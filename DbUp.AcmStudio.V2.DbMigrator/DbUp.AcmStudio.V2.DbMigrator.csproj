@@ -1,0 +1,130 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>netcoreapp2.1</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="dbup-core" Version="4.2.0" />
+        <PackageReference Include="dbup-sqlserver" Version="4.2.0" />
+        <PackageReference Include="System.Data.SqlClient" Version="4.6.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Core.Utils\Functions" />
+      <Folder Include="DataProviders\Broadridge\Tables" />
+      <Folder Include="DataProviders\Geneva.Sma" />
+      <Folder Include="DataProviders\Uma.Merrill.ETL\Procs" />
+    </ItemGroup>
+
+    <!--Core Lookup-->
+    <ItemGroup>
+        <EmbeddedResource Include="Core.Lookup\Tables\dbo.tbl_lku_ColumnStyles.sql" />
+        <EmbeddedResource Include="Core.Lookup\Tables\dbo.tbl_lku_CommissionType.sql" />
+        <EmbeddedResource Include="Core.Lookup\Tables\dbo.tbl_lku_GenevaSma_SplitAccounts.sql" />
+        <EmbeddedResource Include="Core.Lookup\Tables\dbo.tbl_lku_RateType.sql" />
+        <EmbeddedResource Include="Core.Lookup\Tables\dbo.tbl_lku_RegionalDirector.sql" />
+        <EmbeddedResource Include="Core.Lookup\Tables\dbo.tbl_lku_RegionalDirectorRate.sql" />
+        
+
+        <EmbeddedResource Include="Core.Lookup\Functions\dbo.fn_GetRegionalDirectorIID_By_Name.sql" />
+        <EmbeddedResource Include="Core.Lookup\Functions\dbo.fn_tbl_RegionalDirector_RateInfo.sql" />
+
+        <EmbeddedResource Include="Core.Lookup\Procs\dbo.prc_ColumnStyles_Fetch.sql" />
+        <EmbeddedResource Include="Core.Lookup\Procs\dbo.prc_RegionalDirector_RateInfo_Fetch.sql" />
+        <EmbeddedResource Include="Core.Lookup\Procs\dbo.prc_RegionalDirector_RateInfo_ByLastName_Fetch.sql" />
+
+        <EmbeddedResource Include="Core.Lookup\RefDataSync\dbo.RefDataSync_tbl_lku_ColumnStyles.sql" />
+        <EmbeddedResource Include="Core.Lookup\RefDataSync\dbo.RefDataSync_tbl_lku_CommissionType.sql" />
+        <EmbeddedResource Include="Core.Lookup\RefDataSync\dbo.RefDataSync_tbl_lku_GenevaSma_SplitAccounts.sql" />
+        <EmbeddedResource Include="Core.Lookup\RefDataSync\dbo.RefDataSync_tbl_lku_RateType.sql" />
+        <EmbeddedResource Include="Core.Lookup\RefDataSync\dbo.RefDataSync_tbl_lku_RegionalDirector.sql" />
+        <EmbeddedResource Include="Core.Lookup\RefDataSync\dbo.RefDataSync_tbl_lku_RegionalDirectorRate.sql" />
+    </ItemGroup>
+
+    <!--Core TaskMetaData-->
+    <ItemGroup>
+        <EmbeddedResource Include="Core.TaskMetaData\Tables\dbo.tbl_TaskMetaData.sql" />
+        <EmbeddedResource Include="Core.TaskMetaData\Procs\dbo.prc_TaskMetaData_FetchAll.sql" />
+        <EmbeddedResource Include="Core.TaskMetaData\Procs\dbo.prc_TaskMetaData_Fetch_By_ObjectCode.sql" />
+        <EmbeddedResource Include="Core.TaskMetaData\Procs\dbo.prc_TaskMetaData_Save.sql" />
+        <EmbeddedResource Include="Core.TaskMetaData\RefDataSync\dbo.RefDataSync.TaskMetaData.sql" />
+    </ItemGroup>
+
+    <!--Core Utils-->
+    <ItemGroup>
+        <EmbeddedResource Include="Core.Utils\Functions\dbo.fn_CalcPercentDifference.sql" />
+        <EmbeddedResource Include="Core.Utils\Functions\dbo.fn_ConvertCurrencyToMoney.sql" />
+        <EmbeddedResource Include="Core.Utils\Functions\dbo.fn_ConvertPercentToDecimal.sql" />
+        <EmbeddedResource Include="Core.Utils\Functions\dbo.fn_ConvertStringToDecimal.sql" />
+        <EmbeddedResource Include="Core.Utils\Functions\dbo.fn_Get_EndOfMonth_Date.sql" />
+        <EmbeddedResource Include="Core.Utils\Functions\dbo.fn_Get_StartOfMonth_Date.sql" />
+        <EmbeddedResource Include="Core.Utils\Functions\dbo.fn_GetFirstNonZeroNewAssetValue.sql" />
+        <EmbeddedResource Include="Core.Utils\Functions\dbo.fn_GetGenevaSmaOngoingRate.sql" />
+        <EmbeddedResource Include="Core.Utils\Functions\dbo.fn_GetRate.sql" />
+        <EmbeddedResource Include="Core.Utils\Functions\dbo.fn_GetReportingPeriodString.sql" />
+        <EmbeddedResource Include="Core.Utils\Functions\dbo.fn_GetUMASumPeriodDelta.sql" />
+        <EmbeddedResource Include="Core.Utils\Functions\dbo.fn_IsGenevaSmaSplitAccount.sql" />
+        <EmbeddedResource Include="Core.Utils\Functions\dbo.fn_tbl_RegionalDirector_RateInfo_Table.sql" />
+    </ItemGroup>
+
+    <!--DataProviders Broadridge-->
+    <ItemGroup>
+        <EmbeddedResource Include="DataProviders\Broadridge\Tables\dbo.tbl_Broadridge.sql" />
+        <EmbeddedResource Include="DataProviders\Broadridge\Tables\dbo.tbl_Broadridge_MutualFunds.sql" />
+        <EmbeddedResource Include="DataProviders\Broadridge\Tables\dbo.tbl_Broadridge_MutualFunds_Staging.sql" />
+        <EmbeddedResource Include="DataProviders\Broadridge\Tables\dbo.tbl_Broadridge_Staging.sql" />
+        <EmbeddedResource Include="DataProviders\Broadridge\Tables\dbo.tbl_BroadridgeAssets.sql" />
+        <EmbeddedResource Include="DataProviders\Broadridge\Tables\dbo.tbl_BroadridgeAssets_Staging.sql" />
+        <EmbeddedResource Include="DataProviders\Broadridge\Tables\dbo.tbl_BroadridgeSales.sql" />
+        <EmbeddedResource Include="DataProviders\Broadridge\Tables\dbo.tbl_BroadridgeSales_Staging.sql" />
+
+        <EmbeddedResource Include="DataProviders\Broadridge\Procs\dbo.prc_BroadridgeAssets_Fetch.sql" />
+        <EmbeddedResource Include="DataProviders\Broadridge\Procs\dbo.prc_BroadridgeAssets_Staging_Truncate.sql" />
+        <EmbeddedResource Include="DataProviders\Broadridge\Procs\dbo.prc_BroadridgeAssets_Transform.sql" />
+        <EmbeddedResource Include="DataProviders\Broadridge\Procs\dbo.prc_BroadridgeSales_Fetch.sql" />
+        <EmbeddedResource Include="DataProviders\Broadridge\Procs\dbo.prc_BroadridgeSales_Staging_Truncate.sql" />
+        <EmbeddedResource Include="DataProviders\Broadridge\Procs\dbo.prc_BroadridgeSales_Transform.sql" />
+        <EmbeddedResource Include="DataProviders\Broadridge\Procs\dbo.prc_MutualFundsFlows.sql" />
+        <EmbeddedResource Include="DataProviders\Broadridge\Procs\dbo.prc_tbl_Broadridge_Fetch.sql" />
+        <EmbeddedResource Include="DataProviders\Broadridge\Procs\dbo.prc_BroadridgeAssets_MorganMerrill_Fetch.sql" />
+    </ItemGroup>
+
+    <!--DataProviders Geneva.SMA.ETL-->
+    <ItemGroup>
+        <EmbeddedResource Include="DataProviders\Geneva.Sma\Geneva.SMA.ETL\Tables\dbo.tbl_GenevaAum.sql" />
+        <EmbeddedResource Include="DataProviders\Geneva.Sma\Geneva.SMA.ETL\Tables\dbo.tbl_GenevaAum_Staging.sql" />
+        <EmbeddedResource Include="DataProviders\Geneva.Sma\Geneva.SMA.ETL\Tables\dbo.tbl_GenevaSma.sql" />
+        <EmbeddedResource Include="DataProviders\Geneva.Sma\Geneva.SMA.ETL\Tables\dbo.tbl_GenevaSma_Staging.sql" />
+        <EmbeddedResource Include="DataProviders\Geneva.Sma\Geneva.SMA.ETL\Tables\dbo.tbl_GenevaSmaAssets.sql" />
+        <EmbeddedResource Include="DataProviders\Geneva.Sma\Geneva.SMA.ETL\Tables\dbo.tbl_GenevaSmaAssets_Staging.sql" />
+
+        <EmbeddedResource Include="DataProviders\Geneva.Sma\Geneva.SMA.ETL\Procs\dbo.prc_GenevaAum_Transform.sql" />
+        <EmbeddedResource Include="DataProviders\Geneva.Sma\Geneva.SMA.ETL\Procs\dbo.prc_GenevaSma_Transform.sql" />
+        <EmbeddedResource Include="DataProviders\Geneva.Sma\Geneva.SMA.ETL\Procs\dbo.prc_tbl_GenevaAum_Delete_ByReportEndDate.sql" />
+        <EmbeddedResource Include="DataProviders\Geneva.Sma\Geneva.SMA.ETL\Procs\dbo.prc_tbl_GenevaAum_Staging_Truncate.sql" />
+        <EmbeddedResource Include="DataProviders\Geneva.Sma\Geneva.SMA.ETL\Procs\dbo.prc_tbl_GenevaAum_Transform.sql" />
+        <EmbeddedResource Include="DataProviders\Geneva.Sma\Geneva.SMA.ETL\Procs\dbo.prc_tbl_GenevaSmaAssets_Delete_ByReportEndDate.sql" />
+        <EmbeddedResource Include="DataProviders\Geneva.Sma\Geneva.SMA.ETL\Procs\dbo.prc_tbl_GenevaSmaAssets_Staging_Truncate.sql" />
+        <EmbeddedResource Include="DataProviders\Geneva.Sma\Geneva.SMA.ETL\Procs\dbo.prc_tbl_GenevaSmaAssets_Transform.sql" />
+        <EmbeddedResource Include="DataProviders\Geneva.Sma\Geneva.SMA.ETL\Procs\dbo.prc_GenevaAum.sql" />
+    </ItemGroup>
+
+    <!--DataProviders Geneva.SMA.ETL-->
+    <ItemGroup>
+        <EmbeddedResource Include="DataProviders\Geneva.Sma\Geneva.SMA.Statement\Functions\dbo.fn_tbl_Geneva_NewAssets_Summary_Detail.sql" />
+        <EmbeddedResource Include="DataProviders\Geneva.Sma\Geneva.SMA.Statement\Functions\dbo.fn_tbl_GenevaSmaAssets_NewAssets_Detail.sql" />
+
+        <EmbeddedResource Include="DataProviders\Geneva.Sma\Geneva.SMA.Statement\Procs\dbo.prc_GenevaAum_DetailRows.sql" />
+        <EmbeddedResource Include="DataProviders\Geneva.Sma\Geneva.SMA.Statement\Procs\dbo.prc_GenevaFlows.sql" />
+        <EmbeddedResource Include="DataProviders\Geneva.Sma\Geneva.SMA.Statement\Procs\dbo.prc_GenevaSma_Ongoing_Flows.sql" />
+        <EmbeddedResource Include="DataProviders\Geneva.Sma\Geneva.SMA.Statement\Procs\dbo.prc_GenevaSmaAssets_DetailRows.sql" />
+    </ItemGroup>
+
+    <!--DataProviders UMA Merrill.ETL-->
+    <ItemGroup>
+        <EmbeddedResource Include="DataProviders\Uma.Merrill.ETL\Tables\dbo.tbl_UMA_Merrill.sql" />
+        <EmbeddedResource Include="DataProviders\Uma.Merrill.ETL\Procs\dbo.prc_Uma_Merrill_Data_Fetch.sql" />
+    </ItemGroup>
+</Project>

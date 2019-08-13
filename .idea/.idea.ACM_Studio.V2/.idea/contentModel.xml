@@ -1,0 +1,327 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ContentModelStore">
+    <e p="C:\Development.Acm" t="IncludeFlat">
+      <e p="ACM_Studio.V2.sln" t="IncludeFlat" />
+      <e p="AcmCommissionsStatements" t="IncludeRecursive">
+        <e p="AcmCommissionsStatements.csproj" t="IncludeRecursive" />
+        <e p="appsettings.json" t="Include" />
+        <e p="bin" t="ExcludeRecursive" />
+        <e p="BroadridgeMerrillMorganStatement.cs" t="Include" />
+        <e p="BroadridgeStatement.cs" t="Include" />
+        <e p="CommissionStatementBase.cs" t="Include" />
+        <e p="GenevaSmaStatement.cs" t="Include" />
+        <e p="obj" t="ExcludeRecursive">
+          <e p="Debug" t="Include">
+            <e p="netcoreapp2.1" t="Include">
+              <e p="AcmCommissionsStatements.AssemblyInfo.cs" t="Include" />
+            </e>
+          </e>
+        </e>
+        <e p="Program.cs" t="Include" />
+      </e>
+      <e p="AcmLogging" t="IncludeRecursive">
+        <e p="AcmLogger.cs" t="Include" />
+        <e p="AcmLogging.csproj" t="IncludeRecursive" />
+        <e p="AcmLoggingDetail.cs" t="Include" />
+        <e p="bin" t="ExcludeRecursive" />
+        <e p="obj" t="ExcludeRecursive">
+          <e p="Debug" t="Include">
+            <e p="netcoreapp2.1" t="Include">
+              <e p="AcmLogging.AssemblyInfo.cs" t="Include" />
+            </e>
+          </e>
+        </e>
+        <e p="PerformanceTracker.cs" t="Include" />
+      </e>
+      <e p="AcmLogging.UnitTest" t="IncludeRecursive">
+        <e p="AcmLogging.UnitTest.csproj" t="IncludeRecursive" />
+        <e p="AcmLoggingUnitTest.cs" t="Include" />
+        <e p="bin" t="ExcludeRecursive" />
+        <e p="obj" t="ExcludeRecursive">
+          <e p="Debug" t="Include">
+            <e p="netcoreapp2.1" t="Include">
+              <e p="AcmLogging.UnitTest.AssemblyInfo.cs" t="Include" />
+              <e p="AcmLogging.UnitTest.Program.cs" t="Include" />
+            </e>
+          </e>
+        </e>
+      </e>
+      <e p="Aristotle.Excel" t="IncludeRecursive">
+        <e p="Aristotle.Excel.csproj" t="IncludeRecursive" />
+        <e p="AristotleExcel.cs" t="Include" />
+        <e p="AristotleExcelStyle.cs" t="Include" />
+        <e p="bin" t="ExcludeRecursive" />
+        <e p="obj" t="ExcludeRecursive">
+          <e p="Debug" t="Include">
+            <e p="netcoreapp2.1" t="Include">
+              <e p="Aristotle.Excel.AssemblyInfo.cs" t="Include" />
+            </e>
+          </e>
+        </e>
+      </e>
+      <e p="AristotleExcel" t="Include" />
+      <e p="Core" t="IncludeRecursive">
+        <e p="bin" t="ExcludeRecursive" />
+        <e p="Core.csproj" t="IncludeRecursive" />
+        <e p="CsvParser" t="Include">
+          <e p="CsvParser.cs" t="Include" />
+        </e>
+        <e p="DataModels" t="Include">
+          <e p="Broadridge" t="Include">
+            <e p="BroadridgeDataModels.cs" t="Include" />
+            <e p="BroadridgeFlows.cs" t="Include" />
+            <e p="BroadridgeFlowsSummaryDataModel.cs" t="Include" />
+            <e p="BroadridgeNewAssetsDetailDataModel.cs" t="Include" />
+            <e p="BroadridgeNewAssetsSummaryDataModel.cs" t="Include" />
+            <e p="BroadridgeOgDetailDataModel.cs" t="Include" />
+            <e p="BroadridgeOgSummaryDataModel.cs" t="Include" />
+          </e>
+          <e p="GenevaSma" t="Include">
+            <e p="GenevaAumInbound.cs" t="Include" />
+            <e p="GenevaFlows.cs" t="Include" />
+            <e p="GenevaNewAssetsSummaryDataModel.cs" t="Include" />
+            <e p="GenevaSalesInbound.cs" t="Include" />
+            <e p="GenevaSmaAssetsDataModel.cs" t="Include" />
+            <e p="GenevaSmaAumDataModel.cs" t="Include" />
+            <e p="GenevaSmaFlowsDataModel.cs" t="Include" />
+            <e p="GenevaSmaNewAssetsDataModel.cs" t="Include" />
+            <e p="GenevaSmaOngoingDetailDataModel.cs" t="Include" />
+            <e p="GenevaSmaOngoinSummaryDataModel.cs" t="Include" />
+          </e>
+          <e p="Lookup" t="Include">
+            <e p="CommissionColumnStylesDataModel.cs" t="Include" />
+          </e>
+          <e p="RegionalDirectorRateInfoDataModel.cs" t="Include" />
+          <e p="TaskMetaDataDataModel.cs" t="Include" />
+          <e p="UmaMerrill" t="Include">
+            <e p="UmaMerrillDataModel.cs" t="Include" />
+            <e p="UmaMerrillNewAssetsDetailDataModel.cs" t="Include" />
+            <e p="UmaMerrillNewAssetsSummaryDataModel.cs" t="Include" />
+            <e p="UmaMerrillOngoingDetailDataModel.cs" t="Include" />
+          </e>
+        </e>
+        <e p="DateTimeHandlers" t="Include">
+          <e p="DateTimeHandlers.cs" t="Include" />
+        </e>
+        <e p="DbHandlers" t="Include">
+          <e p="DbHandlers.cs" t="Include" />
+        </e>
+        <e p="Enums" t="Include">
+          <e p="LkuCommissionType.cs" t="Include" />
+          <e p="LkuRateType.cs" t="Include" />
+        </e>
+        <e p="FileNameHelpers.cs" t="Include" />
+        <e p="ListHandlers" t="Include">
+          <e p="ListDataTable.cs" t="Include" />
+        </e>
+        <e p="obj" t="ExcludeRecursive">
+          <e p="Debug" t="Include">
+            <e p="netcoreapp2.1" t="Include">
+              <e p="Core.AssemblyInfo.cs" t="Include" />
+            </e>
+          </e>
+        </e>
+      </e>
+      <e p="DapperDatabaseAccess" t="IncludeRecursive">
+        <e p="bin" t="ExcludeRecursive" />
+        <e p="DapperDal.cs" t="Include" />
+        <e p="DapperDatabaseAccess.csproj" t="IncludeRecursive" />
+        <e p="obj" t="ExcludeRecursive">
+          <e p="Debug" t="Include">
+            <e p="netcoreapp2.1" t="Include">
+              <e p="DapperDatabaseAccess.AssemblyInfo.cs" t="Include" />
+            </e>
+          </e>
+        </e>
+      </e>
+      <e p="DataAccess" t="Include" />
+      <e p="DbUp.AcmStudio.V2" t="Include" />
+      <e p="DbUp.AcmStudio.V2.DbMigrator" t="IncludeRecursive">
+        <e p="bin" t="ExcludeRecursive" />
+        <e p="Core.Lookup" t="Include">
+          <e p="Functions" t="Include">
+            <e p="dbo.fn_GetRegionalDirectorIID_By_Name.sql" t="Include" />
+            <e p="dbo.fn_tbl_RegionalDirector_RateInfo.sql" t="Include" />
+          </e>
+          <e p="Procs" t="Include">
+            <e p="dbo.prc_ColumnStyles_Fetch.sql" t="Include" />
+            <e p="dbo.prc_RegionalDirector_RateInfo_ByLastName_Fetch.sql" t="Include" />
+            <e p="dbo.prc_RegionalDirector_RateInfo_Fetch.sql" t="Include" />
+            <e p="dbo.prc_RegionalDirector_RateInfo_Fetch_All.sql" t="Include" />
+          </e>
+          <e p="RefDataSync" t="Include">
+            <e p="dbo.RefDataSync_tbl_lku_ColumnStyles.sql" t="Include" />
+            <e p="dbo.RefDataSync_tbl_lku_CommissionType.sql" t="Include" />
+            <e p="dbo.RefDataSync_tbl_lku_GenevaSma_SplitAccounts.sql" t="Include" />
+            <e p="dbo.RefDataSync_tbl_lku_RateType.sql" t="Include" />
+            <e p="dbo.RefDataSync_tbl_lku_RegionalDirector.sql" t="Include" />
+            <e p="dbo.RefDataSync_tbl_lku_RegionalDirectorRate.sql" t="Include" />
+          </e>
+          <e p="Tables" t="Include">
+            <e p="dbo.tbl_lku_ColumnStyles.sql" t="Include" />
+            <e p="dbo.tbl_lku_CommissionType.sql" t="Include" />
+            <e p="dbo.tbl_lku_GenevaSma_SplitAccounts.sql" t="Include" />
+            <e p="dbo.tbl_lku_RateType.sql" t="Include" />
+            <e p="dbo.tbl_lku_RegionalDirector.sql" t="Include" />
+            <e p="dbo.tbl_lku_RegionalDirectorRate.sql" t="Include" />
+          </e>
+        </e>
+        <e p="Core.TaskMetaData" t="Include">
+          <e p="Procs" t="Include">
+            <e p="dbo.prc_TaskMetaData_Fetch_By_ObjectCode.sql" t="Include" />
+            <e p="dbo.prc_TaskMetaData_FetchAll.sql" t="Include" />
+            <e p="dbo.prc_TaskMetaData_Save.sql" t="Include" />
+          </e>
+          <e p="RefDataSync" t="Include">
+            <e p="dbo.RefDataSync.TaskMetaData.sql" t="Include" />
+          </e>
+          <e p="Tables" t="Include">
+            <e p="dbo.tbl_TaskMetaData.sql" t="Include" />
+          </e>
+        </e>
+        <e p="Core.Utils" t="Include">
+          <e p="Functions" t="Include">
+            <e p="dbo.fn_CalcPercentDifference.sql" t="Include" />
+            <e p="dbo.fn_ConvertCurrencyToMoney.sql" t="Include" />
+            <e p="dbo.fn_ConvertPercentToDecimal.sql" t="Include" />
+            <e p="dbo.fn_ConvertStringToDecimal.sql" t="Include" />
+            <e p="dbo.fn_Get_EndOfMonth_Date.sql" t="Include" />
+            <e p="dbo.fn_Get_StartOfMonth_Date.sql" t="Include" />
+            <e p="dbo.fn_GetFirstNonZeroNewAssetValue.sql" t="Include" />
+            <e p="dbo.fn_GetGenevaSmaOngoingRate.sql" t="Include" />
+            <e p="dbo.fn_GetRate.sql" t="Include" />
+            <e p="dbo.fn_GetReportingPeriodString.sql" t="Include" />
+            <e p="dbo.fn_GetUMASumPeriodDelta.sql" t="Include" />
+            <e p="dbo.fn_IsGenevaSmaSplitAccount.sql" t="Include" />
+            <e p="dbo.fn_tbl_RegionalDirector_RateInfo_Table.sql" t="Include" />
+          </e>
+        </e>
+        <e p="DataProviders" t="Include">
+          <e p="Broadridge" t="Include">
+            <e p="Procs" t="Include">
+              <e p="dbo.prc_BroadridgeAssets_Fetch.sql" t="Include" />
+              <e p="dbo.prc_BroadridgeAssets_MorganMerrill_Fetch.sql" t="Include" />
+              <e p="dbo.prc_BroadridgeAssets_Staging_Truncate.sql" t="Include" />
+              <e p="dbo.prc_BroadridgeAssets_Transform.sql" t="Include" />
+              <e p="dbo.prc_BroadridgeSales_Fetch.sql" t="Include" />
+              <e p="dbo.prc_BroadridgeSales_Staging_Truncate.sql" t="Include" />
+              <e p="dbo.prc_BroadridgeSales_Transform.sql" t="Include" />
+              <e p="dbo.prc_MutualFundsFlows.sql" t="Include" />
+              <e p="dbo.prc_tbl_Broadridge_Fetch.sql" t="Include" />
+            </e>
+            <e p="Tables" t="Include">
+              <e p="dbo.tbl_Broadridge.sql" t="Include" />
+              <e p="dbo.tbl_Broadridge_MutualFunds.sql" t="Include" />
+              <e p="dbo.tbl_Broadridge_MutualFunds_Staging.sql" t="Include" />
+              <e p="dbo.tbl_Broadridge_Staging.sql" t="Include" />
+              <e p="dbo.tbl_BroadridgeAssets.sql" t="Include" />
+              <e p="dbo.tbl_BroadridgeAssets_Staging.sql" t="Include" />
+              <e p="dbo.tbl_BroadridgeSales.sql" t="Include" />
+              <e p="dbo.tbl_BroadridgeSales_Staging.sql" t="Include" />
+            </e>
+          </e>
+          <e p="Geneva.Sma" t="Include">
+            <e p="Geneva.SMA.ETL" t="Include">
+              <e p="Procs" t="Include">
+                <e p="dbo.prc_GenevaAum.sql" t="Include" />
+                <e p="dbo.prc_GenevaAum_Transform.sql" t="Include" />
+                <e p="dbo.prc_GenevaSma_Transform.sql" t="Include" />
+                <e p="dbo.prc_tbl_GenevaAum_Delete_ByReportEndDate.sql" t="Include" />
+                <e p="dbo.prc_tbl_GenevaAum_Staging_Truncate.sql" t="Include" />
+                <e p="dbo.prc_tbl_GenevaAum_Transform.sql" t="Include" />
+                <e p="dbo.prc_tbl_GenevaSmaAssets_Delete_ByReportEndDate.sql" t="Include" />
+                <e p="dbo.prc_tbl_GenevaSmaAssets_Staging_Truncate.sql" t="Include" />
+                <e p="dbo.prc_tbl_GenevaSmaAssets_Transform.sql" t="Include" />
+              </e>
+              <e p="Tables" t="Include">
+                <e p="dbo.tbl_GenevaAum.sql" t="Include" />
+                <e p="dbo.tbl_GenevaAum_Staging.sql" t="Include" />
+                <e p="dbo.tbl_GenevaSma.sql" t="Include" />
+                <e p="dbo.tbl_GenevaSma_Staging.sql" t="Include" />
+                <e p="dbo.tbl_GenevaSmaAssets.sql" t="Include" />
+                <e p="dbo.tbl_GenevaSmaAssets_Staging.sql" t="Include" />
+              </e>
+            </e>
+            <e p="Geneva.SMA.Statement" t="Include">
+              <e p="Functions" t="Include">
+                <e p="dbo.fn_tbl_Geneva_NewAssets_Summary_Detail.sql" t="Include" />
+                <e p="dbo.fn_tbl_GenevaSmaAssets_NewAssets_Detail.sql" t="Include" />
+              </e>
+              <e p="Procs" t="Include">
+                <e p="dbo.prc_GenevaAum.sql" t="Include" />
+                <e p="dbo.prc_GenevaAum_DetailRows.sql" t="Include" />
+                <e p="dbo.prc_GenevaFlows.sql" t="Include" />
+                <e p="dbo.prc_GenevaSma_Ongoing_Flows.sql" t="Include" />
+                <e p="dbo.prc_GenevaSmaAssets_DetailRows.sql" t="Include" />
+              </e>
+            </e>
+          </e>
+          <e p="Uma.Merrill.ETL" t="Include">
+            <e p="Procs" t="Include">
+              <e p="dbo.prc_Uma_Merrill_Data_Fetch.sql" t="Include" />
+            </e>
+            <e p="Tables" t="Include">
+              <e p="dbo.tbl_UMA_Merrill.sql" t="Include" />
+            </e>
+          </e>
+        </e>
+        <e p="DbUp.AcmStudio.V2.DbMigrator.csproj" t="IncludeRecursive" />
+        <e p="exec_dbo_prc_RegionalDirector_RateInfo_F.csv" t="Include" />
+        <e p="obj" t="ExcludeRecursive">
+          <e p="Debug" t="Include">
+            <e p="netcoreapp2.1" t="Include">
+              <e p="DbUp.AcmStudio.V2.DbMigrator.AssemblyInfo.cs" t="Include" />
+            </e>
+          </e>
+        </e>
+        <e p="Program.cs" t="Include" />
+        <e p="UnitTest" t="Include">
+          <e p="dbo.UnitTest_Script.sql" t="Include" />
+        </e>
+      </e>
+      <e p="ETL" t="IncludeRecursive">
+        <e p="appsettings.json" t="Include" />
+        <e p="bin" t="ExcludeRecursive" />
+        <e p="Etl.Broadridge.cs" t="Include" />
+        <e p="ETL.csproj" t="IncludeRecursive" />
+        <e p="Etl.Geneva.cs" t="Include" />
+        <e p="obj" t="ExcludeRecursive">
+          <e p="Debug" t="Include">
+            <e p="netcoreapp2.1" t="Include">
+              <e p="ETL.AssemblyInfo.cs" t="Include" />
+            </e>
+          </e>
+        </e>
+        <e p="Program.cs" t="Include" />
+      </e>
+      <e p="Logging" t="Include">
+        <e p="AcmLogging.Data" t="IncludeRecursive">
+          <e p="AcmLogging.Data.csproj" t="IncludeRecursive" />
+          <e p="bin" t="ExcludeRecursive" />
+          <e p="CustomDapper" t="Include">
+            <e p="DapperExtensions.cs" t="Include" />
+          </e>
+          <e p="obj" t="ExcludeRecursive">
+            <e p="Debug" t="Include">
+              <e p="netcoreapp2.1" t="Include">
+                <e p="AcmLogging.Data.AssemblyInfo.cs" t="Include" />
+              </e>
+            </e>
+          </e>
+        </e>
+      </e>
+      <e p="packages" t="ExcludeRecursive" />
+      <e p="Statements" t="Include" />
+      <e p="UnitTests" t="Include" />
+    </e>
+    <e p="C:\Users\Hammonm1\.nuget\packages\xunit.runner.visualstudio\2.4.0\build\netcoreapp1.0\xunit.runner.reporters.netcoreapp10.dll" t="Include" />
+    <e p="C:\Users\Hammonm1\.nuget\packages\xunit.runner.visualstudio\2.4.0\build\netcoreapp1.0\xunit.runner.utility.netcoreapp10.dll" t="Include" />
+    <e p="C:\Users\Hammonm1\.nuget\packages\xunit.runner.visualstudio\2.4.0\build\netcoreapp1.0\xunit.runner.visualstudio.dotnetcore.testadapter.dll" t="Include" />
+    <e p="C:\Users\Hammonm1\.Rider2019.2\config\consoles\db" t="IncludeRecursive" />
+    <e p="C:\Users\Hammonm1\.Rider2019.2\config\extensions" t="IncludeRecursive" />
+    <e p="C:\Users\Hammonm1\.Rider2019.2\config\scratches" t="IncludeRecursive" />
+    <e p="C:\Users\Hammonm1\.Rider2019.2\system\extResources" t="IncludeRecursive" />
+    <e p="C:\Users\Hammonm1\.Rider2019.2\system\resharper-host\local\Transient\ReSharperHost\v192\SolutionCaches\_ACM_Studio.V2.445866961.00" t="ExcludeRecursive" />
+  </component>
+</project>
