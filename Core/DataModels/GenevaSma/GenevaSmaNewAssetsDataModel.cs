@@ -22,9 +22,6 @@ namespace Core.DataModels
         public decimal CommissionAmount { get; set; }
         public decimal CommissionRate { get; set; }
         public string IsStartBeforePeriod { get; set; }
-        public DateTime? SumTradeAmountByDate { get; set; }
-        public decimal? SumTradeAmountByPortfolioCode { get; set; }
-        public string IsValid { get; set; }
         public string SalesTeam { get; set; }
         public string Transfer { get; set; }
     }

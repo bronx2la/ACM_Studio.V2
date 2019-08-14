@@ -152,15 +152,12 @@ namespace AcmCommissionsStatements
                             CommissionAmount              = calcCommission ? (item.Amount * rdRateInfo.Rate) : 0.0m,
                             CommissionRate                = rdRateInfo.Rate,
                             SalesTeam                     = item.SalesTeam,
-                            IsStartBeforePeriod           = isStartBeforePeriod ? "TRUE" : "FALSE",
-                            SumTradeAmountByDate          = null,
-                            SumTradeAmountByPortfolioCode = null,
-                            IsValid                       = calcCommission ? "TRUE" : "FALSE"
+                            IsStartBeforePeriod           = isStartBeforePeriod ? "TRUE" : "FALSE"
                         };
                         naItems.Add(na);
                     }
                 }
-                return naItems.OrderBy(c=>c.IsValid).ThenBy(c=>c.RegionalDirector).ThenBy(c=>c.ConsultantFirm).ThenBy(c=>c.Portfolio);
+                return naItems.OrderBy(c=>c.RegionalDirector).ThenBy(c=>c.ConsultantFirm).ThenBy(c=>c.Portfolio);
             }
             catch (Exception e)
             {
@@ -176,26 +173,22 @@ namespace AcmCommissionsStatements
             var naSumm = new List<GenevaNewAssetsSummaryDataModel>();
 
             var naSummWorking = naDetail
-                               .GroupBy(g => new
-                                {
-                                    g.RegionalDirector,
-                                    g.ConsultantFirm,
-                                    g.ConsultantName,
-                                    g.IsValid
-                                })
-                               .Select(group => new
-                                {
-                                    RD                   = group.Key.RegionalDirector,
-                                    IsGood               = group.Key.IsValid,
-                                    Firm                 = group.Key.ConsultantFirm,
-                                    Name                 = group.Key.ConsultantName,
-                                    Quantity             = group.Sum(c => c.Quantity),
-                                    Amount               = group.Sum(c => c.Amount),
-                                    Rate                 = group.Min(c => c.CommissionRate),
-                                    CommissionAmount     = group.Sum(c => c.Amount) * group.Min(c => c.CommissionRate),
-                                    IsValid              = group.Key.IsValid
-                                })
-                               .Where(c=>c.IsValid.Equals("TRUE"));
+                .GroupBy(g => new
+                {
+                    g.RegionalDirector,
+                    g.ConsultantFirm,
+                    g.ConsultantName
+                })
+                .Select(group => new
+                {
+                    RD = group.Key.RegionalDirector,
+                    Firm = group.Key.ConsultantFirm,
+                    Name = group.Key.ConsultantName,
+                    Quantity = group.Sum(c => c.Quantity),
+                    Amount = group.Sum(c => c.Amount),
+                    Rate = group.Min(c => c.CommissionRate),
+                    CommissionAmount = group.Sum(c => c.Amount) * group.Min(c => c.CommissionRate)
+                });
 
             foreach (var item in naSummWorking)
             {
@@ -206,8 +199,7 @@ namespace AcmCommissionsStatements
                     ConsultantName = item.Name,
                     PayableAmount = item.Amount,
                     Rate = item.Rate,
-                    Commission = item.CommissionAmount,
-                    IsValid = item.IsValid
+                    Commission = item.CommissionAmount
                 };
 
                 naSumm.Add(summary);
@@ -227,8 +219,7 @@ namespace AcmCommissionsStatements
                                     Name             = "-----",
                                     Amount           = group.Sum(c => c.PayableAmount),
                                     Rate             = group.Min(c => c.Rate),
-                                    CommissionAmount = group.Sum(c => c.Commission),
-                                    IsValid          = "-----"
+                                    CommissionAmount = group.Sum(c => c.Commission)
                                 });
 
             foreach (var sa in naSummTotals)
