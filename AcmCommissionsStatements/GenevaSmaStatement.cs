@@ -126,6 +126,7 @@ namespace AcmCommissionsStatements
                                               ? rdRateInfo.Rate / 2
                                               : rdRateInfo.Rate;
 
+//                        bool calcCommission = item.Amount > 0;
                         bool calcCommission = ((item.Amount > 0) && (item.TranDesc == "NewCash" || item.TranDesc == "NewAsset"));
                         bool isStartBeforePeriod = ((item.PortStartDate < item.TradeDate) &&
                                                     (item.PortStartDate > new DateTime(1900, 1, 1)));
