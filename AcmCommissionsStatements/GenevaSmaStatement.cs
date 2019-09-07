@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using Aristotle.Excel;
+using CommissionsStatementGenerator;
 using Core.DataModels;
 using Core.Enums;
 using Dapper;
@@ -14,11 +15,13 @@ namespace AcmCommissionsStatements
     public class GenevaSmaStatement : CommissionStatementBase
     {
         private IEnumerable<GenevaSmaAssetsDataModel> _genevaSales { get; set; }
-        private IEnumerable<GenevaFlows>              _genevaFlows { get; set; }
-        private IEnumerable<GenevaSmaAumDataModel>    _aumItems    { get; set; }
-        private IEnumerable<GenevaSmaFlowsDataModel>  FlowsItems   { get; set; }
+        private IEnumerable<GenevaFlows> _genevaFlows { get; set; }
+        private IEnumerable<GenevaSmaAumDataModel> _aumItems { get; set; }
+        private IEnumerable<GenevaSmaFlowsDataModel> FlowsItems { get; set; }
 
-        public GenevaSmaStatement(string startDate, string endDate, string connectionString, TaskMetaDataDataModel metaData) : base(startDate, endDate, connectionString, metaData)
+        
+
+    public GenevaSmaStatement(string startDate, string endDate, string connectionString, TaskMetaDataDataModel metaData) : base(startDate, endDate, connectionString, metaData)
         {
             _genevaSales = InitNewAssetsItems();
             _genevaFlows = InitNewAssetsFlows();
@@ -43,7 +46,6 @@ namespace AcmCommissionsStatements
             parms.Add("@ReportingDate", endDate);
 
             _aumItems = dal.SqlServerFetch("dbo.prc_GenevaAum", parms);
-//            _aumItems = dal.SqlServerFetch("dbo.prc_GenevaAum_DetailRows", parms);
         }
 
 
@@ -118,45 +120,36 @@ namespace AcmCommissionsStatements
 
                 foreach (GenevaSmaAssetsDataModel item in _genevaSales.Distinct())
                 {
-                    rdRateInfo = RegionalDirectorRateInfo(item.InternalMarketingPerson, (int)rateType, (int)commissionType);
+                    bool calcCommission = ((item.Amount > 0) && (item.TranDesc == "NewCash" || item.TranDesc == "NewAsset"));
+                    bool isStartBeforePeriod = ((item.PortStartDate < item.TradeDate) &&
+                                                (item.PortStartDate > new DateTime(1900, 1, 1)));
 
-                    if(rdRateInfo != null)
+                    var rateInfo = GetRateInfo(item.InternalMarketingPerson, item.Strategy);
+                    var theRate = rateInfo?.NewAssetRate ?? 0.0m;
+
+                    var na = new GenevaSmaNewAssetsDataModel()
                     {
-                        rdRateInfo.Rate = item.InternalMarketingPerson.IndexOf(',') > 0
-                                              ? rdRateInfo.Rate / 2
-                                              : rdRateInfo.Rate;
-
-//                        bool calcCommission = item.Amount > 0;
-                        bool calcCommission = ((item.Amount > 0) && (item.TranDesc == "NewCash" || item.TranDesc == "NewAsset"));
-                        bool isStartBeforePeriod = ((item.PortStartDate < item.TradeDate) &&
-                                                    (item.PortStartDate > new DateTime(1900, 1, 1)));
-
-//                        var cn = FindAumItemByPortfolioCode(item.Portfolio.Trim()).ConsultantName;
-
-                        var na = new GenevaSmaNewAssetsDataModel()
-                        {
-                            RegionalDirector              = item.InternalMarketingPerson,
-                            Portfolio                     = item.Portfolio,
-                            PortShortName                 = item.PortShortName,
-                            ConsultantFirm                = item.ConsultantFirm,
-                            ConsultantName                = FindAumItemByPortfolioCode(item.Portfolio.Trim()).ConsultantName,
-                            Strategy                      = item.Strategy,
-                            InteralMarketingPerson        = item.InternalMarketingPerson,
-                            PortStartDate                 = item.PortStartDate,
-                            TradeDate                     = item.TradeDate,
-                            TranType                      = item.TranType,
-                            Trandesc                      = item.TranDesc,
-                            InvCode                       = item.InvCode,
-                            Quantity                      = item.Quantity,
-                            Price                         = item.Price,
-                            Amount                        = item.Amount,
-                            CommissionAmount              = calcCommission ? (item.Amount * rdRateInfo.Rate) : 0.0m,
-                            CommissionRate                = rdRateInfo.Rate,
-                            SalesTeam                     = item.SalesTeam,
-                            IsStartBeforePeriod           = isStartBeforePeriod ? "TRUE" : "FALSE"
-                        };
-                        naItems.Add(na);
-                    }
+                        RegionalDirector              = item.InternalMarketingPerson,
+                        Portfolio                     = item.Portfolio,
+                        PortShortName                 = item.PortShortName,
+                        ConsultantFirm                = item.ConsultantFirm,
+                        ConsultantName                = FindAumItemByPortfolioCode(item.Portfolio.Trim()).ConsultantName,
+                        Strategy                      = item.Strategy,
+                        InteralMarketingPerson        = item.InternalMarketingPerson,
+                        PortStartDate                 = item.PortStartDate,
+                        TradeDate                     = item.TradeDate,
+                        TranType                      = item.TranType,
+                        Trandesc                      = item.TranDesc,
+                        InvCode                       = item.InvCode,
+                        Quantity                      = item.Quantity,
+                        Price                         = item.Price,
+                        Amount                        = item.Amount,
+                        CommissionAmount              = calcCommission ? (item.Amount * theRate) : 0.0m,
+                        CommissionRate                = theRate,
+                        SalesTeam                     = item.SalesTeam,
+                        IsStartBeforePeriod           = isStartBeforePeriod ? "TRUE" : "FALSE"
+                    };
+                    naItems.Add(na);
                 }
                 return naItems.OrderBy(c=>c.RegionalDirector).ThenBy(c=>c.ConsultantFirm).ThenBy(c=>c.Portfolio);
             }
@@ -247,49 +240,36 @@ namespace AcmCommissionsStatements
 
             var ogItems = new List<GenevaSmaOngoingDetailDataModel>();
 
-            foreach (GenevaSmaAumDataModel item in _aumItems)
+            foreach (GenevaSmaAumDataModel item in _aumItems.Where(o=>o.Inception < _startDate))
             {
-                RegionalDirectorRateInfoDataModel rdRateInfo = RegionalDirectorRateInfo(item.IntMktPerson, (int)rateType, (int)commissionType);
+                var flow = FindFlowAmount(item.PortfolioCode);
+                var flowValue = flow?.FlowAmount ?? 0.0m;
 
-                if (rdRateInfo != null)
+                var rateInfo = GetRateInfo(item.IntMktPerson, item.Goal);
+                var theRate = rateInfo?.OngoingRate ?? 0.0m;
+                
+                var og = new GenevaSmaOngoingDetailDataModel()
                 {
-                    rdRateInfo.Rate = item.IntMktPerson.IndexOf(',') > 0
-                                          ? rdRateInfo.Rate / 2
-                                          : rdRateInfo.Rate;
+                    RM             = item.IntMktPerson,
+                    Portfolio      = item.PortfolioCode,
+                    PortShortName  = item.PortfolioName,
+                    PortStartDate  = item.Inception,
+                    Strategy       = item.Goal,
+                    ConsultantFirm = item.ConsultantFirm,
+                    ConsultantName = item.ConsultantName,
+                    ReportEndDate  = _endDate,
+                    AUM            = item.Total,
+                    InFlows        = flowValue,
+                    SeasonedValue  = item.Total - flowValue,
+                    Commission     = (item.Total - flowValue) * (theRate / 4),
+                    Rate           = theRate / 4,
+                    AnnualRate     = theRate
+                };
 
-                    GenevaFlows flow = FindFlowAmount(item.PortfolioCode);
-                    decimal flowValue = flow?.FlowAmount ?? 0.0m;
-
-                    var og = new GenevaSmaOngoingDetailDataModel()
-                    {
-                        RM             = item.IntMktPerson,
-                        Portfolio      = item.PortfolioCode,
-                        PortShortName  = item.PortfolioName,
-                        PortStartDate  = item.Inception,
-                        Strategy       = item.Goal,
-                        ConsultantFirm = item.ConsultantFirm,
-                        ConsultantName = item.ConsultantName,
-                        ReportEndDate  = _endDate,
-                        AUM            = item.Total,
-                        InFlows        = flowValue,
-                        SeasonedValue  = item.Total - flowValue,
-                        Commission     = (item.Total - flowValue) * (rdRateInfo.Rate / 4),
-                        Rate           = rdRateInfo.Rate / 4,
-                        AnnualRate     = rdRateInfo.Rate
-                    };
-
-                    ogItems.Add(og);
-                }
-                else
-                {
-                    Console.WriteLine(item.IntMktPerson);
-                    Console.WriteLine(item.Inception);
-                    Console.WriteLine("--------");
-                }
+                ogItems.Add(og);
             }
 
             return ogItems;
-//            return ogItems.Where(c=>c.SeasonedValue >= 0);
         }
 
         private IEnumerable<GenevaSmaOngoingSummaryDataModel> BuildOngoingSummary()
@@ -407,11 +387,8 @@ namespace AcmCommissionsStatements
                 var dal = new DapperDatabaseAccess<GenevaSmaAumDataModel>(_connectionString);
 
                 var parms = new DynamicParameters();
-//                parms.Add("@StartDate", _startDate, DbType.Date, ParameterDirection.Input);
                 parms.Add("@EndDate", _endDate, DbType.Date, ParameterDirection.Input);
-//                parms.Add("@ReportEndDate", _endDate, DbType.Date, ParameterDirection.Input);
 
-                    var x = dal.SqlServerFetch("dbo.prc_GenevaAum_DetailRows", parms);
                 return dal.SqlServerFetch("dbo.prc_GenevaAum_DetailRows", parms);
             }
             catch (Exception e)
@@ -419,7 +396,6 @@ namespace AcmCommissionsStatements
                 Console.WriteLine(e);
                 throw;
             }
-            
         }
         #endregion
     }

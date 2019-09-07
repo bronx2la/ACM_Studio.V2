@@ -48,7 +48,5 @@ select distinct
         dbo.tbl_GenevaSma
     where
       ReportEndDate3 = @EndDate
-      and TranDesc in ('NewCash','NewAsset')
-      and TradeDate between @StartDate and @EndDate
     order by
         RM, ConsultantFirm

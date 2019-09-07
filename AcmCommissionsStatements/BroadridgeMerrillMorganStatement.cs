@@ -1,11 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using Aristotle.Excel;
 using Core.DataModels;
 using Core.DataModels.Broadridge;
-using Core.DataModels.UmaMerrill;
 using Core.Enums;
 using Dapper;
 using DapperDatabaseAccess;
@@ -145,6 +143,10 @@ namespace AcmCommissionsStatements
                         ? rdRateInfo.Rate / 2
                         : rdRateInfo.Rate;
 
+                    var rd = _regionalDirector.FirstOrDefault(r => r.LastName == asset.Territory);
+                    var rateInfo = GetRateInfo(rd == null ? "House" : rd.RegionalDirectorKey, asset.ProductName, false);
+                    var theRate = rateInfo?.OngoingRate ?? 0.0m;
+
                     var fa = GetFlowAmount(asset);
                     
                     var pf = new BroadridgeFlows()
@@ -162,8 +164,8 @@ namespace AcmCommissionsStatements
                         PersonLastName = asset.PersonLastName,
                         OfficeCity = asset.OfficeCity,
                         FlowAmount = fa > 0.0m ? fa : 0.0m,
-                        Rate = rdRateInfo.Rate,
-                        Commission = fa > 0 ? (asset.Month3AgoAssetBalance > 0.0m ? fa * rdRateInfo.Rate : 0.0m) : 0.0m
+                        Rate = theRate,
+                        Commission = fa > 0 ? (asset.Month3AgoAssetBalance > 0.0m ? fa * theRate : 0.0m) : 0.0m
                     };
                     
                     pfItems.Add(pf);
@@ -227,6 +229,10 @@ namespace AcmCommissionsStatements
                     rdRateInfo.Rate = 0.0m;
                 }
                 
+                var rd = _regionalDirector.FirstOrDefault(r => r.LastName == item.Territory);
+                var rateInfo = GetRateInfo(rd == null ? "House" : rd.RegionalDirectorKey, item.ProductName, false);
+                var theRate = rateInfo?.NewAssetRate ?? 0.0m;
+                
                 var na = new BroadridgeNewAssetsDetailDataModel()
                 {
                     System                 = item.System,
@@ -244,8 +250,8 @@ namespace AcmCommissionsStatements
                     OfficeRegionRefCode    = item.OfficeRegionRefCode,
                     Territory              = item.Territory.Length.Equals(0) ? "Not Found" : item.Territory,
                     MarketValue            = _tradeAmount,
-                    Rate                   = rdRateInfo.Rate,
-                    Commission             = _tradeAmount * rdRateInfo.Rate,
+                    Rate                   = theRate,
+                    Commission             = _tradeAmount * theRate,
                     IsNewAsset             = item.IsNewAsset,
                     IsGrayStone            = null,
                     IsTransfer             = null
@@ -373,12 +379,16 @@ namespace AcmCommissionsStatements
             
             foreach (var asset in _broadridgeNewAssets)
             {
-                RegionalDirectorRateInfoDataModel rdRateInfo = RegionalDirectorRateInfo(asset.Territory, (int)rateType, (int)commissionType);
-                if (rdRateInfo != null)
-                {
-                    rdRateInfo.Rate = asset.Territory.IndexOf(',') > 0
-                        ? rdRateInfo.Rate / 2
-                        : rdRateInfo.Rate;
+//                RegionalDirectorRateInfoDataModel rdRateInfo = RegionalDirectorRateInfo(asset.Territory, (int)rateType, (int)commissionType);
+//                if (rdRateInfo != null)
+//                {
+//                    rdRateInfo.Rate = asset.Territory.IndexOf(',') > 0
+//                        ? rdRateInfo.Rate / 2
+//                        : rdRateInfo.Rate;
+                    var territory = asset.Territory == "" ? "House" : asset.Territory;
+                    var rd = _regionalDirector.FirstOrDefault(r => r.LastName == territory);
+                    var rateInfo = GetRateInfo(rd.RegionalDirectorKey, asset.ProductName, false);
+                    var theRate = rateInfo?.OngoingRate ?? 0.0m;
 
                     var og = new BroadridgeOgDetailDataModel()
                     {
@@ -394,12 +404,12 @@ namespace AcmCommissionsStatements
                         AUM               = asset.Month3AgoAssetBalance != 0.0m ? asset.MostRecentMonthAssetBalance : 0.0m,
                         InFlows           = 0.0m,
                         SeasonedValue     = asset.MostRecentMonthAssetBalance - 0.0m,
-                        AnnualRate        = rdRateInfo.Rate,
-                        Rate              = rdRateInfo.Rate / 4,
-                        Commission        = (asset.MostRecentMonthAssetBalance - 0.0m) * (rdRateInfo.Rate / 4)
+                        AnnualRate        = theRate,
+                        Rate              = theRate / 4,
+                        Commission        = (asset.MostRecentMonthAssetBalance - 0.0m) * (theRate / 4)
                     };
                     ogItems.Add(og);
-                }
+//                }
             }
 
             return ogItems.OrderBy(c => c.RM).ThenBy(c => c.ConsultantName).Where(c => c.PortStartDate < _endDate);
