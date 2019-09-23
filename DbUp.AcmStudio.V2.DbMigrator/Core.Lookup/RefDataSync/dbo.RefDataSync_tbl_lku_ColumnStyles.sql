@@ -46,9 +46,19 @@ go
             ('BroadridgeUma.NewAssetsDetail', 15, '#0.000000', 25),
             ('BroadridgeUma.NewAssetsDetail', 16, '#,##0.00', 25),
 
+            ('BroadridgeUmaNonMerrillMorgan.NewAssetsDetail', 2, 'yyyy-MM-dd', 25),
+            ('BroadridgeUmaNonMerrillMorgan.NewAssetsDetail', 11, '#,##0.00', 25),
+            ('BroadridgeUmaNonMerrillMorgan.NewAssetsDetail', 14, '#,##0.00', 25),
+            ('BroadridgeUmaNonMerrillMorgan.NewAssetsDetail', 15, '#0.000000', 25),
+            ('BroadridgeUmaNonMerrillMorgan.NewAssetsDetail', 16, '#,##0.00', 25),
+
             ('BroadridgeUma.NewAssetsSummary', 9, '#,##0.00', 25),
             ('BroadridgeUma.NewAssetsSummary', 10, '#0.000000', 25),
             ('BroadridgeUma.NewAssetsSummary', 11, '#,##0.00', 25),
+
+            ('BroadridgeUmaNonMerrillMorgan.NewAssetsSummary', 9, '#,##0.00', 25),
+            ('BroadridgeUmaNonMerrillMorgan.NewAssetsSummary', 10, '#0.000000', 25),
+            ('BroadridgeUmaNonMerrillMorgan.NewAssetsSummary', 11, '#,##0.00', 25),
 
             ('BroadridgeUma.OngoingDetail', 9, 'yyyy-MM-dd', 25),
             ('BroadridgeUma.OngoingDetail', 10, '#,##0.00', 25),
@@ -61,11 +71,28 @@ go
             ('BroadridgeUma.OngoingDetail', 17, '#0.0000000', 25),
             ('BroadridgeUma.OngoingDetail', 18, '#,##0.00', 25),
 
+            ('BroadridgeUmaNonMerrillMorgan.OngoingDetail', 9, 'yyyy-MM-dd', 25),
+            ('BroadridgeUmaNonMerrillMorgan.OngoingDetail', 10, '#,##0.00', 25),
+            ('BroadridgeUmaNonMerrillMorgan.OngoingDetail', 11, '#,##0.00', 25),
+            ('BroadridgeUmaNonMerrillMorgan.OngoingDetail', 13, 'yyyy-MM-dd', 25),
+            ('BroadridgeUmaNonMerrillMorgan.OngoingDetail', 14, '#,##0.00', 25),
+            ('BroadridgeUmaNonMerrillMorgan.OngoingDetail', 15, '#,##0.00', 25),
+            ('BroadridgeUmaNonMerrillMorgan.OngoingDetail', 16, '#,##0.00', 25),
+            ('BroadridgeUmaNonMerrillMorgan.OngoingDetail', 17, '#0.0000000', 25),
+            ('BroadridgeUmaNonMerrillMorgan.OngoingDetail', 18, '#0.0000000', 25),
+            ('BroadridgeUmaNonMerrillMorgan.OngoingDetail', 19, '#,##0.00', 25),
+
             ('BroadridgeUma.OngoingSummary', 3, '#,##0.00', 25),
             ('BroadridgeUma.OngoingSummary', 4, '#,##0.00', 25),
             ('BroadridgeUma.OngoingSummary', 5, '#,##0.00', 25),
             ('BroadridgeUma.OngoingSummary', 6, '#0.000000', 25),
             ('BroadridgeUma.OngoingSummary', 7, '#,##0.00', 25),
+
+            ('BroadridgeUmaNonMerrillMorgan.OngoingSummary', 3, '#,##0.00', 25),
+            ('BroadridgeUmaNonMerrillMorgan.OngoingSummary', 4, '#,##0.00', 25),
+            ('BroadridgeUmaNonMerrillMorgan.OngoingSummary', 5, '#,##0.00', 25),
+            ('BroadridgeUmaNonMerrillMorgan.OngoingSummary', 6, '#0.000000', 25),
+            ('BroadridgeUmaNonMerrillMorgan.OngoingSummary', 7, '#,##0.00', 25),
 
             ('BroadridgeUma.PseudoflowDetail', 12, 'yyyy-MM-dd', 25),
             ('BroadridgeUma.PseudoflowDetail', 13, '#,##0.00', 25),

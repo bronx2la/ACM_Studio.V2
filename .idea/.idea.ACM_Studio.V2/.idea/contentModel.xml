@@ -91,6 +91,8 @@
           </e>
           <e p="Lookup" t="Include">
             <e p="CommissionColumnStylesDataModel.cs" t="Include" />
+            <e p="RegionalDirectorDataModel.cs" t="Include" />
+            <e p="RegionalDirectorRateInfoRevisedDataModel.cs" t="Include" />
           </e>
           <e p="RegionalDirectorRateInfoDataModel.cs" t="Include" />
           <e p="TaskMetaDataDataModel.cs" t="Include" />
@@ -146,9 +148,11 @@
           </e>
           <e p="Procs" t="Include">
             <e p="dbo.prc_ColumnStyles_Fetch.sql" t="Include" />
+            <e p="dbo.prc_RegionalDirector_Fetch_All.sql" t="Include" />
             <e p="dbo.prc_RegionalDirector_RateInfo_ByLastName_Fetch.sql" t="Include" />
             <e p="dbo.prc_RegionalDirector_RateInfo_Fetch.sql" t="Include" />
             <e p="dbo.prc_RegionalDirector_RateInfo_Fetch_All.sql" t="Include" />
+            <e p="dbo.prc_RegionalDirector_RateInfo_Revised_Fetch_All.sql" t="Include" />
           </e>
           <e p="RefDataSync" t="Include">
             <e p="dbo.RefDataSync_tbl_lku_ColumnStyles.sql" t="Include" />
@@ -157,6 +161,7 @@
             <e p="dbo.RefDataSync_tbl_lku_RateType.sql" t="Include" />
             <e p="dbo.RefDataSync_tbl_lku_RegionalDirector.sql" t="Include" />
             <e p="dbo.RefDataSync_tbl_lku_RegionalDirectorRate.sql" t="Include" />
+            <e p="dbo.RefDataSync_tbl_lku_RegionalDirectorRateRevised.sql" t="Include" />
           </e>
           <e p="Tables" t="Include">
             <e p="dbo.tbl_lku_ColumnStyles.sql" t="Include" />
@@ -165,6 +170,7 @@
             <e p="dbo.tbl_lku_RateType.sql" t="Include" />
             <e p="dbo.tbl_lku_RegionalDirector.sql" t="Include" />
             <e p="dbo.tbl_lku_RegionalDirectorRate.sql" t="Include" />
+            <e p="dbo.tbl_lku_RegionalDirectorRateRevised.sql" t="Include" />
           </e>
         </e>
         <e p="Core.TaskMetaData" t="Include">
@@ -202,9 +208,11 @@
             <e p="Procs" t="Include">
               <e p="dbo.prc_BroadridgeAssets_Fetch.sql" t="Include" />
               <e p="dbo.prc_BroadridgeAssets_MorganMerrill_Fetch.sql" t="Include" />
+              <e p="dbo.prc_BroadridgeAssets_Staging_Save.sql" t="Include" />
               <e p="dbo.prc_BroadridgeAssets_Staging_Truncate.sql" t="Include" />
               <e p="dbo.prc_BroadridgeAssets_Transform.sql" t="Include" />
               <e p="dbo.prc_BroadridgeSales_Fetch.sql" t="Include" />
+              <e p="dbo.prc_BroadridgeSales_Staging_Save.sql" t="Include" />
               <e p="dbo.prc_BroadridgeSales_Staging_Truncate.sql" t="Include" />
               <e p="dbo.prc_BroadridgeSales_Transform.sql" t="Include" />
               <e p="dbo.prc_MutualFundsFlows.sql" t="Include" />
@@ -224,7 +232,6 @@
           <e p="Geneva.Sma" t="Include">
             <e p="Geneva.SMA.ETL" t="Include">
               <e p="Procs" t="Include">
-                <e p="dbo.prc_GenevaAum.sql" t="Include" />
                 <e p="dbo.prc_GenevaAum_Transform.sql" t="Include" />
                 <e p="dbo.prc_GenevaSma_Transform.sql" t="Include" />
                 <e p="dbo.prc_tbl_GenevaAum_Delete_ByReportEndDate.sql" t="Include" />

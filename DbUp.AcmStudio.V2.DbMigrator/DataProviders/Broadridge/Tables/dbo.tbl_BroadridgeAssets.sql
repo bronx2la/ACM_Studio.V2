@@ -1,11 +1,13 @@
 use ACM_Studio_V2
 go
 
+--drop table dbo.tbl_BroadridgeAssets
+
 if (object_id('dbo.tbl_BroadridgeAssets') is null)
 begin
     create table dbo.tbl_BroadridgeAssets
     (
-      System                       varchar(500),
+      TheSystem                    varchar(500),
       FirmName                     varchar(500),
       FirmId                       varchar(500),
       FirmCRDNumber                varchar(500),
@@ -43,7 +45,11 @@ begin
       Month11AgoAssetBalance       money,
       Month12AgoAssetBalance       money,
       HoldingAddressLine1          varchar(500),
-      ReportingDate                datetime
+      AccountTANumber              varchar(500),
+      ExternalAccountNumber        varchar(500),
+      AccountId                    varchar(500),
+      ReportingDate                datetime,
+      IsNewAsset                   bit
     );
 end
 go

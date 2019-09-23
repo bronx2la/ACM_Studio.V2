@@ -7,6 +7,7 @@ namespace Core.DataModels.Broadridge
         public int      BroadridgeOngoing   { get; set; }
         public string   Portfolio           { get; set; }
         public string   PortShortName       { get; set; }
+        public string   ProductName         { get; set; }
         public string   RM                  { get; set; }
         public string Region { get; set; }
         public string Territory { get; set; }

@@ -14,15 +14,15 @@ where ReportingDate = @ReportingDate
 
 insert into dbo.tbl_BroadridgeAssets
 select
-    [System]                     ,
+    TheSystem                    ,
     FirmName                     ,
     FirmId                       ,
     FirmCRDNumber                ,
     HoldingId                    ,
     HoldingExternalAccountNumber ,
     HoldingName                  ,
-    cast(HoldingStartDate  as date),
-    cast(HoldingCreateDate as date),
+    '20190630' as HoldingStartDate,   
+    '20190630' as HoldingCreateDate,   
     cast(MostRecentMonthAssetBalance as money),
     cast(Month1AgoAssetBalance       as money),
     cast(Month2AgoAssetBalance       as money),
@@ -52,6 +52,9 @@ select
     cast(Month11AgoAssetBalance as money),
     cast(Month12AgoAssetBalance as money),
     HoldingAddressLine1          ,
+    AccountTANumber              ,
+    ExternalAccountNumber        ,
+    AccountId                    ,
     @ReportingDate,
     case
         when cast(Month3AgoAssetBalance as money) = 0 then 1

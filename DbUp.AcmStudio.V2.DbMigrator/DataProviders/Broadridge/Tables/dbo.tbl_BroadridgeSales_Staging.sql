@@ -1,6 +1,8 @@
 use ACM_Studio_V2
 go
 
+-- drop table dbo.tbl_BroadridgeSales_Staging
+
 if (object_id('dbo.tbl_BroadridgeSales_Staging') is null)
 begin
     create table dbo.tbl_BroadridgeSales_Staging (
@@ -27,7 +29,13 @@ begin
       Region                             varchar(500),
       Territory                          varchar(500),
       ProductNasdaqSymbol                varchar(500),
-      ProductName                        varchar(500)
+      ProductName                        varchar(500),
+      AccountTANumber                    varchar(500),
+      AccountId                          varchar(500),
+      ExternalAccountNumber              varchar(500),
+      HoldingId                          varchar(500),
+      HoldingExteralAccountNumber        varchar(500),
+      HoldingName                        varchar(500)
     );
 end
 go

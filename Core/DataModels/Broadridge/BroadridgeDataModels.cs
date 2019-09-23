@@ -30,6 +30,12 @@ namespace Core.DataModels.Broadridge
         public string Territory { get; set; }
         public string ProductNasdaqSymbol { get; set; }
         public string ProductName { get; set; }
+        public string AccountTANumber { get; set; }
+        public string AccountId { get; set; }
+        public string ExternalAccountNumber { get; set; }
+        public string HoldingId { get; set; }
+        public string HoldingExternalAccountNumber { get; set; }
+        public string HoldingName { get; set; }
     }
 
     public class BroadridgeSales
@@ -58,6 +64,12 @@ namespace Core.DataModels.Broadridge
         public string Territory                          { get; set; }
         public string ProductNasdaqSymbol                { get; set; }
         public string ProductName                        { get; set; }
+        public string AccountTANumber                    { get; set; }
+        public string AccountId                          { get; set; }
+        public string ExternalAccountNumber              { get; set; }
+        public string HoldingId                          { get; set; }
+        public string HoldingExternalAccountNumber       { get; set; }
+        public string HoldingName                        { get; set; }
         public DateTime ReportingDate                    { get; set; }
     }
 
@@ -101,6 +113,9 @@ namespace Core.DataModels.Broadridge
         public string Month11AgoAssetBalance { get; set; }
         public string Month12AgoAssetBalance { get; set; }
         public string HoldingAddressLine1 { get; set; }
+        public string AccountTANumber { get; set; }
+        public string ExternalAccountNumber { get; set; }
+        public string AccountId { get; set; }
     }
 
     public class BroadridgeAssets

@@ -20,7 +20,7 @@ namespace Core.DataModels.Broadridge
         public decimal MarketValue { get; set; }
         public decimal Rate { get; set; }
         public decimal Commission { get; set; }
-        public string  System { get; set; }
+        public string  TheSystem { get; set; }
         public bool  IsNewAsset { get; set; }
         public string  IsTransfer { get; set; }
         public string  IsGrayStone { get; set; }

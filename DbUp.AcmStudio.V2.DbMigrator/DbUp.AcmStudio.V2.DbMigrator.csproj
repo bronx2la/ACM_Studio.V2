@@ -26,6 +26,7 @@
         <EmbeddedResource Include="Core.Lookup\Tables\dbo.tbl_lku_RateType.sql" />
         <EmbeddedResource Include="Core.Lookup\Tables\dbo.tbl_lku_RegionalDirector.sql" />
         <EmbeddedResource Include="Core.Lookup\Tables\dbo.tbl_lku_RegionalDirectorRate.sql" />
+        <EmbeddedResource Include="Core.Lookup\Tables\dbo.tbl_lku_RegionalDirectorRateRevised.sql" />
         
 
         <EmbeddedResource Include="Core.Lookup\Functions\dbo.fn_GetRegionalDirectorIID_By_Name.sql" />
@@ -34,6 +35,8 @@
         <EmbeddedResource Include="Core.Lookup\Procs\dbo.prc_ColumnStyles_Fetch.sql" />
         <EmbeddedResource Include="Core.Lookup\Procs\dbo.prc_RegionalDirector_RateInfo_Fetch.sql" />
         <EmbeddedResource Include="Core.Lookup\Procs\dbo.prc_RegionalDirector_RateInfo_ByLastName_Fetch.sql" />
+        <EmbeddedResource Include="Core.Lookup\Procs\dbo.prc_RegionalDirector_RateInfo_Revised_Fetch_All.sql" />
+        <EmbeddedResource Include="Core.Lookup\Procs\dbo.prc_RegionalDirector_Fetch_All.sql" />
 
         <EmbeddedResource Include="Core.Lookup\RefDataSync\dbo.RefDataSync_tbl_lku_ColumnStyles.sql" />
         <EmbeddedResource Include="Core.Lookup\RefDataSync\dbo.RefDataSync_tbl_lku_CommissionType.sql" />
@@ -41,6 +44,7 @@
         <EmbeddedResource Include="Core.Lookup\RefDataSync\dbo.RefDataSync_tbl_lku_RateType.sql" />
         <EmbeddedResource Include="Core.Lookup\RefDataSync\dbo.RefDataSync_tbl_lku_RegionalDirector.sql" />
         <EmbeddedResource Include="Core.Lookup\RefDataSync\dbo.RefDataSync_tbl_lku_RegionalDirectorRate.sql" />
+        <EmbeddedResource Include="Core.Lookup\RefDataSync\dbo.RefDataSync_tbl_lku_RegionalDirectorRateRevised.sql" />
     </ItemGroup>
 
     <!--Core TaskMetaData-->
@@ -89,6 +93,8 @@
         <EmbeddedResource Include="DataProviders\Broadridge\Procs\dbo.prc_MutualFundsFlows.sql" />
         <EmbeddedResource Include="DataProviders\Broadridge\Procs\dbo.prc_tbl_Broadridge_Fetch.sql" />
         <EmbeddedResource Include="DataProviders\Broadridge\Procs\dbo.prc_BroadridgeAssets_MorganMerrill_Fetch.sql" />
+        <EmbeddedResource Include="DataProviders\Broadridge\Procs\dbo.prc_BroadridgeSales_Staging_Save.sql" />
+        <EmbeddedResource Include="DataProviders\Broadridge\Procs\dbo.prc_BroadridgeAssets_Staging_Save.sql" />
     </ItemGroup>
 
     <!--DataProviders Geneva.SMA.ETL-->
@@ -108,7 +114,6 @@
         <EmbeddedResource Include="DataProviders\Geneva.Sma\Geneva.SMA.ETL\Procs\dbo.prc_tbl_GenevaSmaAssets_Delete_ByReportEndDate.sql" />
         <EmbeddedResource Include="DataProviders\Geneva.Sma\Geneva.SMA.ETL\Procs\dbo.prc_tbl_GenevaSmaAssets_Staging_Truncate.sql" />
         <EmbeddedResource Include="DataProviders\Geneva.Sma\Geneva.SMA.ETL\Procs\dbo.prc_tbl_GenevaSmaAssets_Transform.sql" />
-        <EmbeddedResource Include="DataProviders\Geneva.Sma\Geneva.SMA.ETL\Procs\dbo.prc_GenevaAum.sql" />
     </ItemGroup>
 
     <!--DataProviders Geneva.SMA.ETL-->

@@ -2,7 +2,7 @@ namespace Core.DataModels.Broadridge
 {
     public class BroadridgeNewAssetsSummaryDataModel
     {
-        public string System { get; set; }
+        public string TheSystem { get; set; }
         public string Territory { get; set; }
         public string FirmName { get; set; }
         public string OfficeRegionRefCode { get; set; }

@@ -145,7 +145,7 @@ namespace AcmCommissionsStatements
 
                     var rd = _regionalDirector.FirstOrDefault(r => r.LastName == asset.Territory);
                     var rateInfo = GetRateInfo(rd == null ? "House" : rd.RegionalDirectorKey, asset.ProductName, false);
-                    var theRate = rateInfo?.OngoingRate ?? 0.0m;
+                    var theRate = rateInfo?.NewAssetRate ?? 0.0m;
 
                     var fa = GetFlowAmount(asset);
                     
