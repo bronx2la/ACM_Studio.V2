@@ -9,7 +9,7 @@ create procedure dbo.prc_BroadridgeAssets_Fetch
     @ReportingDate date
 as
     select
-      System                       ,
+      TheSystem                    ,
       FirmName                     ,
       FirmId                       ,
       FirmCRDNumber                ,
@@ -52,7 +52,7 @@ as
         dbo.tbl_BroadridgeAssets
     where
         ReportingDate = @ReportingDate
-        and System not in ('MS_SELECTUMA', 'ML_UMA')
+        and TheSystem not in ('MS_SELECTUMA', 'ML_UMA')
 
 go
     

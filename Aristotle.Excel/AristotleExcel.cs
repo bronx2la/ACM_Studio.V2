@@ -72,7 +72,7 @@ namespace Aristotle.Excel
                     row++;
                 }
 
-                ws.View.FreezePanes(2, col);
+//                ws.View.FreezePanes(2, col);
                 col = 1;
                 row = 1;
                 foreach (string header in headers)

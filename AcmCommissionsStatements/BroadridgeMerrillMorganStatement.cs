@@ -235,7 +235,7 @@ namespace AcmCommissionsStatements
                 
                 var na = new BroadridgeNewAssetsDetailDataModel()
                 {
-                    System                 = item.System,
+                    TheSystem                 = item.System,
                     HoldingExterAccountNumber = item.HoldingExternalAccountNumber,
                     HoldingName = item.HoldingName,
                     HoldingCreateDate      = Convert.ToDateTime(item.HoldingStartdate),
@@ -272,7 +272,7 @@ namespace AcmCommissionsStatements
             var naSummWorking = naDetail
                                .GroupBy(c => new
                                 {
-                                    c.System,
+                                    c.TheSystem,
                                     c.Territory,
                                     c.OfficeRegionRefCode,
                                     c.OfficeCity,
@@ -283,7 +283,7 @@ namespace AcmCommissionsStatements
                                 })
                                .Select(group => new
                                 {
-                                    System              = group.Key.System,
+                                    System              = group.Key.TheSystem,
                                     Territory           = group.Key.Territory,
                                     FirmName            = group.Key.FirmName,
                                     PersonLastName      = group.Key.PersonLastName,
@@ -301,7 +301,7 @@ namespace AcmCommissionsStatements
             {
                 var summary = new BroadridgeNewAssetsSummaryDataModel()
                 {
-                    System = item.System,
+                    TheSystem = item.System,
                     Territory = item.Territory,
                     FirmName = item.FirmName,
                     PersonLastName = item.PersonLastName,
@@ -319,12 +319,12 @@ namespace AcmCommissionsStatements
             var naSummTotals = naSumm
                               .GroupBy(g => new
                                {
-                                   g.System,
+                                   g.TheSystem,
                                    g.Territory
                                })
                               .Select(group => new
                                {
-                                   System              = group.Key.System,
+                                   System              = group.Key.TheSystem,
                                    Territory           = group.Key.Territory,
                                    FirmName            = "-----",
                                    OfficeRegionRefCode = "-----",
@@ -337,7 +337,7 @@ namespace AcmCommissionsStatements
             {
                 var summary = new BroadridgeNewAssetsSummaryDataModel()
                 {
-                    System = item.System,
+                    TheSystem = item.System,
                     Territory = item.Territory,
                     FirmName = "z--Totals",
                     MarketValue = item.MarketValue,
@@ -347,7 +347,7 @@ namespace AcmCommissionsStatements
                 naSumm.Add(summary);
             }
 
-            return naSumm.OrderBy(c => c.System).ThenBy(c => c.Territory).ThenBy(c => c.FirmName);
+            return naSumm.OrderBy(c => c.TheSystem).ThenBy(c => c.Territory).ThenBy(c => c.FirmName);
         }
 
         private decimal GetNewAssetAmountFromAssetsList(BroadridgeAssets item)
@@ -406,13 +406,14 @@ namespace AcmCommissionsStatements
                         SeasonedValue     = asset.MostRecentMonthAssetBalance - 0.0m,
                         AnnualRate        = theRate,
                         Rate              = theRate / 4,
-                        Commission        = (asset.MostRecentMonthAssetBalance - 0.0m) * (theRate / 4)
+                        Commission        = (asset.MostRecentMonthAssetBalance - 0.0m) * (theRate / 4),
+                        IsOngoing        = asset.Month3AgoAssetBalance != 0.0m
                     };
                     ogItems.Add(og);
 //                }
             }
 
-            return ogItems.OrderBy(c => c.RM).ThenBy(c => c.ConsultantName).Where(c => c.PortStartDate < _endDate);
+            return ogItems.OrderBy(c => c.RM).ThenBy(c => c.ConsultantName).Where(c => c.IsOngoing);
         }
         
         private IEnumerable<BroadridgeOgSummaryDataModel> BuildOngoingSummary()

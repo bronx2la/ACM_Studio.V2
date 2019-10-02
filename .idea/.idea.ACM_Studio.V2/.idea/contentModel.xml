@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ContentModelStore">
     <e p="C:\Development.Acm" t="IncludeFlat">
+      <e p=".git\info\exclude" t="IncludeRecursive" />
       <e p="ACM_Studio.V2.sln" t="IncludeFlat" />
       <e p="AcmCommissionsStatements" t="IncludeRecursive">
         <e p="AcmCommissionsStatements.csproj" t="IncludeRecursive" />

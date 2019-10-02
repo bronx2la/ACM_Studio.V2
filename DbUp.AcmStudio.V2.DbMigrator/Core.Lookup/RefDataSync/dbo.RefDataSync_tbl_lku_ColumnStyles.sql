@@ -60,16 +60,13 @@ go
             ('BroadridgeUmaNonMerrillMorgan.NewAssetsSummary', 10, '#0.000000', 25),
             ('BroadridgeUmaNonMerrillMorgan.NewAssetsSummary', 11, '#,##0.00', 25),
 
-            ('BroadridgeUma.OngoingDetail', 9, 'yyyy-MM-dd', 25),
-            ('BroadridgeUma.OngoingDetail', 10, '#,##0.00', 25),
-            ('BroadridgeUma.OngoingDetail', 11, '#,##0.00', 25),
-            ('BroadridgeUma.OngoingDetail', 12, 'yyyy-MM-dd', 25),
-            ('BroadridgeUma.OngoingDetail', 13, '#,##0.00', 25),
+            ('BroadridgeUma.OngoingDetail', 13, 'yyyy-MM-dd', 25),
             ('BroadridgeUma.OngoingDetail', 14, '#,##0.00', 25),
             ('BroadridgeUma.OngoingDetail', 15, '#,##0.00', 25),
-            ('BroadridgeUma.OngoingDetail', 16, '#0.0000000', 25),
+            ('BroadridgeUma.OngoingDetail', 16, '#,##0.00', 25),
             ('BroadridgeUma.OngoingDetail', 17, '#0.0000000', 25),
-            ('BroadridgeUma.OngoingDetail', 18, '#,##0.00', 25),
+            ('BroadridgeUma.OngoingDetail', 18, '#0.0000000', 25),
+            ('BroadridgeUma.OngoingDetail', 19, '#,##0.00', 25),
 
             ('BroadridgeUmaNonMerrillMorgan.OngoingDetail', 9, 'yyyy-MM-dd', 25),
             ('BroadridgeUmaNonMerrillMorgan.OngoingDetail', 10, '#,##0.00', 25),
@@ -113,14 +110,13 @@ go
             ('UmaMerrill.NewAssetsSummary', 6, '#0.000000', 25),
             ('UmaMerrill.NewAssetsDetail', 7, '#,##0.00', 25),
 
-            ('UmaMerrill.OngoingDetail', 8, '#,##0.00', 25),
-            ('UmaMerrill.OngoingDetail', 9, '#,##0.00', 25),
-            ('UmaMerrill.OngoingDetail', 10, '#0.000000', 25),
-            ('UmaMerrill.OngoingDetail', 11, '#0.000000', 25),
-            ('UmaMerrill.OngoingDetail', 12, '#,##0.00', 25),
-            ('UmaMerrill.OngoingDetail', 13, '#,##0.00', 25),
-            ('UmaMerrill.OngoingDetail', 14, 'yyyy-MM-dd', 25),
-            ('UmaMerrill.OngoingDetail', 15, 'yyyy-MM-dd', 25)
+            ('UmaMerrill.OngoingDetail', 13, 'yyyy-MM-dd', 25),
+            ('UmaMerrill.OngoingDetail', 14, '#,##0.00', 25),
+            ('UmaMerrill.OngoingDetail', 15, '#,##0.00', 25),
+            ('UmaMerrill.OngoingDetail', 16, '#,##0.00', 25),
+            ('UmaMerrill.OngoingDetail', 17, '#0.000000', 25),
+            ('UmaMerrill.OngoingDetail', 18, '#0.000000', 25),
+            ('UmaMerrill.OngoingDetail', 19, '#,##0.00', 25)
 
     ) as source
     (

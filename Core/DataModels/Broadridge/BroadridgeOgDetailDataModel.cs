@@ -23,5 +23,6 @@ namespace Core.DataModels.Broadridge
         public decimal  AnnualRate          { get; set; }
         public decimal  Rate                { get; set; }
         public decimal  Commission          { get; set; }
+        public bool IsOngoing { get; set; }
     }
 }

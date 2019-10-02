@@ -9,7 +9,7 @@ create procedure dbo.prc_BroadridgeAssets_MorganMerrill_Fetch
     @ReportingDate date
 as
 select
-    System                       ,
+    TheSystem                    ,
     FirmName                     ,
     FirmId                       ,
     FirmCRDNumber                ,
@@ -53,7 +53,7 @@ from
     dbo.tbl_BroadridgeAssets
 where
     ReportingDate = @ReportingDate
-    and System in ('MS_SELECTUMA', 'ML_UMA')
+    and TheSystem in ('MS_SELECTUMA', 'ML_UMA')
 
 
 go

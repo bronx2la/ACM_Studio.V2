@@ -110,7 +110,7 @@ namespace AcmCommissionsStatements
 
                     var na = new BroadridgeNewAssetsDetailDataModel()
                     {
-                        System                 = item.TheSystem,
+                        TheSystem              = item.System,
                         HoldingCreateDate      = item.TradeDate,
                         FirmId                 = item.FirmId,
                         FirmName               = item.FirmName,
@@ -164,7 +164,7 @@ namespace AcmCommissionsStatements
 
                     var na = new BroadridgeNewAssetsDetailDataModel()
                     {
-                        TheSystem                 = item.TheSystem,
+                        TheSystem              = item.System,
                         HoldingCreateDate      = item.TradeDate,
                         FirmId                 = item.FirmId,
                         FirmName               = item.FirmName,
@@ -225,7 +225,7 @@ namespace AcmCommissionsStatements
             {
                 var summary = new BroadridgeNewAssetsSummaryDataModel()
                 {
-                    System = item.TheSystem,
+                    TheSystem = item.System,
                     Territory = item.Territory,
                     FirmName = item.FirmName,
                     OfficeRegionRefCode = item.OfficeRegionRefCode,
@@ -258,7 +258,7 @@ namespace AcmCommissionsStatements
             {
                 var summary = new BroadridgeNewAssetsSummaryDataModel()
                 {
-                    System = item.TheSystem,
+                    TheSystem = item.System,
                     Territory = item.Territory,
                     FirmName = "z--Totals",
                     MarketValue = item.MarketValue,
@@ -302,7 +302,7 @@ namespace AcmCommissionsStatements
             {
                 var summary = new BroadridgeNewAssetsSummaryDataModel()
                 {
-                    System = item.TheSystem,
+                    TheSystem = item.System,
                     Territory = item.Territory,
                     FirmName = item.FirmName,
                     OfficeRegionRefCode = item.OfficeRegionRefCode,
@@ -335,7 +335,7 @@ namespace AcmCommissionsStatements
             {
                 var summary = new BroadridgeNewAssetsSummaryDataModel()
                 {
-                    TheSystem = item.TheSystem,
+                    TheSystem = item.System,
                     Territory = item.Territory,
                     FirmName = "z--Totals",
                     MarketValue = item.MarketValue,
