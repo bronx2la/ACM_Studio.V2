@@ -399,10 +399,10 @@ namespace AcmCommissionsStatements
                     PortShortName     = asset.HoldingName,
                     RM                = asset.Territory,
                     Region            = asset.Region,
-                    Territory         = asset.Territory,
-                    FirstName         = asset.PersonFirstName,
+//                    Territory         = asset.Territory,
+//                    FirstName         = asset.PersonFirstName,
                     LastName          = asset.PersonLastName,
-                    ConsultantName    = $"{asset.PersonLastName}, {asset.PersonFirstName}",
+//                    ConsultantName    = $"{asset.PersonLastName}, {asset.PersonFirstName}",
                     ConsultantFirm    = asset.FirmName,
                     Strategy          = asset.ProductType,
                     PortStartDate     = asset.HoldingCreateDate,
@@ -417,7 +417,7 @@ namespace AcmCommissionsStatements
                 
             }
 
-            return ogItems.OrderBy(c => c.RM).ThenBy(c => c.ConsultantName).Where(c => c.PortStartDate < _endDate);
+            return ogItems.OrderBy(c => c.RM).ThenBy(c => c.ConsultantFirm).Where(c => c.PortStartDate < _endDate);
         }
 
         private IEnumerable<BroadridgeOgDetailDataModel> BuildNonMerrillMorganUmaOngoingDetail()
@@ -459,10 +459,10 @@ namespace AcmCommissionsStatements
                     ProductName       = asset.ProductName,
                     RM                = asset.Territory,
                     Region            = asset.Region,
-                    Territory         = asset.Territory,
-                    FirstName         = asset.PersonFirstName,
+//                    Territory         = asset.Territory,
+//                    FirstName         = asset.PersonFirstName,
                     LastName          = asset.PersonLastName,
-                    ConsultantName    = $"{asset.PersonLastName}, {asset.PersonFirstName}",
+//                    ConsultantName    = $"{asset.PersonLastName}, {asset.PersonFirstName}",
                     ConsultantFirm    = asset.FirmName,
                     Strategy          = asset.ProductType,
                     PortStartDate     = asset.HoldingCreateDate,
@@ -477,7 +477,7 @@ namespace AcmCommissionsStatements
                 
             }
 
-            return ogItems.OrderBy(c => c.RM).ThenBy(c => c.ConsultantName).Where(c => c.PortStartDate < _endDate);
+            return ogItems.OrderBy(c => c.RM).ThenBy(c => c.ConsultantFirm).Where(c => c.PortStartDate < _endDate);
         }
         
         
@@ -622,12 +622,12 @@ namespace AcmCommissionsStatements
                .GroupBy(c => new
                 {
                     c.RM,
-                    c.ConsultantName
+                    c.ConsultantFirm
                 })
                 .Select(group => new
                                 {
                                     RM = group.Key.RM,
-                                    ConsultantName = group.Key.ConsultantName,
+                                    ConsultantName = group.Key.ConsultantFirm,
                                     AUM = group.Sum(c => c.AUM),
                                     InFlows = group.Sum(c => c.InFlows),
                                     SeasonedValue = group.Sum(c => c.SeasonedValue),
@@ -698,12 +698,12 @@ namespace AcmCommissionsStatements
                .GroupBy(c => new
                 {
                     c.RM,
-                    c.ConsultantName
+                    c.ConsultantFirm
                 })
                 .Select(group => new
                                 {
                                     RM = group.Key.RM,
-                                    ConsultantName = group.Key.ConsultantName,
+                                    ConsultantName = group.Key.ConsultantFirm,
                                     AUM = group.Sum(c => c.AUM),
                                     InFlows = group.Sum(c => c.InFlows),
                                     SeasonedValue = group.Sum(c => c.SeasonedValue),

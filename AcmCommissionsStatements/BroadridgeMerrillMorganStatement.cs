@@ -41,9 +41,9 @@ namespace AcmCommissionsStatements
             _xl           = new AristotleExcel(_workbookFile);
 
             naDetail = BuildNewAssetsDetail();
+            pfDetail = BuildPseudoFlowDetail();
             ogDetail = BuildUmaOngoingDetail();
             ogSummary = BuildOngoingSummary();
-            pfDetail = BuildPseudoFlowDetail();
             pfSummary = BuildPseudoFlowSummary();
             
             _xl.AddWorksheet(BuildNewAssetsSummary(), "NewAssets_Summary", ExcelColumnProperties("BroadridgeUma.NewAssetsSummary"));
@@ -163,11 +163,24 @@ namespace AcmCommissionsStatements
                         PersonFirstName = asset.PersonFirstName,
                         PersonLastName = asset.PersonLastName,
                         OfficeCity = asset.OfficeCity,
-                        FlowAmount = fa > 0.0m ? fa : 0.0m,
+                        MostRecentMonthAssetBalance = asset.MostRecentMonthAssetBalance,
+                        Month1AgoAssetBalance = asset.Month1AgoAssetBalance,
+                        Month2AgoAssetBalance = asset.Month2AgoAssetBalance,
+                        Month3AgoAssetBalance = asset.Month3AgoAssetBalance,
+                        Diff1 = IsTenPercentDiff(asset.MostRecentMonthAssetBalance, asset.Month1AgoAssetBalance) ?
+                            asset.MostRecentMonthAssetBalance - asset.Month1AgoAssetBalance : 
+                            0.0m,
+                        Diff2 = IsTenPercentDiff(asset.Month1AgoAssetBalance, asset.Month2AgoAssetBalance) ?
+                            asset.Month1AgoAssetBalance - asset.Month2AgoAssetBalance : 
+                            0.0m,
+                        Diff3 = IsTenPercentDiff(asset.Month2AgoAssetBalance, asset.Month3AgoAssetBalance) ?
+                            asset.Month2AgoAssetBalance - asset.Month3AgoAssetBalance : 
+                            0.0m,
                         Rate = theRate,
                         Commission = fa > 0 ? (asset.Month3AgoAssetBalance > 0.0m ? fa * theRate : 0.0m) : 0.0m
                     };
-                    
+
+                    pf.FlowAmount = (pf.Diff1 + pf.Diff2 + pf.Diff3) > 0.0m? (pf.Diff1 + pf.Diff2 + pf.Diff3) : 0.0m;
                     pfItems.Add(pf);
                 }
             }
@@ -397,13 +410,12 @@ namespace AcmCommissionsStatements
                         PortShortName     = asset.HoldingName,
                         RM                = asset.Territory,
                         LastName          = asset.PersonLastName,
-                        ConsultantFirm    = asset.Firm,
-                        ConsultantName    = asset.FirmName,
+                        ConsultantFirm    = asset.FirmName,
                         Strategy          = asset.ProductType,
                         PortStartDate     = asset.HoldingStartdate,
                         AUM               = asset.Month3AgoAssetBalance != 0.0m ? asset.MostRecentMonthAssetBalance : 0.0m,
-                        InFlows           = 0.0m,
-                        SeasonedValue     = asset.MostRecentMonthAssetBalance - 0.0m,
+                        InFlows           = GetFlowAmount(asset.HoldingId),
+                        SeasonedValue     = asset.MostRecentMonthAssetBalance - GetFlowAmount(asset.HoldingId),
                         AnnualRate        = theRate,
                         Rate              = theRate / 4,
                         Commission        = (asset.MostRecentMonthAssetBalance - 0.0m) * (theRate / 4),
@@ -413,8 +425,15 @@ namespace AcmCommissionsStatements
 //                }
             }
 
-            return ogItems.OrderBy(c => c.RM).ThenBy(c => c.ConsultantName).Where(c => c.IsOngoing);
+            return ogItems.OrderBy(c => c.RM).ThenBy(c => c.ConsultantFirm).Where(c => c.IsOngoing);
         }
+
+        private decimal GetFlowAmount(string portfolio)
+        {
+            var fa = pfDetail.FirstOrDefault(a => a.Portfolio == portfolio).FlowAmount;
+            return fa;
+        }
+        
         
         private IEnumerable<BroadridgeOgSummaryDataModel> BuildOngoingSummary()
         {
@@ -426,13 +445,12 @@ namespace AcmCommissionsStatements
                .GroupBy(c => new
                 {
                     c.RM,
-                    c.ConsultantName,
                     c.ConsultantFirm
                 })
                 .Select(group => new
                                 {
                                     RM = group.Key.RM,
-                                    ConsultantName = group.Key.ConsultantName,
+                                    ConsultantName = group.Key.ConsultantFirm,
                                     AUM = group.Sum(c => c.AUM),
                                     InFlows = group.Sum(c => c.InFlows),
                                     SeasonedValue = group.Sum(c => c.SeasonedValue),

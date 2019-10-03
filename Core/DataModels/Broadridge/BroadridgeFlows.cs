@@ -16,6 +16,14 @@ namespace Core.DataModels.Broadridge
         public string PersonLastName { get; set; }
         public string OfficeCity { get; set; }
         public DateTime PortStartDate { get; set; }
+        public decimal MostRecentMonthAssetBalance { get; set; }
+        public decimal Month1AgoAssetBalance { get; set; }
+        public decimal Month2AgoAssetBalance { get; set; }
+        public decimal Month3AgoAssetBalance { get; set; }
+
+        public decimal Diff1 { get; set; }
+        public decimal Diff2 { get; set; }
+        public decimal Diff3 { get; set; }
         public decimal  FlowAmount    { get; set; }
         public decimal Rate { get; set; }
         public decimal Commission { get; set; }

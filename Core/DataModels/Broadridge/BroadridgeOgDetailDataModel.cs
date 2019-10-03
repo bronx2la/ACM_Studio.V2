@@ -10,11 +10,8 @@ namespace Core.DataModels.Broadridge
         public string   ProductName         { get; set; }
         public string   RM                  { get; set; }
         public string Region { get; set; }
-        public string Territory { get; set; }
-        public string FirstName { get; set; }
         public string   LastName            { get; set; }
         public string   ConsultantFirm      { get; set; }
-        public string   ConsultantName      { get; set; }
         public string   Strategy            { get; set; }
         public DateTime PortStartDate       { get; set; }
         public decimal  AUM                 { get; set; }
