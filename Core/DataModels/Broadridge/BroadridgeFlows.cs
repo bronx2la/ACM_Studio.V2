@@ -20,10 +20,13 @@ namespace Core.DataModels.Broadridge
         public decimal Month1AgoAssetBalance { get; set; }
         public decimal Month2AgoAssetBalance { get; set; }
         public decimal Month3AgoAssetBalance { get; set; }
-
         public decimal Diff1 { get; set; }
         public decimal Diff2 { get; set; }
         public decimal Diff3 { get; set; }
+        
+        public decimal PercentDiff1 { get; set; }
+        public decimal PercentDiff2 { get; set; }
+        public decimal PercentDiff3 { get; set; }
         public decimal  FlowAmount    { get; set; }
         public decimal Rate { get; set; }
         public decimal Commission { get; set; }

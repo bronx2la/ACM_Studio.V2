@@ -68,13 +68,17 @@ namespace AcmCommissionsStatements
             var pfSummWorking = pfDetail
                 .GroupBy(c => new
                 {
+                    c.Territory,
                     c.FirmName,
-                    c.Territory
+                    c.OfficeCity,
+                    c.PersonLastName
                 })
                 .Select(group => new
                 {
                     FirmName = group.Key.FirmName,
                     Territory = group.Key.Territory,
+                    OfficeCity = group.Key.OfficeCity,
+                    PersonLastName = group.Key.PersonLastName,
                     SumFlowAmount = group.Sum(c => c.FlowAmount),
                     Rate = group.Min(c => c.Rate),
                     Commission = group.Sum(c => c.FlowAmount) * group.Min(c => c.Rate),
@@ -86,6 +90,8 @@ namespace AcmCommissionsStatements
                 {
                     FirmName = item.FirmName,
                     Territory = item.Territory,
+                    OfficeCity = item.OfficeCity,
+                    PersonLastName = item.PersonLastName,
                     SumFlowAmount = item.SumFlowAmount > 0 ? item.SumFlowAmount : 0.0m,
                     Rate        = item.Rate,
                     SumCommission  = item.SumFlowAmount > 0 ? (item.SumFlowAmount * item.Rate) : 0.0m
@@ -98,11 +104,16 @@ namespace AcmCommissionsStatements
             var pfSummTotals = pfSumm
                 .GroupBy(g => new
                 {
-                    g.Territory
+                    g.Territory,
+                    g.FirmName,
+                    g.OfficeCity,
+                    g.PersonLastName
                 })
                 .Select(grp => new
                 {
                     RM             = grp.Key.Territory,
+                    OfficeCity     = grp.Key.OfficeCity,
+                    PersonLastName = grp.Key.PersonLastName,
                     ConsultantName = "Totals",
                     InFlows        = grp.Sum(group => group.SumFlowAmount),
                     Rate           = grp.Min(group => group.Rate),
@@ -115,6 +126,8 @@ namespace AcmCommissionsStatements
                 {
                     Territory = item.RM,
                     FirmName = item.ConsultantName,
+                    OfficeCity = item.OfficeCity,
+                    PersonLastName = item.PersonLastName,
                     SumFlowAmount = item.InFlows > 0 ? item.InFlows : 0.0m,
                     Rate           = item.Rate,
                     SumCommission  = item.InFlows > 0 ? item.Commission : 0.0m
@@ -181,6 +194,9 @@ namespace AcmCommissionsStatements
                     };
 
                     pf.FlowAmount = (pf.Diff1 + pf.Diff2 + pf.Diff3) > 0.0m? (pf.Diff1 + pf.Diff2 + pf.Diff3) : 0.0m;
+                    pf.PercentDiff1 = GetPercentDiff(pf.MostRecentMonthAssetBalance, pf.Month1AgoAssetBalance);
+                    pf.PercentDiff2 = GetPercentDiff(pf.Month1AgoAssetBalance, pf.Month2AgoAssetBalance);
+                    pf.PercentDiff3 = GetPercentDiff(pf.Month2AgoAssetBalance, pf.Month3AgoAssetBalance);
                     pfItems.Add(pf);
                 }
             }
@@ -212,6 +228,11 @@ namespace AcmCommissionsStatements
             return result;
         }
 
+        private decimal GetPercentDiff(decimal amount1, decimal amount2)
+        {
+            var pd = amount1 == 0.0m ? 0.0m : (amount1 - amount2) / amount1;
+            return pd;
+        }
 
         private bool IsTenPercentDiff(decimal amount1, decimal amount2)
         {
