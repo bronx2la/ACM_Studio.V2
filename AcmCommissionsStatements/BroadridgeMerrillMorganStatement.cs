@@ -90,6 +90,7 @@ namespace AcmCommissionsStatements
                 {
                     FirmName = item.FirmName,
                     Territory = item.Territory,
+//                    Totals = string.Empty,
                     OfficeCity = item.OfficeCity,
                     PersonLastName = item.PersonLastName,
                     SumFlowAmount = item.SumFlowAmount > 0 ? item.SumFlowAmount : 0.0m,
@@ -114,7 +115,7 @@ namespace AcmCommissionsStatements
                     RM             = grp.Key.Territory,
                     OfficeCity     = grp.Key.OfficeCity,
                     PersonLastName = grp.Key.PersonLastName,
-                    ConsultantName = "Totals",
+                    FirmName       = grp.Key.FirmName,
                     InFlows        = grp.Sum(group => group.SumFlowAmount),
                     Rate           = grp.Min(group => group.Rate),
                     Commission     = grp.Sum(group => group.SumCommission)
@@ -125,7 +126,8 @@ namespace AcmCommissionsStatements
                 var summary = new BroadridgeFlowsSummaryDataModel()
                 {
                     Territory = item.RM,
-                    FirmName = item.ConsultantName,
+                    FirmName = item.FirmName,
+                    Totals = "zz-Totals",
                     OfficeCity = item.OfficeCity,
                     PersonLastName = item.PersonLastName,
                     SumFlowAmount = item.InFlows > 0 ? item.InFlows : 0.0m,
@@ -136,7 +138,7 @@ namespace AcmCommissionsStatements
                 pfSumm.Add(summary);
             }
 
-            return pfSumm.OrderBy(c => c.Territory).ThenBy(c => c.FirmName);
+            return pfSumm.OrderBy(c => c.Territory).ThenBy(c => c.FirmName).ThenBy(c => c.OfficeCity).ThenBy(c => c.PersonLastName);
 
         }
         

@@ -106,9 +106,9 @@ go
             ('BroadridgeUma.PseudoflowDetail', 24, '#0.000000', 25),
             ('BroadridgeUma.PseudoflowDetail', 25, '#,##0.00', 25),
 
-            ('BroadridgeUma.PseudoflowSummary', 5, '#,##0.00', 25),
-            ('BroadridgeUma.PseudoflowSummary', 6, '#0.000000', 25),
-            ('BroadridgeUma.PseudoflowSummary', 7, '#,##0.00', 25),
+            ('BroadridgeUma.PseudoflowSummary', 6, '#,##0.00', 25),
+            ('BroadridgeUma.PseudoflowSummary', 7, '#0.000000', 25),
+            ('BroadridgeUma.PseudoflowSummary', 8, '#,##0.00', 25),
 
             ('UmaMerrill.NewAssetsDetail', 2, 'yyyy-MM-dd', 25),
             ('UmaMerrill.NewAssetsDetail', 7, '#,##0.00', 25),

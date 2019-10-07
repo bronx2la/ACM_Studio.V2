@@ -4,6 +4,7 @@ namespace Core.DataModels.Broadridge
     {
         public string FirmName { get; set; }
         public string Territory { get; set; }
+        public string Totals { get; set; }
         public string OfficeCity { get; set; }
         public string PersonLastName { get; set; }
         public decimal SumFlowAmount { get; set; }
