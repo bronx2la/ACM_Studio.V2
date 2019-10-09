@@ -101,7 +101,6 @@ namespace AcmCommissionsStatements
             parms.Add("@RateTypeIid", rateType);
             parms.Add("@CommissionTypeIid", commissionType);
             var result = dal.SqlServerFetch("dbo.prc_RegionalDirector_RateInfo_Revised_Fetch_All", null).FirstOrDefault() ?? new RegionalDirectorRateInfoDataModel();
-//            var result = dal.SqlServerFetch("dbo.prc_RegionalDirector_RateInfo_Fetch", parms).FirstOrDefault() ?? new RegionalDirectorRateInfoDataModel();
 
             return result;
         }

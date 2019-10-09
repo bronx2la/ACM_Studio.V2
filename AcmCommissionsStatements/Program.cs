@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using AcmCommissionsStatements.BroadridgeMerrillMorgan;
 using Core.DataModels;
 using Dapper;
 using DapperDatabaseAccess;
@@ -36,16 +37,16 @@ namespace AcmCommissionsStatements
                     smaReport.ProduceReport();
                     break;
                 case "COMM.BROADRIDGE.UMA":
-                    var broadRidgeStatement = new BroadridgeStatement(args[1], args[2], _connectionString, _metaData, true);
-                    broadRidgeStatement.ProduceNonMerrillMorganReport();
+//                    var broadRidgeStatement = new BroadridgeStatement(args[1], args[2], _connectionString, _metaData, true);
+//                    broadRidgeStatement.ProduceNonMerrillMorganReport();
                     break;
                 case "COMM.BROADRIDGE.MERRILL_MORGAN.UMA":
                     var broadRidgeMerrillMorganStatement = new BroadridgeMerrillMorganStatement(args[1], _connectionString, _metaData);
                     broadRidgeMerrillMorganStatement.ProduceReport();
                     break;
                 case "COMM.BROADRIDGE.MUTUALFUNDS":
-                    var broadRidgeMfStatement = new BroadridgeStatement(args[1], args[2], _connectionString, _metaData, false);
-                    broadRidgeMfStatement.ProduceReport();
+//                    var broadRidgeMfStatement = new BroadridgeStatement(args[1], args[2], _connectionString, _metaData, false);
+//                    broadRidgeMfStatement.ProduceReport();
                     break;
             }
 

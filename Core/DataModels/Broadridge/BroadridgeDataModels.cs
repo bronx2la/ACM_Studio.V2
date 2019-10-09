@@ -120,9 +120,8 @@ namespace Core.DataModels.Broadridge
 
     public class BroadridgeAssets
     {
-        public string System { get; set; }
+        public string TheSystem { get; set; }
         public string FirmName { get; set; }
-        public string Firm { get; set; }
         public string FirmId { get; set; }
         public string FirmCRDNumber { get; set; }
         public string HoldingId { get; set; }
