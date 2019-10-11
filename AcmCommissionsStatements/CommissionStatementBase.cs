@@ -126,5 +126,15 @@ namespace AcmCommissionsStatements
             parms.Add("@ReportName", reportName);
             return dal.SqlServerFetch("dbo.prc_ColumnStyles_Fetch", parms);
         }
+
+        protected DateTime GetFirstOfMonth(DateTime value)
+        {
+            return new DateTime(value.Year, value.Month, 1);
+        }
+
+        protected DateTime GetDateDiffMonths(DateTime value, int delta)
+        {
+            return value.AddMonths(delta);
+        }
     }
 }

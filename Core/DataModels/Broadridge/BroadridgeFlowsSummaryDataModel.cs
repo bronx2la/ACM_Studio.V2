@@ -2,13 +2,14 @@ namespace Core.DataModels.Broadridge
 {
     public class BroadridgeFlowsSummaryDataModel
     {
-        public string FirmName { get; set; }
         public string Territory { get; set; }
-        public string Totals { get; set; }
-        public string OfficeCity { get; set; }
-        public string PersonLastName { get; set; }
-        public decimal SumFlowAmount { get; set; }
+        public string TheSystem { get; set; }
+        public string SystemOfficeAddress { get; set; }
+        public string OfficeState { get; set; }
+        public string ProductName { get; set; }
+        public string SystemFAName { get; set; }
+        public decimal Flows { get; set; }
+        public decimal Commission { get; set; }
         public decimal Rate { get; set; }
-        public decimal SumCommission { get; set; }
     }
 }

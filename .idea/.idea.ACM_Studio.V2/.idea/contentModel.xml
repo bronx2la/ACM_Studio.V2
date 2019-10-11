@@ -2,13 +2,14 @@
 <project version="4">
   <component name="ContentModelStore">
     <e p="C:\Development.Acm" t="IncludeFlat">
-      <e p=".git\info\exclude" t="IncludeRecursive" />
       <e p="ACM_Studio.V2.sln" t="IncludeFlat" />
       <e p="AcmCommissionsStatements" t="IncludeRecursive">
         <e p="AcmCommissionsStatements.csproj" t="IncludeRecursive" />
         <e p="appsettings.json" t="Include" />
         <e p="bin" t="ExcludeRecursive" />
-        <e p="BroadridgeMerrillMorganStatement.cs" t="Include" />
+        <e p="BroadridgeMerrillMorgan" t="Include">
+          <e p="BroadridgeMerrillMorganStatement.cs" t="Include" />
+        </e>
         <e p="BroadridgeStatement.cs" t="Include" />
         <e p="CommissionStatementBase.cs" t="Include" />
         <e p="GenevaSmaStatement.cs" t="Include" />
