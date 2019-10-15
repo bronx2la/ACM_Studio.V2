@@ -37,8 +37,8 @@ namespace AcmCommissionsStatements
                     smaReport.ProduceReport();
                     break;
                 case "COMM.BROADRIDGE.UMA":
-//                    var broadRidgeStatement = new BroadridgeStatement(args[1], args[2], _connectionString, _metaData, true);
-//                    broadRidgeStatement.ProduceNonMerrillMorganReport();
+                    var broadRidgeStatement = new BroadridgeStatement(args[1], args[2], _connectionString, _metaData, true);
+                    broadRidgeStatement.ProduceNonMerrillMorganReport();
                     break;
                 case "COMM.BROADRIDGE.MERRILL_MORGAN.UMA":
                     var broadRidgeMerrillMorganStatement = new BroadridgeMerrillMorganStatement(args[1], _connectionString, _metaData);

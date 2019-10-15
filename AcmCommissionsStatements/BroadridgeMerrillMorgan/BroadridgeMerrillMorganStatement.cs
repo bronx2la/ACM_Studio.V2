@@ -51,7 +51,7 @@ namespace AcmCommissionsStatements.BroadridgeMerrillMorgan
             _xl.AddWorksheet(ogSummary, "Ongoing_Summary", ExcelColumnProperties("BroadridgeUmaMerrillMorgan.OngoingSummary"));
             _xl.AddWorksheet(pfSummary, "Pseudoflow_Summary", ExcelColumnProperties("BroadridgeUmaMerrillMorgan.PseudoflowSummary"));
             _xl.AddWorksheet(naDetail, "NewAssets.Detail", ExcelColumnProperties("BroadridgeUmaMerrillMorgan.NewAssetsDetail"));
-            _xl.AddWorksheet(ogDetail, "Ongoing_Detail", ExcelColumnProperties("BroadridgeNonMerrillMorgan.OngoingDetail"));
+            _xl.AddWorksheet(ogDetail, "Ongoing_Detail", ExcelColumnProperties("BroadridgeMerrillMorgan.OngoingDetail"));
             _xl.AddWorksheet(pfDetail, "Pseudoflow_Detail", ExcelColumnProperties("BroadridgeUmaMerrillMorgan.PseudoDetail"));
             _xl.SaveWorkbook();
         }

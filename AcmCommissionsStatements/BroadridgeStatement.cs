@@ -68,22 +68,22 @@ namespace AcmCommissionsStatements
 //            _xl.SaveWorkbook();
 //        }
 //
-//        public void ProduceNonMerrillMorganReport()
-//        {
-//            _workbookFile = $@"{_metaData.outboundFolder}\{Core.FileNameHelpers.FormatOutboundFileName(_metaData.outboundFile)}";
-//            _xl           = new AristotleExcel(_workbookFile);
-//
-//            naDetail = BuildNonMerrillMorganNewAssetsDetail();
+        public void ProduceNonMerrillMorganReport()
+        {
+            _workbookFile = $@"{_metaData.outboundFolder}\{Core.FileNameHelpers.FormatOutboundFileName(_metaData.outboundFile)}";
+            _xl           = new AristotleExcel(_workbookFile);
+
+            naDetail = BuildNonMerrillMorganNewAssetsDetail();
 //            naSummary = BuildNonMerrillMorganNewAssetsSummary();
 //            ogDetail = BuildNonMerrillMorganUmaOngoingDetail();
 //            ogSummary = BuildNonMerrillMorganOngoingSummary();
-//            
+            
 //            _xl.AddWorksheet(naSummary, "NewAssets_Summary", ExcelColumnProperties("BroadridgeUma.NewAssetsSummary"));
 //            _xl.AddWorksheet(ogSummary, "Ongoing_Summary", ExcelColumnProperties("BroadridgeUma.OngoingSummary"));
-//            _xl.AddWorksheet(naDetail, "NewAssets_Detail", ExcelColumnProperties("BroadridgeUmaNonMerrillMorgan.NewAssetsDetail"));
+            _xl.AddWorksheet(naDetail, "NewAssets_Detail", ExcelColumnProperties("BroadridgeUma.NewAssetsDetail"));
 //            _xl.AddWorksheet(ogDetail, "Ongoing_Detail", ExcelColumnProperties("BroadridgeUmaNonMerrillMorgan.OngoingDetail"));
-//            _xl.SaveWorkbook();
-//        }
+            _xl.SaveWorkbook();
+        }
 //        
 //        private IEnumerable<BroadridgeNewAssetsDetailDataModel> BuildNewAssetsDetail()
 //        {
@@ -139,59 +139,94 @@ namespace AcmCommissionsStatements
 //                          .ThenBy(c => c.FirmName);
 //        }
 //
-//        private IEnumerable<BroadridgeNewAssetsDetailDataModel> BuildNonMerrillMorganNewAssetsDetail()
-//        {
-//            const LkuRateType.RateType rateType= LkuRateType.RateType.NewAssets;
-//            const LkuCommissionType.CommissionType commissionType = LkuCommissionType.CommissionType.UMA;
-//            var naItems = new List<BroadridgeNewAssetsDetailDataModel>();
-//
-//            foreach (var item in _broadridgeSales)
-//            {
-//                if (item.Territory != null)
-//                {
-//                    RegionalDirectorRateInfoDataModel rdRateInfo = RegionalDirectorRateInfo(item.Territory, (int)rateType, (int)commissionType);
-//
-//                    if (rdRateInfo != null)
-//                    {
-//                        rdRateInfo.Rate = item.Territory.IndexOf(',') > 0
-//                            ? rdRateInfo.Rate / 2
-//                            : rdRateInfo.Rate;
-//                    }
-//                    
-//                    var rd = _regionalDirector.FirstOrDefault(r => r.LastName == item.Territory);
-//                    var rateInfo = GetRateInfo(rd == null ? "House" : rd.RegionalDirectorKey, item.ProductName, false);
-//                    var theRate = rateInfo?.NewAssetRate ?? 0.0m;
-//
-//                    var na = new BroadridgeNewAssetsDetailDataModel()
-//                    {
-//                        TheSystem              = item.System,
-//                        HoldingCreateDate      = item.TradeDate,
-//                        FirmId                 = item.FirmId,
-//                        FirmName               = item.FirmName,
-//                        PersonFirstName        = item.PersonFirstName,
-//                        PersonLastName         = item.PersonLastName,
-//                        ProductName            = item.ProductName, 
-//                        OfficeAddressLine1     = item.OfficeAddressLine1,
-//                        OfficeCity             = item.OfficeCity, 
-//                        OfficeRegionRefCode    = item.OfficeRegionRefCode,
-//                        Territory              = item.Territory,
-//                        MarketValue            = item.TradeAmount,
-//                        Rate                   = theRate,
-//                        Commission             = item.TradeAmount * theRate,
-//                        IsNewAsset             = (item.TradeDate > _startDate) ? true : false,
-//                        IsGrayStone            = null,
-//                        IsTransfer             = null
-//                    };
-//                    
-//                    naItems.Add(na);
-//                }    
-//                
-//            }
-//
-//            var y = 0;
-//            return naItems.OrderBy(c => c.TheSystem).ThenBy(c => c.Territory)
-//                          .ThenBy(c => c.FirmName);
-//        }
+        private IEnumerable<BroadridgeNewAssetsDetailDataModel> BuildNonMerrillMorganNewAssetsDetail()
+        {
+            const LkuRateType.RateType rateType= LkuRateType.RateType.NewAssets;
+            const LkuCommissionType.CommissionType commissionType = LkuCommissionType.CommissionType.UMA;
+            var naItems = new List<BroadridgeNewAssetsDetailDataModel>();
+
+            foreach (var item in _broadridgeSales)
+            {
+                if (item.Territory != null)
+                {
+                    RegionalDirectorRateInfoDataModel rdRateInfo = RegionalDirectorRateInfo(item.Territory, (int)rateType, (int)commissionType);
+
+                    if (rdRateInfo != null)
+                    {
+                        rdRateInfo.Rate = item.Territory.IndexOf(',') > 0
+                            ? rdRateInfo.Rate / 2
+                            : rdRateInfo.Rate;
+                    }
+                    
+                    var rd = _regionalDirector.FirstOrDefault(r => r.LastName == item.Territory);
+                    var rateInfo = GetRateInfo(rd == null ? "House" : rd.RegionalDirectorKey, item.ProductName, false);
+                    var theRate = rateInfo?.NewAssetRate ?? 0.0m;
+
+                    var na = new BroadridgeNewAssetsDetailDataModel()
+                    {
+                        TheSystem              = item.System,
+                        FirmName               = item.FirmName,
+                        FirmId                 = item.FirmId,
+                        FirmCrdNumber          = null,
+                        HoldingId = item.HoldingId,
+                        HoldingExterAccountNumber = item.HoldingExternalAccountNumber,
+                        HoldingName = item.HoldingName,
+                        HoldingStartDate = item.TradeDate,
+                        HoldingCreateDate = item.SuperSheetDate,
+                        MostRecentMonthAssetBalance = item.TradeAmount,
+                        Month1AgoAssetBalance = 0.0m,
+                        Month2AgoAssetBalance = 0.0m,
+                        Month3AgoAssetBalance = 0.0m,
+                        NewAssetValue = 0.0m,
+                        Commission             = item.TradeAmount * theRate,
+                        Rate                   = theRate,
+                        Territory              = item.Territory,
+                        SalesRunTerritory = item.Territory,
+                        IsTerritorySame = true,
+                        ProductName            = item.ProductName, 
+                        ProductType = null,
+                        Channel = item.Channel,
+                        Region = item.Region,
+                        PersonCRDNumber = null,
+                        PersonFirstName        = item.PersonFirstName,
+                        PersonLastName         = item.PersonLastName,
+                        OfficeAddressLine1     = item.OfficeAddressLine1,
+                        OfficeAddressLine2     = null,
+                        OfficeCity             = item.OfficeCity, 
+                        OfficeRegionRefCode    = item.OfficeRegionRefCode,
+                        OfficePostalCode = item.OfficePostalCode,
+                        PersonBrokerTeamFlag = null,
+                        Month4AgoAssetBalance = 0.0m,
+                        Month5AgoAssetBalance = 0.0m,
+                        Month6AgoAssetBalance = 0.0m,
+                        Month7AgoAssetBalance = 0.0m,
+                        Month8AgoAssetBalance = 0.0m,
+                        Month9AgoAssetBalance = 0.0m,
+                        Month10AgoAssetBalance = 0.0m,
+                        Month11AgoAssetBalance = 0.0m,
+                        Month12AgoAssetBalance = 0.0m,
+                        HoldingAddressLine1 = null,
+                        SystemFAName = null,
+                        SystemOfficeAddress = item.OfficeAddressLine1,
+                        SystemOfficeState = item.OfficeRegionRefCode,
+                        SystemQEAssets = item.TradeAmount,
+                        AssetCheck = 0.0m,
+                        SystemRDCredit = item.Territory,
+                        RDCheck = null,
+                        AccountTANumber = item.AccountTANumber,
+                        ExternalAccountNumber = item.FirmId,
+                        AccountId = item.RepCode
+                    };
+                    
+                    naItems.Add(na);
+                }    
+                
+            }
+
+            var y = 0;
+            return naItems.OrderBy(c => c.TheSystem).ThenBy(c => c.Territory)
+                          .ThenBy(c => c.FirmName);
+        }
 //        
 //        
 //        private IEnumerable<BroadridgeNewAssetsSummaryDataModel> BuildNewAssetsSummary()
