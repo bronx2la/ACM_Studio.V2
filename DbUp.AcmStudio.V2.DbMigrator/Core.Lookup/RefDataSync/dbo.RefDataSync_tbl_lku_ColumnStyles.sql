@@ -177,9 +177,71 @@ go
             --UMA New Assets Summary
             ('BroadridgeUma.NewAssetsSummary', 7, '#,##0.00', 25),
             ('BroadridgeUma.NewAssetsSummary', 8, '#,##0.00', 25),
-            ('BroadridgeUma.NewAssetsSummary', 9, '#0.000000', 25)
+            ('BroadridgeUma.NewAssetsSummary', 9, '#0.000000', 25),
             --end ---UMA Column Properties   
                
+        
+            --UMA Ongoing Detail
+            ('BroadridgeUma.OngoingDetail', 9, 'yyyy-MM-dd', 25),
+            ('BroadridgeUma.OngoingDetail', 10, '#,##0.00', 25),
+            ('BroadridgeUma.OngoingDetail', 11, '#,##0.00', 25),
+            ('BroadridgeUma.OngoingDetail', 13, 'yyyy-MM-dd', 25),
+            ('BroadridgeUma.OngoingDetail', 14, '#,##0.00', 25),
+            ('BroadridgeUma.OngoingDetail', 15, '#,##0.00', 25),
+            ('BroadridgeUma.OngoingDetail', 16, '#,##0.00', 25),
+            ('BroadridgeUma.OngoingDetail', 17, '#0.0000000', 25),
+            ('BroadridgeUma.OngoingDetail', 18, '#0.0000000', 25),
+            ('BroadridgeUma.OngoingDetail', 19, '#,##0.00', 25),
+            --end --UMA Ongoing Detail
+        
+            --UMA Pseudo Flow Detail
+            ('BroadridgeUma.PseudoflowDetail', 8, 'yyyy-MM-dd', 25),
+            ('BroadridgeUma.PseudoflowDetail', 9, 'yyyy-MM-dd', 25),
+            ('BroadridgeUma.PseudoflowDetail', 10, '#,##0.00', 25),
+            ('BroadridgeUma.PseudoflowDetail', 11, '#,##0.00', 25),
+            ('BroadridgeUma.PseudoflowDetail', 12, '#,##0.00', 25),
+            ('BroadridgeUma.PseudoflowDetail', 13, '#,##0.00', 25),
+            ('BroadridgeUma.PseudoflowDetail', 14, '#,##0.00', 25),
+            ('BroadridgeUma.PseudoflowDetail', 15, '#,##0.00', 25),
+            ('BroadridgeUma.PseudoflowDetail', 16, '#,##0.00', 25),
+            ('BroadridgeUma.PseudoflowDetail', 17, '#,##0.00', 25),
+            ('BroadridgeUma.PseudoflowDetail', 18, '#,##0.00', 25),
+            ('BroadridgeUma.PseudoflowDetail', 19, '#,##0.00', 25),
+            ('BroadridgeUma.PseudoflowDetail', 20, '#,##0.00', 25),
+            ('BroadridgeUma.PseudoflowDetail', 21, '#,##0.00', 25),
+            ('BroadridgeUma.PseudoflowDetail', 22, '#,##0.00', 25),
+            ('BroadridgeUma.PseudoflowDetail', 23, '#,##0.00', 25),
+            ('BroadridgeUma.PseudoflowDetail', 24, '#,##0.00', 25),
+            ('BroadridgeUma.PseudoflowDetail', 25, '#,##0.00', 25),
+            ('BroadridgeUma.PseudoflowDetail', 26, '#,##0.00', 25),
+            ('BroadridgeUma.PseudoflowDetail', 27, '#,##0.00', 25),
+            ('BroadridgeUma.PseudoflowDetail', 28, '#,##0.00', 25),
+            ('BroadridgeUma.PseudoflowDetail', 40, '#,##0.00', 25),
+            ('BroadridgeUma.PseudoflowDetail', 41, '#,##0.00', 25),
+            ('BroadridgeUma.PseudoflowDetail', 42, '#,##0.00', 25),
+            ('BroadridgeUma.PseudoflowDetail', 43, '#,##0.00', 25),
+            ('BroadridgeUma.PseudoflowDetail', 44, '#,##0.00', 25),
+            ('BroadridgeUma.PseudoflowDetail', 45, '#,##0.00', 25),
+            ('BroadridgeUma.PseudoflowDetail', 46, '#,##0.00', 25),
+            ('BroadridgeUma.PseudoflowDetail', 47, '#,##0.00', 25),
+            ('BroadridgeUma.PseudoflowDetail', 48, '#,##0.00', 25),
+            ('BroadridgeUma.PseudoflowDetail', 50, '#,##0.00', 25),
+            ('BroadridgeUma.PseudoflowDetail', 51, '#,##0.00', 25),
+            ('BroadridgeUma.PseudoflowDetail', 52, '#,##0.00', 25),
+            ('BroadridgeUma.PseudoflowDetail', 53, '#,##0.00', 25),
+            ('BroadridgeUma.PseudoflowDetail', 54, '#,##0.00', 25),
+            ('BroadridgeUma.PseudoflowDetail', 55, '#,##0.00', 25),
+            ('BroadridgeUma.PseudoflowDetail', 56, '#,##0.00', 25),
+            ('BroadridgeUma.PseudoflowDetail', 57, '#,##0.00', 25),
+            ('BroadridgeUma.PseudoflowDetail', 58, '#,##0.00', 25),
+
+            ('BroadridgeUma.PseudoflowSummary', 6, '#,##0.00', 25),
+            ('BroadridgeUma.PseudoflowSummary', 7, '#,##0.00', 25),
+            ('BroadridgeUma.PseudoflowSummary', 8, '#,##0.00', 25),
+            ('BroadridgeUma.PseudoflowSummary', 9, '#,##0.00', 25),
+            ('BroadridgeUma.PseudoflowSummary', 10, '#0.000000', 25),
+            ('BroadridgeUma.PseudoflowSummary', 11, '#0.000000', 25)
+            --end --UMA Pseudo Flow Detail
             ------------------------------   
 
 
