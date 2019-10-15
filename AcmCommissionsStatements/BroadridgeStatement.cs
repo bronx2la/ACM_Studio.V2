@@ -73,73 +73,19 @@ namespace AcmCommissionsStatements
             _workbookFile = $@"{_metaData.outboundFolder}\{Core.FileNameHelpers.FormatOutboundFileName(_metaData.outboundFile)}";
             _xl           = new AristotleExcel(_workbookFile);
 
-            naDetail = BuildNonMerrillMorganNewAssetsDetail();
-//            naSummary = BuildNonMerrillMorganNewAssetsSummary();
+            naDetail = BuildUmaNewAssetsDetail();
+            naSummary = BuildUmaNewAssetsSummary();
 //            ogDetail = BuildNonMerrillMorganUmaOngoingDetail();
 //            ogSummary = BuildNonMerrillMorganOngoingSummary();
             
-//            _xl.AddWorksheet(naSummary, "NewAssets_Summary", ExcelColumnProperties("BroadridgeUma.NewAssetsSummary"));
+            _xl.AddWorksheet(naSummary, "NewAssets_Summary", ExcelColumnProperties("BroadridgeUma.NewAssetsSummary"));
 //            _xl.AddWorksheet(ogSummary, "Ongoing_Summary", ExcelColumnProperties("BroadridgeUma.OngoingSummary"));
             _xl.AddWorksheet(naDetail, "NewAssets_Detail", ExcelColumnProperties("BroadridgeUma.NewAssetsDetail"));
 //            _xl.AddWorksheet(ogDetail, "Ongoing_Detail", ExcelColumnProperties("BroadridgeUmaNonMerrillMorgan.OngoingDetail"));
             _xl.SaveWorkbook();
         }
-//        
-//        private IEnumerable<BroadridgeNewAssetsDetailDataModel> BuildNewAssetsDetail()
-//        {
-//            const LkuRateType.RateType rateType= LkuRateType.RateType.NewAssets;
-//            const LkuCommissionType.CommissionType commissionType = LkuCommissionType.CommissionType.UMA;
-//            var naItems = new List<BroadridgeNewAssetsDetailDataModel>();
-//
-//            foreach (var item in _broadridgeSales)
-//            {
-//                if (item.Territory != null)
-//                {
-//                    RegionalDirectorRateInfoDataModel rdRateInfo = RegionalDirectorRateInfo(item.Territory, (int)rateType, (int)commissionType);
-//
-//                    if (rdRateInfo != null)
-//                    {
-//                        rdRateInfo.Rate = item.Territory.IndexOf(',') > 0
-//                            ? rdRateInfo.Rate / 2
-//                            : rdRateInfo.Rate;
-//                    }
-//                    
-//                    var rd = _regionalDirector.FirstOrDefault(r => r.LastName == item.Territory);
-//                    var rateInfo = GetRateInfo(rd == null ? "House" : rd.RegionalDirectorKey, item.ProductName, false);
-//                    var theRate = rateInfo?.NewAssetRate ?? 0.0m;
-//
-//                    var na = new BroadridgeNewAssetsDetailDataModel()
-//                    {
-//                        TheSystem              = item.System,
-//                        FirmName               = item.FirmName,
-//                        FirmId                 = item.FirmId,
-//                        HoldingCreateDate      = item.TradeDate,
-//                        PersonFirstName        = item.PersonFirstName,
-//                        PersonLastName         = item.PersonLastName,
-//                        ProductName            = item.ProductName, 
-//                        OfficeAddressLine1     = item.OfficeAddressLine1,
-//                        OfficeCity             = item.OfficeCity, 
-//                        OfficeRegionRefCode    = item.OfficeRegionRefCode,
-//                        Territory              = item.Territory,
-//                        MarketValue            = item.TradeAmount,
-//                        Rate                   = theRate,
-//                        Commission             = item.TradeAmount * theRate,
-//                        IsNewAsset             = (item.TradeDate > _startDate) ? true : false,
-//                        IsGrayStone            = null,
-//                        IsTransfer             = null
-//                    };
-//                    
-//                    naItems.Add(na);
-//                }    
-//                
-//            }
-//
-//            var y = 0;
-//            return naItems.OrderBy(c => c.TheSystem).ThenBy(c => c.Territory)
-//                          .ThenBy(c => c.FirmName);
-//        }
-//
-        private IEnumerable<BroadridgeNewAssetsDetailDataModel> BuildNonMerrillMorganNewAssetsDetail()
+
+        private IEnumerable<BroadridgeNewAssetsDetailDataModel> BuildUmaNewAssetsDetail()
         {
             const LkuRateType.RateType rateType= LkuRateType.RateType.NewAssets;
             const LkuCommissionType.CommissionType commissionType = LkuCommissionType.CommissionType.UMA;
@@ -227,162 +173,89 @@ namespace AcmCommissionsStatements
             return naItems.OrderBy(c => c.TheSystem).ThenBy(c => c.Territory)
                           .ThenBy(c => c.FirmName);
         }
-//        
-//        
-//        private IEnumerable<BroadridgeNewAssetsSummaryDataModel> BuildNewAssetsSummary()
-//        {
-//            const LkuRateType.RateType             rateType       = LkuRateType.RateType.NewAssets;
-//            const LkuCommissionType.CommissionType commissionType = LkuCommissionType.CommissionType.UMA;
-//            var naSumm = new List<BroadridgeNewAssetsSummaryDataModel>();
-//
-//            var naSummWorking = naDetail
-//                .GroupBy(c => new
-//                {
-//                    c.TheSystem,
-//                    c.Territory,
-//                    c.FirmName,
-//                    c.OfficeRegionRefCode,
-//                    c.IsNewAsset
-//                })
-//                .Select(group => new
-//                {
-//                    System = group.Key.TheSystem,
-//                    Territory = group.Key.Territory,
-//                    FirmName = group.Key.FirmName,
-//                    OfficeRegionRefCode = group.Key.OfficeRegionRefCode,
-//                    MarketValue = group.Sum(c => c.MarketValue),
-//                    Rate = group.Min(c => c.Rate),
-//                    Commission = group.Sum(c => c.Commission),
-//                    IsNewAsset = group.Key.IsNewAsset
-//                });
-//
-//            foreach (var item in naSummWorking)
-//            {
-//                var summary = new BroadridgeNewAssetsSummaryDataModel()
-//                {
-//                    TheSystem = item.System,
-//                    Territory = item.Territory,
-//                    FirmName = item.FirmName,
-//                    OfficeRegionRefCode = item.OfficeRegionRefCode,
-//                    MarketValue = item.MarketValue,
-//                    Rate = item.Rate,
-//                    Commission = item.Commission
-//                };
-//                naSumm.Add(summary);
-//            }
-//            
-//            // Total Lines
-//            var naSummTotals = naSumm
-//                              .GroupBy(g => new
-//                               {
-//                                   g.TheSystem,
-//                                   g.Territory
-//                               })
-//                              .Select(group => new
-//                               {
-//                                   System              = group.Key.TheSystem,
-//                                   Territory           = group.Key.Territory,
-//                                   FirmName            = "-----",
-//                                   OfficeRegionRefCode = "-----",
-//                                   MarketValue         = group.Sum(c => c.MarketValue),
-//                                   Rate                = group.Min(c=>c.Rate),
-//                                   Commission          = group.Sum(c => c.Commission)
-//                               });
-//
-//            foreach (var item in naSummTotals)
-//            {
-//                var summary = new BroadridgeNewAssetsSummaryDataModel()
-//                {
-//                    TheSystem = item.System,
-//                    Territory = item.Territory,
-//                    FirmName = "z--Totals",
-//                    MarketValue = item.MarketValue,
-//                    Rate = item.Rate,
-//                    Commission = item.Commission
-//                };
-//                naSumm.Add(summary);
-//            }
-//
-//            return naSumm.OrderBy(c => c.TheSystem).ThenBy(c => c.Territory).ThenBy(c => c.FirmName);
-//        }
-//        
-//        private IEnumerable<BroadridgeNewAssetsSummaryDataModel> BuildNonMerrillMorganNewAssetsSummary()
-//        {
-//            const LkuRateType.RateType             rateType       = LkuRateType.RateType.NewAssets;
-//            const LkuCommissionType.CommissionType commissionType = LkuCommissionType.CommissionType.UMA;
-//            var naSumm = new List<BroadridgeNewAssetsSummaryDataModel>();
-//
-//            var naSummWorking = naDetail
-//                .GroupBy(c => new
-//                {
-//                    c.TheSystem,
-//                    c.Territory,
-//                    c.FirmName,
-//                    c.OfficeRegionRefCode,
-//                    c.IsNewAsset
-//                })
-//                .Select(group => new
-//                {
-//                    System = group.Key.TheSystem,
-//                    Territory = group.Key.Territory,
-//                    FirmName = group.Key.FirmName,
-//                    OfficeRegionRefCode = group.Key.OfficeRegionRefCode,
-//                    MarketValue = group.Sum(c => c.MarketValue),
-//                    Rate = group.Min(c => c.Rate),
-//                    Commission = group.Sum(c => c.Commission),
-//                    IsNewAsset = group.Key.IsNewAsset
-//                });
-//
-//            foreach (var item in naSummWorking)
-//            {
-//                var summary = new BroadridgeNewAssetsSummaryDataModel()
-//                {
-//                    TheSystem = item.System,
-//                    Territory = item.Territory,
-//                    FirmName = item.FirmName,
-//                    OfficeRegionRefCode = item.OfficeRegionRefCode,
-//                    MarketValue = item.MarketValue,
-//                    Rate = item.Rate,
-//                    Commission = item.Commission
-//                };
-//                naSumm.Add(summary);
-//            }
-//            
-//            // Total Lines
-//            var naSummTotals = naSumm
-//                              .GroupBy(g => new
-//                               {
-//                                   g.TheSystem,
-//                                   g.Territory
-//                               })
-//                              .Select(group => new
-//                               {
-//                                   System              = group.Key.TheSystem,
-//                                   Territory           = group.Key.Territory,
-//                                   FirmName            = "-----",
-//                                   OfficeRegionRefCode = "-----",
-//                                   MarketValue         = group.Sum(c => c.MarketValue),
-//                                   Rate                = group.Min(c=>c.Rate),
-//                                   Commission          = group.Sum(c => c.Commission)
-//                               });
-//
-//            foreach (var item in naSummTotals)
-//            {
-//                var summary = new BroadridgeNewAssetsSummaryDataModel()
-//                {
-//                    TheSystem = item.System,
-//                    Territory = item.Territory,
-//                    FirmName = "z--Totals",
-//                    MarketValue = item.MarketValue,
-//                    Rate = item.Rate,
-//                    Commission = item.Commission
-//                };
-//                naSumm.Add(summary);
-//            }
-//
-//            return naSumm.OrderBy(c => c.TheSystem).ThenBy(c => c.Territory).ThenBy(c => c.FirmName);
-//        }
-//
+
+        
+        private IEnumerable<BroadridgeNewAssetsSummaryDataModel> BuildUmaNewAssetsSummary()
+        {
+            const LkuRateType.RateType             rateType       = LkuRateType.RateType.NewAssets;
+            const LkuCommissionType.CommissionType commissionType = LkuCommissionType.CommissionType.UMA;
+            var naSumm = new List<BroadridgeNewAssetsSummaryDataModel>();
+
+            var naSummWorking = naDetail
+                .GroupBy(c => new
+                {
+                    c.Territory,
+                    c.TheSystem,
+                    c.OfficeAddressLine1,
+                    c.SystemOfficeState,
+                    c.ProductName,
+                    c.SystemFAName
+                })
+                .Select(group => new
+                {
+                    Territory = group.Key.Territory,
+                    System = group.Key.TheSystem,
+                    OfficeAddress = group.Key.OfficeAddressLine1,
+                    OfficeState = group.Key.SystemOfficeState,
+                    ProductName = group.Key.ProductName,
+                    FAName = group.Key.SystemFAName,
+                    NewAssetValue = group.Sum(c => c.MostRecentMonthAssetBalance),
+                    Commission = group.Sum(c => c.Commission),
+                    Rate = group.Min(c => c.Rate)
+                });
+
+            foreach (var item in naSummWorking)
+            {
+                var summary = new BroadridgeNewAssetsSummaryDataModel()
+                {
+                    TheSystem = item.System,
+                    Territory = item.Territory,
+                    OfficeAddress = item.OfficeAddress,
+                    OfficeState = item.OfficeState,
+                    ProductName = item.ProductName,
+                    FAName = item.FAName,
+                    NewAssetValue = item.NewAssetValue,
+                    Commission = item.Commission,
+                    Rate = item.Rate
+                };
+                naSumm.Add(summary);
+            }
+            
+            // Total Lines
+            var naSummTotals = naSumm
+                .GroupBy(g => new
+                {
+                    g.TheSystem,
+                    g.Territory
+                })
+                .Select(group => new
+                {
+                    System              = group.Key.TheSystem,
+                    Territory           = group.Key.Territory,
+                    FirmName            = "-----",
+                    OfficeRegionRefCode = "-----",
+                    MarketValue         = group.Sum(c => c.NewAssetValue),
+                    Rate                = group.Min(c=>c.Rate),
+                    Commission          = group.Sum(c => c.Commission)
+                });
+
+            foreach (var item in naSummTotals)
+            {
+                var summary = new BroadridgeNewAssetsSummaryDataModel()
+                {
+                    TheSystem = item.System,
+                    Territory = item.Territory,
+                    ProductName = "z--Totals",
+                    NewAssetValue = item.MarketValue,
+                    Rate = item.Rate,
+                    Commission = item.Commission
+                };
+                naSumm.Add(summary);
+            }
+
+            return naSumm.OrderBy(c => c.TheSystem).ThenBy(c => c.Territory).ThenBy(c => c.ProductName);
+        }
+
 //        private IEnumerable<BroadridgeOgDetailDataModel> BuildUmaOngoingDetail()
 //        {
 //            const LkuRateType.RateType             rateType       = LkuRateType.RateType.Ongoing;

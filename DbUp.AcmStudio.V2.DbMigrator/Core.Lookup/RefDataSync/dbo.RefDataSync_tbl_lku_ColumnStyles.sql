@@ -172,16 +172,17 @@ go
             ('BroadridgeUma.NewAssetsDetail', 41, '#,##0.00', 25),
             ('BroadridgeUma.NewAssetsDetail', 42, '#,##0.00', 25),
             ('BroadridgeUma.NewAssetsDetail', 47, '#,##0.00', 25),
-            ('BroadridgeUma.NewAssetsDetail', 48, '#,##0.00', 25)
+            ('BroadridgeUma.NewAssetsDetail', 48, '#,##0.00', 25),
+
+            --UMA New Assets Summary
+            ('BroadridgeUma.NewAssetsSummary', 7, '#,##0.00', 25),
+            ('BroadridgeUma.NewAssetsSummary', 8, '#,##0.00', 25),
+            ('BroadridgeUma.NewAssetsSummary', 9, '#0.000000', 25)
             --end ---UMA Column Properties   
                
             ------------------------------   
 
---             ('BroadridgeUma.NewAssetsDetail', 2, 'yyyy-MM-dd', 25),
---             ('BroadridgeUma.NewAssetsDetail', 11, '#,##0.00', 25),
---             ('BroadridgeUma.NewAssetsDetail', 14, '#,##0.00', 25),
---             ('BroadridgeUma.NewAssetsDetail', 15, '#0.000000', 25),
---             ('BroadridgeUma.NewAssetsDetail', 16, '#,##0.00', 25),
+
 -- 
 --             
 --             ('BroadridgeUmaMerrillMorgan.NewAssetsDetail', 8, 'yyyy-MM-dd', 25),
