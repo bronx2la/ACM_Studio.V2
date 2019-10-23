@@ -3,8 +3,8 @@ namespace Core.DataModels.Broadridge
     public class BroadridgeOgSummaryDataModel
     {
         public string RM { get; set; }
-        public string TheSystem { get; set; }
         public string SystemOfficeAddress { get; set; }
+        public string TheSystem { get; set; }
         public string State { get; set; }
         public string SystemFAName { get; set; }
         public decimal SystemQuarterEndAssets { get; set; }

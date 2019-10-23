@@ -182,17 +182,38 @@ go
                
         
             --UMA Ongoing Detail
+            ('BroadridgeUma.OngoingDetail', 8, 'yyyy-MM-dd', 25),
             ('BroadridgeUma.OngoingDetail', 9, 'yyyy-MM-dd', 25),
             ('BroadridgeUma.OngoingDetail', 10, '#,##0.00', 25),
             ('BroadridgeUma.OngoingDetail', 11, '#,##0.00', 25),
-            ('BroadridgeUma.OngoingDetail', 13, 'yyyy-MM-dd', 25),
+            ('BroadridgeUma.OngoingDetail', 12, '#,##0.00', 25),
+            ('BroadridgeUma.OngoingDetail', 13, '#,##0.00', 25),
             ('BroadridgeUma.OngoingDetail', 14, '#,##0.00', 25),
             ('BroadridgeUma.OngoingDetail', 15, '#,##0.00', 25),
             ('BroadridgeUma.OngoingDetail', 16, '#,##0.00', 25),
-            ('BroadridgeUma.OngoingDetail', 17, '#0.0000000', 25),
-            ('BroadridgeUma.OngoingDetail', 18, '#0.0000000', 25),
+            ('BroadridgeUma.OngoingDetail', 17, '#,##0.00', 25),
+            ('BroadridgeUma.OngoingDetail', 18, '#,##0.00', 25),
             ('BroadridgeUma.OngoingDetail', 19, '#,##0.00', 25),
+            ('BroadridgeUma.OngoingDetail', 20, '#,##0.00', 25),
+            ('BroadridgeUma.OngoingDetail', 21, '#,##0.00', 25),
+            ('BroadridgeUma.OngoingDetail', 22, '#,##0.00', 25),
+            ('BroadridgeUma.OngoingDetail', 23, '#,##0.00', 25),
+            ('BroadridgeUma.OngoingDetail', 24, '#,##0.00', 25),
+            ('BroadridgeUma.OngoingDetail', 25, '#,##0.00', 25),
+            ('BroadridgeUma.OngoingDetail', 26, '#0.0000000', 25),
+            ('BroadridgeUma.OngoingDetail', 27, '#0.0000000', 25),
+            ('BroadridgeUma.OngoingDetail', 51, '#,##0.00', 25),
+            ('BroadridgeUma.OngoingDetail', 52, '#,##0.00', 25),
             --end --UMA Ongoing Detail
+        
+            --UMA Ongoing Summary
+            ('BroadridgeUma.OngoingSummary', 6, '#,##0.00', 25),
+            ('BroadridgeUma.OngoingSummary', 7, '#,##0.00', 25),
+            ('BroadridgeUma.OngoingSummary', 8, '#,##0.00', 25),
+            ('BroadridgeUma.OngoingSummary', 9, '#,##0.00', 25),
+            ('BroadridgeUma.OngoingSummary', 10, '#0.000000', 25),
+            ('BroadridgeUma.OngoingSummary', 11, '#0.000000', 25),
+            --end --UMA Ongoing Summary
         
             --UMA Pseudo Flow Detail
             ('BroadridgeUma.PseudoflowDetail', 8, 'yyyy-MM-dd', 25),

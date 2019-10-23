@@ -120,6 +120,7 @@
         <e p="ListHandlers" t="Include">
           <e p="ListDataTable.cs" t="Include" />
         </e>
+        <e p="NewAssetTradeType.cs" t="Include" />
         <e p="obj" t="ExcludeRecursive">
           <e p="Debug" t="Include">
             <e p="netcoreapp2.1" t="Include">

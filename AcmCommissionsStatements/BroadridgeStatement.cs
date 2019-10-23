@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Aristotle.Excel;
 using CommissionsStatementGenerator;
+using Core;
 using Core.DataModels;
 using Core.DataModels.Broadridge;
 using Core.Enums;
@@ -16,15 +17,12 @@ namespace AcmCommissionsStatements
     {
         private IEnumerable<BroadridgeSales> _broadridgeSales;
         private IEnumerable<BroadridgeUmaAssets> _broadridgeAssets;
-        private IEnumerable<BroadridgeFlows> _broadridgeFlows;
         private bool _isUma;
 
         private IEnumerable<BroadridgeNewAssetsDetailDataModel> naDetail;
         private IEnumerable<BroadridgeNewAssetsSummaryDataModel> naSummary;
         private IEnumerable<BroadridgeOgDetailDataModel> ogDetail;
         private IEnumerable<BroadridgeOgSummaryDataModel> ogSummary;
-        private IEnumerable<BroadridgeFlows> pfDetail;
-        private IEnumerable<BroadridgeFlowsSummaryDataModel> pfSummary;
         
         public BroadridgeStatement(string startDate, string endDate, string connectionString, TaskMetaDataDataModel metaData, bool isUma) : base(startDate, endDate, connectionString, metaData)
         {
@@ -61,17 +59,13 @@ namespace AcmCommissionsStatements
 
             naDetail = BuildUmaNewAssetsDetail();
             naSummary = BuildUmaNewAssetsSummary();
-            pfDetail = BuildPseudoFlowDetail();
-            pfSummary = BuildPseudoFlowSummary();
             ogDetail = BuildUmaOngoingDetail();
-//            ogSummary = BuildNonMerrillMorganOngoingSummary();
+            ogSummary = BuildOngoingSummary();
             
             _xl.AddWorksheet(naSummary, "NewAssets_Summary", ExcelColumnProperties("BroadridgeUma.NewAssetsSummary"));
-//            _xl.AddWorksheet(ogSummary, "Ongoing_Summary", ExcelColumnProperties("BroadridgeUma.OngoingSummary"));
-            _xl.AddWorksheet(pfSummary, "Flows_Summary", ExcelColumnProperties("BroadridgeUma.PseudoflowSummary"));
+            _xl.AddWorksheet(ogSummary, "Ongoing_Summary", ExcelColumnProperties("BroadridgeUma.OngoingSummary"));
             _xl.AddWorksheet(naDetail, "NewAssets_Detail", ExcelColumnProperties("BroadridgeUma.NewAssetsDetail"));
             _xl.AddWorksheet(ogDetail, "Ongoing_Detail", ExcelColumnProperties("BroadridgeUma.OngoingDetail"));
-            _xl.AddWorksheet(pfDetail, "Flows_Detail", ExcelColumnProperties("BroadridgeUma.PseudoflowDetail"));
             _xl.SaveWorkbook();
         }
 
@@ -81,7 +75,15 @@ namespace AcmCommissionsStatements
             const LkuCommissionType.CommissionType commissionType = LkuCommissionType.CommissionType.UMA;
             var naItems = new List<BroadridgeNewAssetsDetailDataModel>();
 
-            foreach (var item in _broadridgeSales)
+            var newTypes = new List<NewAssetTradeType>();
+            var n = new NewAssetTradeType("Purchase");
+            newTypes.Add(n);
+            
+            n = new NewAssetTradeType("Transfer In");
+            newTypes.Add(n);
+            
+            var _sales = _broadridgeSales.Where(c => newTypes.Select(r => r.TradeType).Contains(c.TransactionCodeOverrideDescription));
+            foreach (var item in _sales)
             {
                 if (item.Territory != null)
                 {
@@ -368,91 +370,6 @@ namespace AcmCommissionsStatements
             return pfItems;
         }
 
-        private IEnumerable<BroadridgeFlowsSummaryDataModel> BuildPseudoFlowSummary()
-        {
-            const LkuRateType.RateType rateType = LkuRateType.RateType.Ongoing;
-            const LkuCommissionType.CommissionType commissionType = LkuCommissionType.CommissionType.UMA;
-
-            var pfSumm = new List<BroadridgeFlowsSummaryDataModel>();
-            
-            var pfSummWorking = pfDetail
-                .GroupBy(c => new
-                {
-                    c.Territory,
-                    c.TheSystem,
-                    c.SystemOfficeAddress,
-                    c.SystemOfficeState,
-                    c.ProductName,
-                    c.SystemFAName
-                })
-                .Select(group => new
-                {
-                    Territory = group.Key.Territory,
-                    TheSystem = group.Key.TheSystem,
-                    SystemOfficeAddress = group.Key.SystemOfficeAddress,
-                    OfficeState = group.Key.SystemOfficeState,
-                    ProductName = group.Key.ProductName,
-                    SystemFAName = group.Key.SystemFAName,
-                    Flows = group.Sum(c => c.SumFlows),
-                    Rate = group.Min(c => c.Rate),
-                    Commission = group.Sum(c => c.SumFlows) * group.Min(c => c.Rate),
-                });
-            
-            foreach (var item in pfSummWorking)
-            {
-                var summary = new BroadridgeFlowsSummaryDataModel()
-                {
-                    Territory = item.Territory,
-                    TheSystem = item.TheSystem,
-                    SystemOfficeAddress = item.SystemOfficeAddress,
-                    OfficeState = item.OfficeState,
-                    SystemFAName = item.SystemFAName,
-                    Flows = item.Flows > 0 ? item.Flows : 0.0m,
-                    Rate        = item.Rate,
-                    Commission  = item.Flows > 0 ? (item.Flows * item.Rate) : 0.0m
-                };
-                
-                if(item.Flows > 0)
-                    pfSumm.Add(summary);
-            }
-            
-            // Total Lines
-            var pfSummTotals = pfSumm
-                .GroupBy(g => new
-                {
-                    g.Territory,
-                    g.TheSystem
-                })
-                .Select(grp => new
-                {
-                    RM             = grp.Key.Territory,
-                    System         = $"{grp.Key.TheSystem} - Total",
-                    InFlows        = grp.Sum(group => group.Flows),
-                    Rate           = grp.Min(group => group.Rate),
-                    Commission     = grp.Sum(group => group.Commission)
-                });
-            
-            foreach (var item in pfSummTotals)
-            {
-                var summary = new BroadridgeFlowsSummaryDataModel()
-                {
-                    Territory = item.RM,
-                    TheSystem = item.System,
-                    SystemOfficeAddress = string.Empty,
-                    OfficeState = string.Empty,
-                    ProductName = string.Empty,
-                    SystemFAName = string.Empty,
-                    Flows = item.InFlows > 0 ? item.InFlows : 0.0m,
-                    Commission  = item.InFlows > 0 ? item.Commission : 0.0m,
-                    Rate           = item.Rate
-                };
-                
-                pfSumm.Add(summary);
-            }
-
-            return pfSumm.OrderBy(c => c.Territory).ThenBy(c => c.TheSystem);
-        }
-        
         
         
         private IEnumerable<BroadridgeOgDetailDataModel> BuildUmaOngoingDetail()
@@ -510,8 +427,8 @@ namespace AcmCommissionsStatements
                         Month11AgoAssetBalance = asset.Month11AgoAssetBalance,
                         Month12AgoAssetBalance = asset.Month11AgoAssetBalance,
                         SumFlows = GetFlowAmount(asset),
-                        PayableAmount = asset.MostRecentMonthAssetBalance - GetFlowAmount(asset),
-                        Commission = (asset.MostRecentMonthAssetBalance - GetFlowAmount(asset) ) * (theRate / 4),
+                        PayableAmount = asset.MostRecentMonthAssetBalance - GetSalesTransactions(asset.HoldingId),
+                        Commission = (asset.MostRecentMonthAssetBalance - GetSalesTransactions(asset.HoldingId) ) * (theRate / 4),
                         QuarterlyRate = theRate / 4,
                         AnnualRate = theRate,
                         IsSeasoned = asset.HoldingCreateDate < GetDateDiffMonths(GetFirstOfMonth(_endDate), -3),
@@ -551,6 +468,98 @@ namespace AcmCommissionsStatements
             return ogItems.OrderBy(c => c.Territory).ThenBy(c => c.FirmName).Where(c => c.HoldingStartDate < _endDate);
         }
         
+        private IEnumerable<BroadridgeOgSummaryDataModel> BuildOngoingSummary()
+        {
+            const LkuRateType.RateType rateType = LkuRateType.RateType.Ongoing;
+            const LkuCommissionType.CommissionType commissionType = LkuCommissionType.CommissionType.UMA;
+            var ogSumm = new List<BroadridgeOgSummaryDataModel>();
+            
+            var ogSummWorking = ogDetail
+               .GroupBy(c => new
+                {
+                    c.Territory,
+                    c.TheSystem,
+                    c.SystemOfficeAddress,
+                    c.SystemOfficeState,
+                    c.PersonFirstName,
+                    c.PersonLastName
+                })
+                .Select(group => new
+                                {
+                                    RM = group.Key.Territory,
+                                    TheSystem = group.Key.TheSystem,
+                                    SystemOfficeAddress = group.Key.SystemOfficeAddress,
+                                    SystemOfficeState = group.Key.SystemOfficeAddress,
+                                    SystemFAName = $"{group.Key.PersonFirstName} {group.Key.PersonLastName}",
+                                    SystemQuarterEndAssets = group.Sum(c => c.SystemQuarterEndAssets),
+                                    Flows = group.Sum(c => c.SumFlows),
+                                    PayableAmout = group.Sum(c => c.PayableAmount),
+                                    Commission = group.Sum(c => c.Commission),
+                                    QuarterlyRate = group.Min(c => c.QuarterlyRate),
+                                    AnnualRate = group.Min(c => c.AnnualRate),
+                                });
+
+            foreach (var item in ogSummWorking)
+            {
+                var summary = new BroadridgeOgSummaryDataModel()
+                {
+                    RM             = item.RM,
+                    TheSystem = item.TheSystem,
+                    SystemOfficeAddress = string.Empty,
+                    State = string.Empty,
+                    SystemFAName = item.SystemFAName,
+                    SystemQuarterEndAssets = item.SystemQuarterEndAssets,
+                    Flows        = item.Flows,
+                    PayableAmount  = item.PayableAmout,
+                    QuarterlyRate = item.QuarterlyRate,
+                    AnnualRate = item.AnnualRate,
+                    Commission     = item.Commission
+                };
+                
+                ogSumm.Add(summary);
+            }
+            
+            // Total Lines
+            var ogSummTotals = ogSumm
+                              .GroupBy(g => new
+                               {
+                                   g.RM, g.TheSystem
+                               })
+                              .Select(grp => new
+                               {
+                                   RM             = grp.Key.RM,
+                                   TheSystem      = grp.Key.TheSystem,
+                                   SystemOfficeAddress = "Totals",
+                                   SystemQuarterEndAssets = grp.Min(group => group.SystemQuarterEndAssets),
+                                   Flows          = grp.Sum(group => group.Flows),
+                                   PaymentAmount  = grp.Sum(group => group.PayableAmount),
+                                   Commission     = grp.Sum(group => group.Commission),
+                                   QuarterlyRate  = grp.Min(group => group.QuarterlyRate),
+                                   AnnualRate     = grp.Min(group => group.AnnualRate)
+                               });
+
+            foreach (var item in ogSummTotals)
+            {
+                var summary = new BroadridgeOgSummaryDataModel()
+                {
+                    RM             = item.RM,
+                    TheSystem = item.TheSystem,
+                    SystemOfficeAddress = string.Empty,
+                    State = string.Empty,
+                    SystemQuarterEndAssets = item.SystemQuarterEndAssets,
+                    Flows  = item.Flows,
+                    PayableAmount = item.PaymentAmount,
+                    Commission    = item.Commission,
+                    QuarterlyRate = item.QuarterlyRate,
+                    AnnualRate = item.AnnualRate
+                };
+                
+                ogSumm.Add(summary);
+            }
+
+            return ogSumm.OrderBy(c => c.RM).ThenBy(c => c.TheSystem);
+        }
+        
         private decimal GetFlowAmount(BroadridgeUmaAssets asset)
         {
             var result = 0.0m;
@@ -587,7 +596,22 @@ namespace AcmCommissionsStatements
             var pd = Math.Abs((amount1 - amount2) / amount1);
             return Math.Abs(pd) >= .10m;
         }
-        
 
+        private decimal GetSalesTransactions(string holdingId)
+        {
+            var result = 0.0m;
+            
+            var sales = _broadridgeSales.Where(c => c.HoldingId == holdingId);
+
+            foreach (var item in sales)
+            {
+                result = item.TransactionCodeOverrideDescription.Equals("Purchase") ||
+                         item.TransactionCodeOverrideDescription.Equals("Transfer In")
+                    ? result += item.TradeAmount
+                    : result = result + (item.TradeAmount + -1);
+            }
+
+            return result;
+        }
     }
 }

@@ -40,6 +40,6 @@ as
         dbo.tbl_BroadridgeSales
     where 
         ReportingDate = @ReportingDate
-        and TransactionCodeOverrideDescription in ('Purchase', 'Transfer In')
+--         and TransactionCodeOverrideDescription in ('Purchase', 'Transfer In')
 go
     
