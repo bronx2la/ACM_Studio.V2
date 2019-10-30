@@ -153,31 +153,17 @@ go
                
             --begin --UMA Column Properties
             --UMA New Assets Detail 
-            ('BroadridgeUma.NewAssetsDetail', 8, 'yyyy-MM-dd', 25),
-            ('BroadridgeUma.NewAssetsDetail', 9, 'yyyy-MM-dd', 25),
-            ('BroadridgeUma.NewAssetsDetail', 10, '#,##0.00', 25),
-            ('BroadridgeUma.NewAssetsDetail', 11, '#,##0.00', 25),
-            ('BroadridgeUma.NewAssetsDetail', 12, '#,##0.00', 25),
-            ('BroadridgeUma.NewAssetsDetail', 13, '#,##0.00', 25),
-            ('BroadridgeUma.NewAssetsDetail', 14, '#,##0.00', 25),
-            ('BroadridgeUma.NewAssetsDetail', 15, '#,##0.00', 25),
-            ('BroadridgeUma.NewAssetsDetail', 16, '#0.000000', 25),
-            ('BroadridgeUma.NewAssetsDetail', 34, '#,##0.00', 25),
-            ('BroadridgeUma.NewAssetsDetail', 35, '#,##0.00', 25),
-            ('BroadridgeUma.NewAssetsDetail', 36, '#,##0.00', 25),
-            ('BroadridgeUma.NewAssetsDetail', 37, '#,##0.00', 25),
-            ('BroadridgeUma.NewAssetsDetail', 38, '#,##0.00', 25),
-            ('BroadridgeUma.NewAssetsDetail', 39, '#,##0.00', 25),
-            ('BroadridgeUma.NewAssetsDetail', 40, '#,##0.00', 25),
-            ('BroadridgeUma.NewAssetsDetail', 41, '#,##0.00', 25),
-            ('BroadridgeUma.NewAssetsDetail', 42, '#,##0.00', 25),
-            ('BroadridgeUma.NewAssetsDetail', 47, '#,##0.00', 25),
-            ('BroadridgeUma.NewAssetsDetail', 48, '#,##0.00', 25),
-
+            ('BroadridgeUma.NewAssetsDetail', 3, 'yyyy-MM-dd', 25),
+            ('BroadridgeUma.NewAssetsDetail', 4, 'yyyy-MM-dd', 25),
+            ('BroadridgeUma.NewAssetsDetail', 5, 'yyyy-MM-dd', 25),
+            ('BroadridgeUma.NewAssetsDetail', 6, '#,##0.00', 25),
+            ('BroadridgeUma.NewAssetsDetail', 7, '#,##0.00', 25),
+            ('BroadridgeUma.NewAssetsDetail', 8, '#0.000000', 25),
+            
             --UMA New Assets Summary
-            ('BroadridgeUma.NewAssetsSummary', 7, '#,##0.00', 25),
             ('BroadridgeUma.NewAssetsSummary', 8, '#,##0.00', 25),
-            ('BroadridgeUma.NewAssetsSummary', 9, '#0.000000', 25),
+            ('BroadridgeUma.NewAssetsSummary', 9, '#,##0.00', 25),
+            ('BroadridgeUma.NewAssetsSummary', 10, '#0.000000', 25),
             --end ---UMA Column Properties   
                
         

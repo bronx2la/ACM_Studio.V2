@@ -9,6 +9,7 @@ namespace Core.DataModels.Broadridge
         public string ProductName { get; set; }
 
         public string FAName { get; set; }
+        public string PersonLastName { get; set; }
         public decimal NewAssetValue { get; set; }
         public decimal Commission { get; set; }
         public decimal Rate { get; set; }

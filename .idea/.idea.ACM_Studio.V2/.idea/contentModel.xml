@@ -79,6 +79,9 @@
             <e p="BroadridgeNewAssetsSummaryDataModel.cs" t="Include" />
             <e p="BroadridgeOgDetailDataModel.cs" t="Include" />
             <e p="BroadridgeOgSummaryDataModel.cs" t="Include" />
+            <e p="BroadridgeOtherNewAssetsDataModel.cs" t="Include" />
+            <e p="BroadridgeOtherOgDetailDataModel.cs" t="Include" />
+            <e p="BroadridgeOtherOnGoingDataModel.cs" t="Include" />
           </e>
           <e p="GenevaSma" t="Include">
             <e p="GenevaAumInbound.cs" t="Include" />

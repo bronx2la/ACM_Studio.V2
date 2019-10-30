@@ -35,6 +35,12 @@ as
       Territory                          ,
       ProductNasdaqSymbol                ,
       ProductName                        ,
+      AccountTANumber                    ,
+      AccountId                          ,
+      ExternalAccountNumber              ,
+      HoldingId                          ,
+      HoldingExteralAccountNumber        ,
+      HoldingName                        ,
       ReportingDate                      
     from 
         dbo.tbl_BroadridgeSales

@@ -1,8 +1,10 @@
-using System;
+namespace Core.DataModels.Broadridge
+{
+    using System;
 
 namespace Core.DataModels.Broadridge
 {
-    public class BroadridgeOgDetailDataModel
+    public class BroadridgeOtherOgDetailDataModel
     {
         public string TheSystem { get; set; }
         public string FirmName { get; set; }
@@ -62,4 +64,5 @@ namespace Core.DataModels.Broadridge
         public string SystemRDCredit { get; set; }
         public bool IsAccountSame { get; set; }
     }
+}
 }

@@ -6,6 +6,7 @@ using CommissionsStatementGenerator;
 using Core;
 using Core.DataModels;
 using Core.DataModels.Broadridge;
+using Core.DataModels.Broadridge.Core.DataModels.Broadridge;
 using Core.Enums;
 using Dapper;
 using DapperDatabaseAccess;
@@ -19,9 +20,9 @@ namespace AcmCommissionsStatements
         private IEnumerable<BroadridgeUmaAssets> _broadridgeAssets;
         private bool _isUma;
 
-        private IEnumerable<BroadridgeNewAssetsDetailDataModel> naDetail;
+        private IEnumerable<BroadridgeOtherNewAssetsDataModel> naDetail;
         private IEnumerable<BroadridgeNewAssetsSummaryDataModel> naSummary;
-        private IEnumerable<BroadridgeOgDetailDataModel> ogDetail;
+        private IEnumerable<BroadridgeOtherOgDetailDataModel> ogDetail;
         private IEnumerable<BroadridgeOgSummaryDataModel> ogSummary;
         
         public BroadridgeStatement(string startDate, string endDate, string connectionString, TaskMetaDataDataModel metaData, bool isUma) : base(startDate, endDate, connectionString, metaData)
@@ -69,11 +70,11 @@ namespace AcmCommissionsStatements
             _xl.SaveWorkbook();
         }
 
-        private IEnumerable<BroadridgeNewAssetsDetailDataModel> BuildUmaNewAssetsDetail()
+        private IEnumerable<BroadridgeOtherNewAssetsDataModel> BuildUmaNewAssetsDetail()
         {
             const LkuRateType.RateType rateType= LkuRateType.RateType.NewAssets;
             const LkuCommissionType.CommissionType commissionType = LkuCommissionType.CommissionType.UMA;
-            var naItems = new List<BroadridgeNewAssetsDetailDataModel>();
+            var naItems = new List<BroadridgeOtherNewAssetsDataModel>();
 
             var newTypes = new List<NewAssetTradeType>();
             var n = new NewAssetTradeType("Purchase");
@@ -100,69 +101,47 @@ namespace AcmCommissionsStatements
                     var rateInfo = GetRateInfo(rd == null ? "House" : rd.RegionalDirectorKey, item.ProductName, false);
                     var theRate = rateInfo?.NewAssetRate ?? 0.0m;
 
-                    var na = new BroadridgeNewAssetsDetailDataModel()
+                    var na = new BroadridgeOtherNewAssetsDataModel()
                     {
-                        TheSystem              = item.System,
-                        FirmName               = item.FirmName,
+                        TradeId              = item.TradeId,
+                        TransactionCodeOverrideDescription = item.TransactionCodeOverrideDescription,
+                        TradeDate = item.TradeDate,
+                        SettledDate = item.SettledDate,
+                        SuperSheetDate = item.SuperSheetDate,
+                        TradeAmount = item.TradeAmount,
+                        Commission = item.TradeAmount * theRate,
+                        Rate = theRate,
+                        System = item.System,
+                        DealerNum = item.DealerNum,
+                        DealerBranchCode = item.DealerBranchBranchCode,
+                        RepCode = item.RepCode,
                         FirmId                 = item.FirmId,
-                        FirmCrdNumber          = null,
-                        HoldingId = item.HoldingId,
-                        HoldingExterAccountNumber = item.HoldingExternalAccountNumber,
-                        HoldingName = item.HoldingName,
-                        HoldingStartDate = item.TradeDate,
-                        HoldingCreateDate = item.SuperSheetDate,
-                        MostRecentMonthAssetBalance = item.TradeAmount,
-                        Month1AgoAssetBalance = 0.0m,
-                        Month2AgoAssetBalance = 0.0m,
-                        Month3AgoAssetBalance = 0.0m,
-                        NewAssetValue = 0.0m,
-                        Commission             = item.TradeAmount * theRate,
-                        Rate                   = theRate,
-                        Territory              = item.Territory,
-                        SalesRunTerritory = item.Territory,
-                        IsTerritorySame = true,
-                        ProductName            = item.ProductName, 
-                        ProductType = null,
-                        Channel = item.Channel,
-                        Region = item.Region,
-                        PersonCRDNumber = null,
-                        PersonFirstName        = item.PersonFirstName,
-                        PersonLastName         = item.PersonLastName,
+                        FirmName               = item.FirmName,
                         OfficeAddressLine1     = item.OfficeAddressLine1,
-                        OfficeAddressLine2     = null,
                         OfficeCity             = item.OfficeCity, 
                         OfficeRegionRefCode    = item.OfficeRegionRefCode,
-                        OfficePostalCode = item.OfficePostalCode,
-                        PersonBrokerTeamFlag = null,
-                        Month4AgoAssetBalance = 0.0m,
-                        Month5AgoAssetBalance = 0.0m,
-                        Month6AgoAssetBalance = 0.0m,
-                        Month7AgoAssetBalance = 0.0m,
-                        Month8AgoAssetBalance = 0.0m,
-                        Month9AgoAssetBalance = 0.0m,
-                        Month10AgoAssetBalance = 0.0m,
-                        Month11AgoAssetBalance = 0.0m,
-                        Month12AgoAssetBalance = 0.0m,
-                        HoldingAddressLine1 = null,
-                        SystemFAName = null,
-                        SystemOfficeAddress = item.OfficeAddressLine1,
-                        SystemOfficeState = item.OfficeRegionRefCode,
-                        SystemQEAssets = item.TradeAmount,
-                        AssetCheck = 0.0m,
-                        SystemRDCredit = item.Territory,
-                        RDCheck = null,
+                        PersonFirstName        = item.PersonFirstName,
+                        PersonLastName         = item.PersonLastName,
+                        LineOfBusiness = item.LineOfBusiness,
+                        Channel = item.Channel,
+                        Region = item.Region,
+                        Territory              = item.Territory,
+                        ProductNasdaqSymbol = item.ProductNasdaqSymbol,
+                        ProductName            = item.ProductName, 
                         AccountTANumber = item.AccountTANumber,
+                        AccountId = item.RepCode,
                         ExternalAccountNumber = item.FirmId,
-                        AccountId = item.RepCode
+                        HoldingId = item.HoldingId,
+                        HoldingName = item.HoldingName,
+                        HoldingExternalAccountNumber = item.HoldingExternalAccountNumber
                     };
                     
                     naItems.Add(na);
                 }    
-                
             }
 
             var y = 0;
-            return naItems.OrderBy(c => c.TheSystem).ThenBy(c => c.Territory)
+            return naItems.OrderBy(c => c.System).ThenBy(c => c.Territory)
                           .ThenBy(c => c.FirmName);
         }
 
@@ -177,21 +156,23 @@ namespace AcmCommissionsStatements
                 .GroupBy(c => new
                 {
                     c.Territory,
-                    c.TheSystem,
+                    c.System,
                     c.OfficeAddressLine1,
-                    c.SystemOfficeState,
+                    c.OfficeRegionRefCode,
                     c.ProductName,
-                    c.SystemFAName
+                    c.FirmName,
+                    c.PersonLastName
                 })
                 .Select(group => new
                 {
                     Territory = group.Key.Territory,
-                    System = group.Key.TheSystem,
+                    System = group.Key.System,
                     OfficeAddress = group.Key.OfficeAddressLine1,
-                    OfficeState = group.Key.SystemOfficeState,
+                    OfficeState = group.Key.OfficeRegionRefCode,
                     ProductName = group.Key.ProductName,
-                    FAName = group.Key.SystemFAName,
-                    NewAssetValue = group.Sum(c => c.MostRecentMonthAssetBalance),
+                    FAName = group.Key.FirmName,
+                    PersonLastName = group.Key.PersonLastName,
+                    NewAssetValue = group.Sum(c => c.TradeAmount),
                     Commission = group.Sum(c => c.Commission),
                     Rate = group.Min(c => c.Rate)
                 });
@@ -206,6 +187,7 @@ namespace AcmCommissionsStatements
                     OfficeState = item.OfficeState,
                     ProductName = item.ProductName,
                     FAName = item.FAName,
+                    PersonLastName = item.PersonLastName,
                     NewAssetValue = item.NewAssetValue,
                     Commission = item.Commission,
                     Rate = item.Rate
@@ -372,12 +354,12 @@ namespace AcmCommissionsStatements
 
         
         
-        private IEnumerable<BroadridgeOgDetailDataModel> BuildUmaOngoingDetail()
+        private IEnumerable<BroadridgeOtherOgDetailDataModel> BuildUmaOngoingDetail()
         {
             const LkuRateType.RateType             rateType       = LkuRateType.RateType.Ongoing;
             const LkuCommissionType.CommissionType commissionType = LkuCommissionType.CommissionType.UMA;
             
-            var ogItems = new List<BroadridgeOgDetailDataModel>();
+            var ogItems = new List<BroadridgeOtherOgDetailDataModel>();
             
             foreach (var asset in _broadridgeAssets)
             {
@@ -402,7 +384,7 @@ namespace AcmCommissionsStatements
                 var rateInfo = GetRateInfo(rd.RegionalDirectorKey, asset.ProductName, false);
                 var theRate = rateInfo?.OngoingRate ?? 0.0m;
 
-                var og = new BroadridgeOgDetailDataModel()
+                var og = new BroadridgeOtherOgDetailDataModel()
                 {
                     TheSystem = asset.System,
                         FirmName = asset.FirmName,
