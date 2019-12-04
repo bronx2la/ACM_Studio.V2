@@ -16,10 +16,12 @@ namespace AcmCommissionsStatements.BroadridgeMerrillMorgan
         private IEnumerable<BroadridgeAssets> _broadridgeNewAssets;
 
         private IEnumerable<BroadridgeNewAssetsDetailDataModel> naDetail;
+        private IEnumerable<BroadridgeNewAssetsSummaryDataModel> naSummary;
         private IEnumerable<BroadridgeOgDetailDataModel> ogDetail;
         private IEnumerable<BroadridgeOgSummaryDataModel> ogSummary;
         private IEnumerable<BroadridgeFlows> pfDetail;
         private IEnumerable<BroadridgeFlowsSummaryDataModel> pfSummary;
+        private IEnumerable<TopLevelSummaryDataModel> tlSummary;
         
         public BroadridgeMerrillMorganStatement(string endDate, string connectionString, TaskMetaDataDataModel metaData) : base(endDate, connectionString, metaData)
         {
@@ -40,19 +42,23 @@ namespace AcmCommissionsStatements.BroadridgeMerrillMorgan
         {
             _workbookFile = $@"{_metaData.outboundFolder}\{Core.FileNameHelpers.FormatOutboundFileName(_metaData.outboundFile)}";
             _xl           = new AristotleExcel(_workbookFile);
-//
+
             naDetail = BuildNewAssetsDetail();
+            naSummary = BuildNewAssetsSummary();
             pfDetail = BuildPseudoFlowDetail();
             ogDetail = BuildUmaOngoingDetail();
             ogSummary = BuildOngoingSummary();
             pfSummary = BuildPseudoFlowSummary();
+            tlSummary = BuildTopLevelSummary(naDetail, ogDetail);
             
-            _xl.AddWorksheet(BuildNewAssetsSummary(), "NewAssets_Summary", ExcelColumnProperties("BroadridgeUmaMerrillMorgan.NewAssetsSummary"));
+            
+            _xl.AddWorksheet(tlSummary, "Top_Level_Summary", ExcelColumnProperties("GevevaSma.TopLevelSummary"));
+            _xl.AddWorksheet(naSummary, "NewAssets_Summary", ExcelColumnProperties("BroadridgeUmaMerrillMorgan.NewAssetsSummary"));
             _xl.AddWorksheet(ogSummary, "Ongoing_Summary", ExcelColumnProperties("BroadridgeUmaMerrillMorgan.OngoingSummary"));
             _xl.AddWorksheet(pfSummary, "Pseudoflow_Summary", ExcelColumnProperties("BroadridgeUmaMerrillMorgan.PseudoflowSummary"));
             _xl.AddWorksheet(naDetail, "NewAssets.Detail", ExcelColumnProperties("BroadridgeUmaMerrillMorgan.NewAssetsDetail"));
             _xl.AddWorksheet(ogDetail, "Ongoing_Detail", ExcelColumnProperties("BroadridgeMerrillMorgan.OngoingDetail"));
-            _xl.AddWorksheet(pfDetail, "Pseudoflow_Detail", ExcelColumnProperties("BroadridgeUmaMerrillMorgan.PseudoDetail"));
+            _xl.AddWorksheet(pfDetail, "Pseudoflow_Detail", ExcelColumnProperties("BroadridgeUmaMerrillMorgan.PseudoflowDetail"));
             _xl.SaveWorkbook();
         }
 
@@ -137,7 +143,8 @@ namespace AcmCommissionsStatements.BroadridgeMerrillMorgan
                     Commission  = item.InFlows > 0 ? item.Commission : 0.0m,
                     Rate           = item.Rate
                 };
-                
+
+                summary.Rate = summary.Flows > 0.0m ? item.Commission / summary.Flows : 0.0m;
                 pfSumm.Add(summary);
             }
 
@@ -505,69 +512,72 @@ namespace AcmCommissionsStatements.BroadridgeMerrillMorgan
             {
                     var territory = asset.Territory == "" ? "House" : asset.Territory;
                     var rd = _regionalDirector.FirstOrDefault(r => r.LastName == territory);
-                    var rateInfo = GetRateInfo(rd.RegionalDirectorKey, asset.ProductName, false);
-                    var theRate = rateInfo?.OngoingRate ?? 0.0m;
-
-                    var og = new BroadridgeOgDetailDataModel()
+                    if (rd != null)
                     {
-                        TheSystem = asset.TheSystem,
-                        FirmName = asset.FirmName,
-                        FirmId = asset.FirmId,
-                        FirmCRDNumber = asset.FirmCRDNumber,
-                        HoldingId = asset.HoldingId,
-                        HoldingExternalAccountNumber = asset.HoldingExternalAccountNumber,
-                        HoldingName = asset.HoldingName,
-                        HoldingStartDate = asset.HoldingStartdate,
-                        HoldingCreateDate = asset.HoldingCreatedate,
-                        MostRecentMonthAssetBalance = asset.MostRecentMonthAssetBalance,
-                        Month1AgoAssetBalance = asset.Month1AgoAssetBalance,
-                        Month2AgoAssetBalance = asset.Month2AgoAssetBalance,
-                        Month3AgoAssetBalance = asset.Month3AgoAssetBalance,
-                        Month4AgoAssetBalance = asset.Month4AgoAssetBalance,
-                        Month5AgoAssetBalance = asset.Month5AgoAssetBalance,
-                        Month6AgoAssetBalance = asset.Month6AgoAssetBalance,
-                        Month7AgoAssetBalance = asset.Month7AgoAssetBalance,
-                        Month8AgoAssetBalance = asset.Month8AgoAssetBalance,
-                        Month9AgoAssetBalance = asset.Month9AgoAssetBalance,
-                        Month10AgoAssetBalance = asset.Month10AgoAssetBalance,
-                        Month11AgoAssetBalance = asset.Month11AgoAssetBalance,
-                        Month12AgoAssetBalance = asset.Month11AgoAssetBalance,
-                        SumFlows = GetFlowAmount(asset.HoldingId),
-                        PayableAmount = asset.MostRecentMonthAssetBalance - GetFlowAmount(asset.HoldingId),
-                        Commission = (asset.MostRecentMonthAssetBalance - GetFlowAmount(asset.HoldingId) ) * (theRate / 4),
-                        QuarterlyRate = theRate / 4,
-                        AnnualRate = theRate,
-                        IsSeasoned = asset.HoldingCreatedate < GetDateDiffMonths(GetFirstOfMonth(_endDate), -3),
-                        ProductName = asset.ProductName,
-                        ProductType = asset.ProductType,
-                        Channel = asset.Channel,
-                        Region = asset.Region,
-                        Territory = asset.Territory,
-                        SalesCredit = asset.Territory,
-                        IsSame = true,
-                        PersonCRDNumber = asset.PersonCRDNumber,
-                        PersonFirstName = asset.PersonFirstName,
-                        PersonLastName = asset.PersonLastName,
-                        PersonId = asset.PersonId,
-                        OfficeAddressLine1 = asset.OfficeAddressLine1,
-                        OfficeAddressLine2 = asset.OfficeAddressLine2,
-                        OfficeCity = asset.OfficeCity,
-                        OfficeRegionRefCode = asset.OfficeRegionRefCode,
-                        OfficePostalCode = asset.OfficePostalCode,
-                        PersonBrokerTeamFlag = asset.PersonBrokerTeamFlag,
-                        HoldingAddressLine1 = asset.HoldingAddressLine1,
-                        SystemFAName = "?",
-                        SystemOfficeAddress = "?",
-                        SystemOfficeState = asset.OfficeRegionRefCode,
-                        SystemQuarterEndAssets = asset.MostRecentMonthAssetBalance,
-                        AssetCheck = 0.0m,
-                        SystemRDCredit = asset.Territory,
-                        AccountTANumber = asset.HoldingExternalAccountNumber,
-                        ExternalAccountNumber = asset.HoldingExternalAccountNumber,
-                        IsAccountSame = true,
-                        AccountId = asset.HoldingId
-                    };
-                    ogItems.Add(og);
+                        var rateInfo = GetRateInfo(rd.RegionalDirectorKey, asset.ProductName, false);
+                        var theRate = rateInfo?.OngoingRate ?? 0.0m;
+
+                        var og = new BroadridgeOgDetailDataModel()
+                        {
+                            TheSystem = asset.TheSystem,
+                            FirmName = asset.FirmName,
+                            FirmId = asset.FirmId,
+                            FirmCRDNumber = asset.FirmCRDNumber,
+                            HoldingId = asset.HoldingId,
+                            HoldingExternalAccountNumber = asset.HoldingExternalAccountNumber,
+                            HoldingName = asset.HoldingName,
+                            HoldingStartDate = asset.HoldingStartdate,
+                            HoldingCreateDate = asset.HoldingCreatedate,
+                            MostRecentMonthAssetBalance = asset.MostRecentMonthAssetBalance,
+                            Month1AgoAssetBalance = asset.Month1AgoAssetBalance,
+                            Month2AgoAssetBalance = asset.Month2AgoAssetBalance,
+                            Month3AgoAssetBalance = asset.Month3AgoAssetBalance,
+                            Month4AgoAssetBalance = asset.Month4AgoAssetBalance,
+                            Month5AgoAssetBalance = asset.Month5AgoAssetBalance,
+                            Month6AgoAssetBalance = asset.Month6AgoAssetBalance,
+                            Month7AgoAssetBalance = asset.Month7AgoAssetBalance,
+                            Month8AgoAssetBalance = asset.Month8AgoAssetBalance,
+                            Month9AgoAssetBalance = asset.Month9AgoAssetBalance,
+                            Month10AgoAssetBalance = asset.Month10AgoAssetBalance,
+                            Month11AgoAssetBalance = asset.Month11AgoAssetBalance,
+                            Month12AgoAssetBalance = asset.Month11AgoAssetBalance,
+                            SumFlows = GetFlowAmount(asset.HoldingId),
+                            PayableAmount = asset.MostRecentMonthAssetBalance - GetFlowAmount(asset.HoldingId),
+                            Commission = (asset.MostRecentMonthAssetBalance - GetFlowAmount(asset.HoldingId) ) * (theRate / 4),
+                            QuarterlyRate = theRate / 4,
+                            AnnualRate = theRate,
+                            IsSeasoned = asset.HoldingCreatedate < GetDateDiffMonths(GetFirstOfMonth(_endDate), -3),
+                            ProductName = asset.ProductName,
+                            ProductType = asset.ProductType,
+                            Channel = asset.Channel,
+                            Region = asset.Region,
+                            Territory = asset.Territory,
+                            SalesCredit = asset.Territory,
+                            IsSame = true,
+                            PersonCRDNumber = asset.PersonCRDNumber,
+                            PersonFirstName = asset.PersonFirstName,
+                            PersonLastName = asset.PersonLastName,
+                            PersonId = asset.PersonId,
+                            OfficeAddressLine1 = asset.OfficeAddressLine1,
+                            OfficeAddressLine2 = asset.OfficeAddressLine2,
+                            OfficeCity = asset.OfficeCity,
+                            OfficeRegionRefCode = asset.OfficeRegionRefCode,
+                            OfficePostalCode = asset.OfficePostalCode,
+                            PersonBrokerTeamFlag = asset.PersonBrokerTeamFlag,
+                            HoldingAddressLine1 = asset.HoldingAddressLine1,
+                            SystemFAName = "?",
+                            SystemOfficeAddress = "?",
+                            SystemOfficeState = asset.OfficeRegionRefCode,
+                            SystemQuarterEndAssets = asset.MostRecentMonthAssetBalance,
+                            AssetCheck = 0.0m,
+                            SystemRDCredit = asset.Territory,
+                            AccountTANumber = asset.HoldingExternalAccountNumber,
+                            ExternalAccountNumber = asset.HoldingExternalAccountNumber,
+                            IsAccountSame = true,
+                            AccountId = asset.HoldingId
+                        };
+                        ogItems.Add(og);
+                    }
             }
 
             return ogItems.OrderBy(c => c.Territory).ThenBy(c => c.TheSystem);
@@ -670,6 +680,74 @@ namespace AcmCommissionsStatements.BroadridgeMerrillMorgan
             }
 
             return ogSumm.OrderBy(c => c.RM).ThenBy(c => c.TheSystem);
+        }
+
+        private IEnumerable<TopLevelSummaryDataModel> BuildTopLevelSummary(IEnumerable<BroadridgeNewAssetsDetailDataModel> naDetail, IEnumerable<BroadridgeOgDetailDataModel> ogDetail)
+        {
+            var nasumm = naSummary
+                .Where(f => f.ProductName == "z--Totals")
+                .GroupBy(g => new
+                {
+                    g.Territory
+                })
+                .Select(group => new
+                {
+                    RD = group.Key.Territory,
+                    Amount = group.Sum(c => c.NewAssetValue),
+                    Rate = group.Average(c => c.Rate),
+                    CommissionAmount = group.Sum(c => c.Commission)
+                });
+            
+            var topLevelSum = nasumm.Select(item => new TopLevelSummaryDataModel() {RegionalDirector = item.RD, Heading = "New Assets", Amount = item.Amount, Commission = item.CommissionAmount, AverageRate = item.Rate}).ToList();
+
+            var ogsumm = ogDetail
+                .GroupBy(k => new
+                {
+                    k.Territory
+                })
+                .Select(group => new
+                {
+                    RD = group.Key.Territory,
+                    Amount = group.Sum(c => c.PayableAmount),
+                    Rate = group.Average(c => c.AnnualRate),
+                    CommissionAmount = group.Sum(c => c.PayableAmount) * group.Average(c => c.AnnualRate)
+                });
+
+            topLevelSum.AddRange(ogsumm.Select(item => new TopLevelSummaryDataModel() {RegionalDirector = item.RD, Heading = "Ongoing", Amount = item.Amount, Commission = item.CommissionAmount, AverageRate = item.Rate}));
+
+            
+            var pfsumm = pfSummary
+                .Where(f => f.TheSystem.Contains(" - Total"))    
+                .GroupBy(k => new
+                {
+                    k.Territory
+                })
+                .Select(group => new
+                {
+                    RD = group.Key.Territory,
+                    Amount = group.Sum(c => c.Flows),
+                    Rate = group.Average(c => c.Rate),
+                    CommissionAmount = group.Max(c => c.Commission)
+//                    CommissionAmount = group.Sum(c => c.Flows) * group.Average(c => c.Rate)
+                });
+            
+            topLevelSum.AddRange(pfsumm.Select(item => new TopLevelSummaryDataModel() {RegionalDirector = item.RD, Heading = "PseudoFlows", Amount = item.Amount, Commission = item.CommissionAmount, AverageRate = item.Rate}));
+            var rdList = topLevelSum.Select(c => c.RegionalDirector).Distinct().ToList();
+
+            foreach (var rd in rdList)
+            {
+                var tls = new TopLevelSummaryDataModel()
+                {
+                    RegionalDirector = rd,
+                    Heading = "Totals",
+                    Amount = topLevelSum.Where(a => a.RegionalDirector == rd).Sum(a => a.Amount),
+                    Commission = topLevelSum.Where(a => a.RegionalDirector == rd).Sum(a => a.Commission),
+                };
+                tls.AverageRate = tls.Amount != 0 ? tls.Commission / tls.Amount : 0.0m;
+                topLevelSum.Add(tls);
+            }
+            
+            return topLevelSum.OrderBy(c=>c.RegionalDirector).ThenBy(c=>c.Heading);
         }
 
         #endregion

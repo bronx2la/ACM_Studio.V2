@@ -5,8 +5,10 @@ using System.Linq;
 using Aristotle.Excel;
 using CommissionsStatementGenerator;
 using Core.DataModels;
+using Core.DataModels.Broadridge;
 using Dapper;
 using DapperDatabaseAccess;
+using OfficeOpenXml.FormulaParsing.Excel.Functions.Text;
 
 namespace AcmCommissionsStatements
 {
@@ -72,6 +74,8 @@ namespace AcmCommissionsStatements
                 throw;
             }
         }
+        
+        
 
         protected RegionalDirectorRateInfoRevisedDataModel GetRateInfo(string rdkey, string strategy, bool isGeneva = true)
         {
@@ -135,6 +139,61 @@ namespace AcmCommissionsStatements
         protected DateTime GetDateDiffMonths(DateTime value, int delta)
         {
             return value.AddMonths(delta);
+        }
+
+        protected List<FinalSummaryDataModel> GetBroadridgeNewAssetFinalSummary(IEnumerable<BroadridgeNewAssetsSummaryDataModel> newAssetsList, IEnumerable<BroadridgeOgSummaryDataModel> ongoingList)
+        {
+            var result = new List<FinalSummaryDataModel>();
+            FinalSummaryDataModel summaryModel;
+
+            foreach (var rd in _regionalDirector)
+            {
+                var naItem =
+                    newAssetsList.FirstOrDefault(na => na.Territory == rd.LastName && na.ProductName == "z--Totals");
+                if (naItem != null)
+                {
+                    summaryModel = new FinalSummaryDataModel()
+                    {
+                        RegionalDirector = rd.RegionalDirectorKey,
+                        CommissionType = "New Assets",
+                        Amount = naItem.NewAssetValue,
+                        Commission = naItem.Commission,
+                        AverageRate = naItem.Rate
+                    };
+                    result.Add(summaryModel);
+                }
+
+                var ogItem = ongoingList.FirstOrDefault(og => og.RM == rd.LastName);
+                if (ogItem != null)
+                {
+                    summaryModel = new FinalSummaryDataModel()
+                    {
+                        RegionalDirector = rd.RegionalDirectorKey,
+                        CommissionType = "Ongoing",
+                        Amount = ogItem.PayableAmount,
+                        Commission = ogItem.Commission,
+                        AverageRate = ogItem.QuarterlyRate
+                    };
+                    result.Add(summaryModel);
+                }
+
+                if ((ogItem != null) && (naItem != null))
+                {
+                    summaryModel = new FinalSummaryDataModel()
+                    {
+                        RegionalDirector = $"{rd.RegionalDirectorKey}-Total",
+//                        RegionalDirector = $"{rd.RegionalDirectorKey}-Total",
+                        CommissionType = "Totals",
+                        Amount = naItem.NewAssetValue + ogItem.PayableAmount,
+                        Commission = naItem.Commission + ogItem.Commission,
+                        AverageRate = null
+                    };
+                    result.Add(summaryModel);
+
+                }
+            }
+
+            return result;
         }
     }
 }

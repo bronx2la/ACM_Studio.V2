@@ -82,6 +82,7 @@
             <e p="BroadridgeOtherNewAssetsDataModel.cs" t="Include" />
             <e p="BroadridgeOtherOgDetailDataModel.cs" t="Include" />
             <e p="BroadridgeOtherOnGoingDataModel.cs" t="Include" />
+            <e p="FinalSummaryDataModel.cs" t="Include" />
           </e>
           <e p="GenevaSma" t="Include">
             <e p="GenevaAumInbound.cs" t="Include" />
@@ -94,6 +95,7 @@
             <e p="GenevaSmaNewAssetsDataModel.cs" t="Include" />
             <e p="GenevaSmaOngoingDetailDataModel.cs" t="Include" />
             <e p="GenevaSmaOngoinSummaryDataModel.cs" t="Include" />
+            <e p="TopLevelSummaryDataModel.cs" t="Include" />
           </e>
           <e p="Lookup" t="Include">
             <e p="CommissionColumnStylesDataModel.cs" t="Include" />
