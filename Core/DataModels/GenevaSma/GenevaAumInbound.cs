@@ -28,5 +28,7 @@ namespace Core.DataModels
         public string ConsultantName { get; set; }
         public string IntMktPerson { get; set; }
         public string SalesTeam { get; set; }
+        public string ClientTyp { get; set; }
+        public string Textbox43 { get; set; }
     }
 }

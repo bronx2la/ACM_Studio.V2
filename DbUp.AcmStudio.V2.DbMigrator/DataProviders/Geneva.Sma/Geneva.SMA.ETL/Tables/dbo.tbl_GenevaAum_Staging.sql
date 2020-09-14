@@ -1,6 +1,10 @@
 use ACM_Studio_V2
 go
 
+if (object_id('dbo.tbl_GenevaAum_Staging') is not null)
+    drop table dbo.tbl_GenevaAum_Staging
+go
+
 if (object_id('dbo.tbl_GenevaAum_Staging') is null)
 begin
     create table dbo.tbl_GenevaAum_Staging
@@ -30,7 +34,9 @@ begin
       ConsultantFirm varchar(500),
       ConsultantName varchar(500),
       IntMktPerson varchar(500),
-      SalesTeam varchar(500)
+      SalesTeam varchar(500),
+      ClientTyp varchar(500),
+      Textbox43 varchar(500)
     );
 end
 go

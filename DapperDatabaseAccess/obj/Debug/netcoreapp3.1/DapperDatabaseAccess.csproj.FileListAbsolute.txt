@@ -1,0 +1,12 @@
+C:\Development.Acm\DapperDatabaseAccess\bin\Debug\netcoreapp3.1\DapperDatabaseAccess.deps.json
+C:\Development.Acm\DapperDatabaseAccess\bin\Debug\netcoreapp3.1\DapperDatabaseAccess.dll
+C:\Development.Acm\DapperDatabaseAccess\bin\Debug\netcoreapp3.1\DapperDatabaseAccess.pdb
+C:\Development.Acm\DapperDatabaseAccess\bin\Debug\netcoreapp3.1\Core.dll
+C:\Development.Acm\DapperDatabaseAccess\bin\Debug\netcoreapp3.1\Core.pdb
+C:\Development.Acm\DapperDatabaseAccess\obj\Debug\netcoreapp3.1\DapperDatabaseAccess.csprojAssemblyReference.cache
+C:\Development.Acm\DapperDatabaseAccess\obj\Debug\netcoreapp3.1\DapperDatabaseAccess.AssemblyInfoInputs.cache
+C:\Development.Acm\DapperDatabaseAccess\obj\Debug\netcoreapp3.1\DapperDatabaseAccess.AssemblyInfo.cs
+C:\Development.Acm\DapperDatabaseAccess\obj\Debug\netcoreapp3.1\DapperDatabaseAccess.csproj.CopyComplete
+C:\Development.Acm\DapperDatabaseAccess\obj\Debug\netcoreapp3.1\DapperDatabaseAccess.dll
+C:\Development.Acm\DapperDatabaseAccess\obj\Debug\netcoreapp3.1\DapperDatabaseAccess.pdb
+C:\Development.Acm\DapperDatabaseAccess\obj\Debug\netcoreapp3.1\DapperDatabaseAccess.csproj.CoreCompileInputs.cache

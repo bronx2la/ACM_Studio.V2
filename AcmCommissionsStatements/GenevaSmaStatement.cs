@@ -17,8 +17,6 @@ namespace AcmCommissionsStatements
         private IEnumerable<GenevaSmaAssetsDataModel> _genevaSales { get; set; }
         private IEnumerable<GenevaFlows> _genevaFlows { get; set; }
         private IEnumerable<GenevaSmaAumDataModel> _aumItems { get; set; }
-        private IEnumerable<GenevaSmaFlowsDataModel> FlowsItems { get; set; }
-
         
 
     public GenevaSmaStatement(string startDate, string endDate, string connectionString, TaskMetaDataDataModel metaData) : base(startDate, endDate, connectionString, metaData)
@@ -35,7 +33,7 @@ namespace AcmCommissionsStatements
             var parms = new DynamicParameters();
             parms.Add("@ReportingDate", endDate);
 
-            _genevaSales = dal.SqlServerFetch("dbo.prc_GenevaSmaAssets_DetailRows", parms);
+            _genevaSales = dal.SqlServerFetch("dbo.prc_GenevaSmaAssets_DetailRows", parms).Distinct();
         }
 
         protected void InitializeAumData(string endDate)
@@ -55,13 +53,17 @@ namespace AcmCommissionsStatements
             IEnumerable<GenevaSmaNewAssetsDataModel> naDetail = BuildNewAssetsData();
             //NewAssets Summary
             IEnumerable<GenevaNewAssetsSummaryDataModel> naSummary = BuildNewAssetsSummaryData(naDetail);
-            //Ongoing Detail
+//            //Ongoing Detail
             IEnumerable<GenevaSmaOngoingDetailDataModel> ogDetail = BuildOngoingDetail();
-            //Ongoing Summary
+//            //Ongoing Summary
             IEnumerable<GenevaSmaOngoingSummaryDataModel> ogSummary = BuildOngoingSummary();
 
+            IEnumerable<TopLevelSummaryDataModel> tlSummary = BuildTopLevelSummary(naSummary, ogDetail);
+            
+            
             _workbookFile = $@"{_metaData.outboundFolder}\{Core.FileNameHelpers.FormatOutboundFileName(_metaData.outboundFile)}";
             _xl           = new AristotleExcel(_workbookFile);
+            _xl.AddWorksheet(tlSummary, "Top_Level_Summary", ExcelColumnProperties("GevevaSma.TopLevelSummary"));
             _xl.AddWorksheet(naSummary, "SMA_NewAssets_Summary", ExcelColumnProperties("GevevaSma.NewAssetsSummary"));
             _xl.AddWorksheet(ogSummary, "SMA_Ongoing_Summary", ExcelColumnProperties("GevevaSma.OngoingSummary"));
             _xl.AddWorksheet(naDetail, "SMA_NewAssets_Detail", ExcelColumnProperties("GevevaSma.NewAssetsDetail"));
@@ -118,7 +120,7 @@ namespace AcmCommissionsStatements
             {
                 var naItems = new List<GenevaSmaNewAssetsDataModel>();
 
-                foreach (GenevaSmaAssetsDataModel item in _genevaSales.Distinct())
+                foreach (GenevaSmaAssetsDataModel item in _genevaSales)
                 {
                     bool calcCommission = ((item.Amount > 0) && (item.TranDesc == "NewCash" || item.TranDesc == "NewAsset"));
                     bool isStartBeforePeriod = ((item.PortStartDate < item.TradeDate) &&
@@ -129,21 +131,20 @@ namespace AcmCommissionsStatements
 
                     var na = new GenevaSmaNewAssetsDataModel()
                     {
-                        RegionalDirector              = item.InternalMarketingPerson,
+                        InternalMarketingPerson       = item.InternalMarketingPerson,
                         Portfolio                     = item.Portfolio,
                         PortShortName                 = item.PortShortName,
                         ConsultantFirm                = item.ConsultantFirm,
                         ConsultantName                = FindAumItemByPortfolioCode(item.Portfolio.Trim()).ConsultantName,
                         Strategy                      = item.Strategy,
-                        InteralMarketingPerson        = item.InternalMarketingPerson,
                         PortStartDate                 = item.PortStartDate,
                         TradeDate                     = item.TradeDate,
                         TranType                      = item.TranType,
-                        Trandesc                      = item.TranDesc,
                         InvCode                       = item.InvCode,
                         Quantity                      = item.Quantity,
                         Price                         = item.Price,
                         Amount                        = item.Amount,
+                        AmountRemoved                 = null,
                         CommissionAmount              = calcCommission ? (item.Amount * theRate) : 0.0m,
                         CommissionRate                = theRate,
                         SalesTeam                     = item.SalesTeam,
@@ -151,7 +152,7 @@ namespace AcmCommissionsStatements
                     };
                     naItems.Add(na);
                 }
-                return naItems.OrderBy(c=>c.RegionalDirector).ThenBy(c=>c.ConsultantFirm).ThenBy(c=>c.Portfolio);
+                return naItems.OrderBy(c=>c.InternalMarketingPerson).ThenBy(c=>c.ConsultantFirm).ThenBy(c=>c.Portfolio);
             }
             catch (Exception e)
             {
@@ -169,15 +170,17 @@ namespace AcmCommissionsStatements
             var naSummWorking = naDetail
                 .GroupBy(g => new
                 {
-                    g.RegionalDirector,
+                    g.InternalMarketingPerson,
                     g.ConsultantFirm,
-                    g.ConsultantName
+                    g.ConsultantName,
+                    g.Strategy
                 })
                 .Select(group => new
                 {
-                    RD = group.Key.RegionalDirector,
+                    RD = group.Key.InternalMarketingPerson,
                     Firm = group.Key.ConsultantFirm,
                     Name = group.Key.ConsultantName,
+                    Strategy = group.Key.Strategy,
                     Quantity = group.Sum(c => c.Quantity),
                     Amount = group.Sum(c => c.Amount),
                     Rate = group.Min(c => c.CommissionRate),
@@ -188,12 +191,13 @@ namespace AcmCommissionsStatements
             {
                 var summary = new GenevaNewAssetsSummaryDataModel()
                 {
-                    RegionalDirectorKey = item.RD,
+                    RowLabels = item.RD,
                     ConsultantFirm = item.Firm,
                     ConsultantName = item.Name,
-                    PayableAmount = item.Amount,
-                    Rate = item.Rate,
-                    Commission = item.CommissionAmount
+                    Strategy = item.Strategy,
+                    Amount = item.Amount,
+                    CommissionRate = item.Rate,
+                    CommissionAmount = item.CommissionAmount
                 };
 
                 naSumm.Add(summary);
@@ -203,34 +207,36 @@ namespace AcmCommissionsStatements
             var naSummTotals = naSumm
                                .GroupBy(g => new
                                 {
-                                    g.RegionalDirectorKey
+                                    g.RowLabels
                                 })
                                .Select(group => new
                                 {
-                                    RD               = group.Key.RegionalDirectorKey,
+                                    RD               = group.Key.RowLabels,
                                     IsGood           = "-----",
                                     Firm             = "-----",
                                     Name             = "-----",
-                                    Amount           = group.Sum(c => c.PayableAmount),
-                                    Rate             = group.Min(c => c.Rate),
-                                    CommissionAmount = group.Sum(c => c.Commission)
+                                    Strategy         = "-----",
+                                    Amount           = group.Sum(c => c.Amount),
+                                    Rate             = group.Min(c => c.CommissionRate),
+                                    CommissionAmount = group.Sum(c => c.CommissionAmount)
                                 });
 
             foreach (var sa in naSummTotals)
             {
                 var summary = new GenevaNewAssetsSummaryDataModel()
                 {
-                    RegionalDirectorKey = sa.RD,
+                    RowLabels = sa.RD,
                     ConsultantFirm      = "z--Totals",
-                    PayableAmount       = sa.Amount,
-                    Rate                = sa.Rate,
-                    Commission          = sa.CommissionAmount,
+                    Amount       = sa.Amount,
+                    Strategy = "",
+                    CommissionRate                = sa.Rate,
+                    CommissionAmount          = sa.CommissionAmount,
                 };
 
                 naSumm.Add(summary);
             }
 
-            return naSumm.OrderBy(c=>c.RegionalDirectorKey).ThenBy(c=>c.ConsultantFirm);
+            return naSumm.OrderBy(c=>c.RowLabels).ThenBy(c=>c.ConsultantFirm);
         }
 
         private IEnumerable<GenevaSmaOngoingDetailDataModel> BuildOngoingDetail()
@@ -250,15 +256,16 @@ namespace AcmCommissionsStatements
                 
                 var og = new GenevaSmaOngoingDetailDataModel()
                 {
-                    RM             = item.IntMktPerson,
+                    RegionalDirector = item.IntMktPerson,
+                    IntMktPerson = item.IntMktPerson,
                     Portfolio      = item.PortfolioCode,
                     PortShortName  = item.PortfolioName,
-                    PortStartDate  = item.Inception,
-                    Strategy       = item.Goal,
+                    Inception  = item.Inception,
+                    Goal       = item.Goal,
                     ConsultantFirm = item.ConsultantFirm,
                     ConsultantName = item.ConsultantName,
                     ReportEndDate  = _endDate,
-                    AUM            = item.Total,
+                    Total            = item.Total,
                     InFlows        = flowValue,
                     SeasonedValue  = item.Total - flowValue,
                     Commission     = (item.Total - flowValue) * (theRate / 4),
@@ -282,30 +289,33 @@ namespace AcmCommissionsStatements
             var naSummWorking = details
                                .GroupBy(g => new
                                 {
-                                    g.RM,
+                                    g.RegionalDirector,
                                     g.ConsultantFirm,
-                                    g.ConsultantName
+                                    g.ConsultantName,
+                                    g.Goal
                                 })
                                .Select(group => new
                                 {
-                                    RD               = group.Key.RM,
+                                    RD               = group.Key.RegionalDirector,
                                     Firm             = group.Key.ConsultantFirm,
                                     Name             = group.Key.ConsultantName,
-                                    AUM              = group.Sum(c => c.AUM),
+                                    Goal             = group.Key.Goal,
+                                    Total            = group.Sum(c => c.Total),
                                     Inflows          = group.Sum(c => c.InFlows),
                                     SeasonedValue    = group.Sum(c => c.SeasonedValue),
                                     Rate             = group.Min(c => c.Rate),
                                     CommissionAmount = group.Sum(c => c.SeasonedValue) * group.Min(c => c.Rate)
                                 });
 
-            foreach (var item in naSummWorking)
+            foreach (var item in naSummWorking) 
             {
                 var summary = new GenevaSmaOngoingSummaryDataModel()
                 {
-                    RegionalDirector = item.RD,
+                    RowLabels = item.RD,
                     ConsultantFirm   = item.Firm,
                     ConsultantName   = item.Name,
-                    AUM              = item.AUM,
+                    Goal = item.Goal,
+                    Total             = item.Total,
                     Inflows          = item.Inflows,
                     SeasonedValue    = item.SeasonedValue,
                     Commission       = item.CommissionAmount,
@@ -319,32 +329,88 @@ namespace AcmCommissionsStatements
             var naSummTotals = naSumm
                               .GroupBy(g => new
                                {
-                                   g.RegionalDirector
+                                   g.RowLabels
                                })
                               .Select(group => new
                                {
-                                   RD             = @group.Key.RegionalDirector,
+                                   RD             = @group.Key.RowLabels,
                                    ConsultantFirm = "-----",
                                    ConsultantName = "-----",
-                                   AUM            = @group.Sum(c=>c.AUM),
+                                   Goal = "-----",
+                                   Total            = @group.Sum(c=>c.Total),
                                    InFlows        = @group.Sum(c=>c.Inflows),
                                    SeasonedValue  = @group.Sum(c=>c.SeasonedValue),
-                                   Rate           = @group.Min(c=>c.Rate),
-                                   Commission     = @group.Sum(c=>c.SeasonedValue) * @group.Min(c=>c.Rate)
+                                   Rate           = @group.Max(c=>c.Rate),
+                                   Commission     = @group.Sum(c=>c.SeasonedValue) * group.Max(c=>c.Rate) 
                                });
 
             naSumm.AddRange(naSummTotals.Select(sa => new GenevaSmaOngoingSummaryDataModel()
             {
-                RegionalDirector = sa.RD,
+                RowLabels = sa.RD,
                 ConsultantFirm   = "z--Totals",
                 ConsultantName   = "-----",
-                AUM              = sa.AUM,
+                Goal = "-----",
+                Total              = sa.Total,
                 Inflows          = sa.InFlows,
                 SeasonedValue    = sa.SeasonedValue,
                 Commission       = sa.Commission
             }));
 
-            return naSumm.OrderBy(c=>c.RegionalDirector).ThenBy(c=>c.ConsultantFirm);
+            return naSumm.OrderBy(c=>c.RowLabels).ThenBy(c=>c.ConsultantFirm);
+        }
+
+        private IEnumerable<TopLevelSummaryDataModel> BuildTopLevelSummary(IEnumerable<GenevaNewAssetsSummaryDataModel> naSummary, IEnumerable<GenevaSmaOngoingDetailDataModel> ogDetail)
+        {
+            var nasumm = naSummary
+                .Where(f => f.ConsultantFirm == "z--Totals")
+                .GroupBy(g => new
+                {
+                    g.RowLabels, g.ConsultantFirm
+                })
+                .Select(group => new
+                {
+                    RD = group.Key.RowLabels,
+                    Amount = group.Sum(c => c.Amount),
+                    Rate = 0.0m,
+                    CommissionAmount = group.Sum(c => c.CommissionAmount),
+                }).Distinct();
+
+            var topLevelSum = nasumm.Select(item => new TopLevelSummaryDataModel() {RegionalDirector = item.RD, Heading = "New Assets", Amount = item.Amount, Commission = item.CommissionAmount, AverageRate = 0.0m}).ToList().Distinct();
+
+            var ogsumm = ogDetail
+                .GroupBy(k => new
+                {
+                    k.RegionalDirector//, k.ConsultantFirm
+                })
+                .Select(group => new
+                {
+                    RD = group.Key.RegionalDirector,
+                    Amount = group.Sum(c => c.SeasonedValue),
+                    Rate = 0.0,
+                    CommissionAmount = group.Sum(c => c.SeasonedValue) * group.Average(c => c.Rate)
+                }).Distinct();
+                
+            var topLevelSummaryDataModels = topLevelSum.ToList();
+            
+            topLevelSum = ogsumm.Select(item => new TopLevelSummaryDataModel() {RegionalDirector = item.RD, Heading = "Ongoing", Amount = item.Amount, Commission = item.CommissionAmount, AverageRate = 0.0m});
+            topLevelSummaryDataModels.AddRange(topLevelSum);
+
+            var rdList = topLevelSummaryDataModels.Select(c => c.RegionalDirector).Distinct().ToList();
+
+            foreach (var rd in rdList)
+            {
+                var tls = new TopLevelSummaryDataModel()
+                {
+                    RegionalDirector = rd,
+                    Heading = "Totals",
+                    Amount = topLevelSummaryDataModels.Where(a => a.RegionalDirector == rd).Sum(a => a.Amount),
+                    Commission = topLevelSummaryDataModels.Where(a => a.RegionalDirector == rd).Sum(a => a.Commission),
+                };
+                tls.AverageRate = tls.Amount != 0 ? tls.Commission / tls.Amount : 0.0m;
+                topLevelSummaryDataModels.Add(tls);
+            }
+            
+            return topLevelSummaryDataModels.OrderBy(c=>c.RegionalDirector).ThenBy(c=>c.Heading);
         }
 
         private IEnumerable<GenevaSmaFlowsDataModel> BuildFlowsDetail()
@@ -367,7 +433,7 @@ namespace AcmCommissionsStatements
             parms.Add("@StartDate", _startDate, DbType.Date, ParameterDirection.Input);
             parms.Add("@EndDate", _endDate, DbType.Date, ParameterDirection.Input);
 
-            return dal.SqlServerFetch("dbo.prc_GenevaSmaAssets_DetailRows", parms);
+            return dal.SqlServerFetch("dbo.prc_GenevaSmaAssets_DetailRows", parms).Distinct();
         }
 
         private IEnumerable<GenevaFlows> InitNewAssetsFlows()

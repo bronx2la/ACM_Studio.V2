@@ -8,38 +8,47 @@ go
     (
         values
             --begin --Geneva Column Properties   
-            ('GevevaSma.NewAssetsDetail', 8, 'YYYY-mm-dd', 25),
-			('GevevaSma.NewAssetsDetail', 9, 'YYYY-mm-dd', 25),
+            ('GevevaSma.NewAssetsDetail', 7, 'YYYY-mm-dd', 25),
+			('GevevaSma.NewAssetsDetail', 8, 'YYYY-mm-dd', 25),
+            ('GevevaSma.NewAssetsDetail', 11, '#,##0.00', 25),
+            ('GevevaSma.NewAssetsDetail', 12, '#,##0.00', 25),
             ('GevevaSma.NewAssetsDetail', 13, '#,##0.00', 25),
             ('GevevaSma.NewAssetsDetail', 14, '#,##0.00', 25),
             ('GevevaSma.NewAssetsDetail', 15, '#,##0.00', 25),
             ('GevevaSma.NewAssetsDetail', 16, '#0.000000', 25),
-            ('GevevaSma.NewAssetsDetail', 17, '#0.000000', 25),
-
+            
             ('GevevaSma.NewAssetsSummary', 1, '', 25),
             ('GevevaSma.NewAssetsSummary', 2, '', 50),
             ('GevevaSma.NewAssetsSummary', 3, '', 50),
-            ('GevevaSma.NewAssetsSummary', 4, '#,##0.00', 25),
             ('GevevaSma.NewAssetsSummary', 5, '#,##0.00', 25),
-            ('GevevaSma.NewAssetsSummary', 6, '#0.000000', 25),
+            ('GevevaSma.NewAssetsSummary', 6, '#,##0.00', 25),
+            ('GevevaSma.NewAssetsSummary', 7, '#0.000000', 25),
 
             ('GevevaSma.OngoingDetail', 4, 'YYYY-mm-dd', 25),
             ('GevevaSma.OngoingDetail', 8, 'YYYY-mm-dd', 25),
             ('GevevaSma.OngoingDetail', 9, '#,##0.00', 25),
             ('GevevaSma.OngoingDetail', 10, '#,##0.00', 25),
             ('GevevaSma.OngoingDetail', 11, '#,##0.00', 25),
-            ('GevevaSma.OngoingDetail', 12, '#0.000000', 25),
-            ('GevevaSma.OngoingDetail', 13, '#0.000000', 25),
+            ('GevevaSma.OngoingDetail', 12, '#,##0.00', 25),
+            ('GevevaSma.OngoingDetail', 13, '#,##0.00', 25),
+            ('GevevaSma.OngoingDetail', 14, '#0.000000', 25),
+            ('GevevaSma.OngoingDetail', 15, '#0.000000', 25),
 
             ('GevevaSma.OngoingSummary', 1, '', 25),
             ('GevevaSma.OngoingSummary', 2, '', 50),
             ('GevevaSma.OngoingSummary', 3, '', 50),
-            ('GevevaSma.OngoingSummary', 4, '#,##0.00', 25),
             ('GevevaSma.OngoingSummary', 5, '#,##0.00', 25),
             ('GevevaSma.OngoingSummary', 6, '#,##0.00', 25),
             ('GevevaSma.OngoingSummary', 7, '#,##0.00', 25),
-            ('GevevaSma.OngoingSummary', 8, '#0.000000', 25),
-            ('GevevaSma.OngoingSummary', 9, '#0.0000##', 25),
+            ('GevevaSma.OngoingSummary', 8, '#,##0.00', 25),
+            ('GevevaSma.OngoingSummary', 9, '#0.000000', 25),
+            ('GevevaSma.OngoingSummary', 10, '#0.0000##', 25),
+
+            ('GevevaSma.TopLevelSummary', 1, '', 25),
+            ('GevevaSma.TopLevelSummary', 2, '', 25),
+            ('GevevaSma.TopLevelSummary', 3, '#,##0.00', 25),
+            ('GevevaSma.TopLevelSummary', 4, '#,##0.00', 25),
+            ('GevevaSma.TopLevelSummary', 5, '#0.0000##', 25),
             --end --Geneva Column Properties
                
              --begin --Merrill/Morgan Column Properties  
@@ -66,9 +75,9 @@ go
             ('BroadridgeUmaMerrillMorgan.NewAssetsDetail', 48, '#,##0.00', 25),
 
             --Merrill/Morgan New Assets Summary
-            ('BroadridgeUmaMerrillMorgan.NewAssetsSummary', 7, '#,##0.00', 25),
             ('BroadridgeUmaMerrillMorgan.NewAssetsSummary', 8, '#,##0.00', 25),
-            ('BroadridgeUmaMerrillMorgan.NewAssetsSummary', 9, '#0.000000', 25),
+            ('BroadridgeUmaMerrillMorgan.NewAssetsSummary', 9, '#,##0.00', 25),
+            ('BroadridgeUmaMerrillMorgan.NewAssetsSummary', 10, '#0.000000', 25),
 
             --Merrill/Morgan Pseudo Flows
             ('BroadridgeUmaMerrillMorgan.PseudoflowDetail', 8, 'yyyy-MM-dd', 25),
@@ -113,8 +122,8 @@ go
 
             ('BroadridgeUmaMerrillMorgan.PseudoflowSummary', 6, '#,##0.00', 25),
             ('BroadridgeUmaMerrillMorgan.PseudoflowSummary', 7, '#,##0.00', 25),
-            ('BroadridgeUmaMerrillMorgan.PseudoflowSummary', 8, '#,##0.00', 25),
-            ('BroadridgeUmaMerrillMorgan.PseudoflowSummary', 9, '#,##0.00', 25),
+            ('BroadridgeUmaMerrillMorgan.PseudoflowSummary', 8, '#0.000000', 25),
+            ('BroadridgeUmaMerrillMorgan.PseudoflowSummary', 9, '#0.000000', 25),
             ('BroadridgeUmaMerrillMorgan.PseudoflowSummary', 10, '#0.000000', 25),
             ('BroadridgeUmaMerrillMorgan.PseudoflowSummary', 11, '#0.000000', 25),
                
@@ -150,6 +159,10 @@ go
             ('BroadridgeUmaMerrillMorgan.OngoingSummary', 11, '#0.000000', 25),
             --end; --UMA Merrill/Morgan Column Properties   
                
+               
+            ('FinalSummary', 3, '#,##0.00', 25),   
+            ('FinalSummary', 4, '#,##0.00', 25),   
+            ('FinalSummary', 5, '#0.0000000', 25),
                
             --begin --UMA Column Properties
             --UMA New Assets Detail 

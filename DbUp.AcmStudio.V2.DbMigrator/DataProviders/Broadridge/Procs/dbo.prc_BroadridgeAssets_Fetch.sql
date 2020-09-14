@@ -9,7 +9,7 @@ create procedure dbo.prc_BroadridgeAssets_Fetch
     @ReportingDate date
 as
     select
-      TheSystem                    ,
+      TheSystem                    as System,
       FirmName                     ,
       FirmId                       ,
       FirmCRDNumber                ,

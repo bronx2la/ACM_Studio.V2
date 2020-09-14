@@ -38,5 +38,7 @@ create procedure dbo.prc_GenevaAum_Transform
         ConsultantFirm,
         ConsultantName,
         IntMktPerson,
-        SalesTeam
+        SalesTeam,
+        ClientTyp,
+        Textbox43
       from dbo.tbl_GenevaAum_Staging
