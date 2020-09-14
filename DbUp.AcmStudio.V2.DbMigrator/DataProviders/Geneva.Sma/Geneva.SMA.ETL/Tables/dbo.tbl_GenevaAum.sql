@@ -31,7 +31,9 @@ begin
       ConsultantFirm varchar(500),
       ConsultantName varchar(500),
       IntMktPerson varchar(500),
-      SalesTeam varchar(500)
+      SalesTeam varchar(500),
+      ClientTyp varchar(500),
+      Textbox43 varchar(500)
     );
 end
 go

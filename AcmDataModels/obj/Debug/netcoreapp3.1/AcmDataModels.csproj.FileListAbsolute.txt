@@ -1,0 +1,9 @@
+C:\Development.Acm\AcmDataModels\bin\Debug\netcoreapp3.1\AcmDataModels.deps.json
+C:\Development.Acm\AcmDataModels\bin\Debug\netcoreapp3.1\AcmDataModels.dll
+C:\Development.Acm\AcmDataModels\bin\Debug\netcoreapp3.1\AcmDataModels.pdb
+C:\Development.Acm\AcmDataModels\obj\Debug\netcoreapp3.1\AcmDataModels.csprojAssemblyReference.cache
+C:\Development.Acm\AcmDataModels\obj\Debug\netcoreapp3.1\AcmDataModels.AssemblyInfoInputs.cache
+C:\Development.Acm\AcmDataModels\obj\Debug\netcoreapp3.1\AcmDataModels.AssemblyInfo.cs
+C:\Development.Acm\AcmDataModels\obj\Debug\netcoreapp3.1\AcmDataModels.dll
+C:\Development.Acm\AcmDataModels\obj\Debug\netcoreapp3.1\AcmDataModels.pdb
+C:\Development.Acm\AcmDataModels\obj\Debug\netcoreapp3.1\AcmDataModels.csproj.CoreCompileInputs.cache

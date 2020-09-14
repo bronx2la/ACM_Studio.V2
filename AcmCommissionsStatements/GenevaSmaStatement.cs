@@ -307,7 +307,7 @@ namespace AcmCommissionsStatements
                                     CommissionAmount = group.Sum(c => c.SeasonedValue) * group.Min(c => c.Rate)
                                 });
 
-            foreach (var item in naSummWorking)
+            foreach (var item in naSummWorking) 
             {
                 var summary = new GenevaSmaOngoingSummaryDataModel()
                 {
